@@ -18,7 +18,13 @@ ENV PYTHONUNBUFFERED=1
 ENV QNA_PATH=/app/QnA_pairs_extracted.json
 ENV CHROMA_DIR=/app/backend/chroma_data
 
+# ============================================================
+# IMPORTANT: Build the ChromaDB vector index during Docker build
+# This embeds all Q&A pairs so the RAG chatbot can retrieve them
+# ============================================================
+WORKDIR /app/backend
+RUN python -m scripts.ingest
+
 EXPOSE 8000
 
-WORKDIR /app/backend
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
