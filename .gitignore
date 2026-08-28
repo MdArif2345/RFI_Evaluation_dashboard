@@ -1,0 +1,65 @@
+# =========================
+# CMC Dashboard .gitignore
+# =========================
+
+# ----- Secrets & Environment -----
+backend/.env
+.env
+.env.local
+.env.*.local
+
+# ----- Python Virtual Environment -----
+backend/.venv/
+.venv/
+venv/
+ENV/
+env/
+
+# ----- Python Cache -----
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+.Python
+
+# ----- ChromaDB Data (regenerated via ingest.py) -----
+backend/chroma_data/
+
+# ----- macOS -----
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ----- IDE / Editor -----
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# ----- Logs -----
+*.log
+logs/
+npm-debug.log*
+
+# ----- Temporary Files -----
+*.tmp
+*.temp
+.cache/
+tmp/
+
+# ----- Build Artifacts -----
+dist/
+build/
+*.egg-info/
+
+# ----- Node (if any frontend tooling added later) -----
+node_modules/
+
+# ----- Session files -----
+*.ses
+:memory:.ses

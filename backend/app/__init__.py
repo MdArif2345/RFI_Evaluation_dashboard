@@ -1,0 +1,1 @@
+"""CMC Dashboard RAG backend."""

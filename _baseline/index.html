@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CMC Response Portfolio Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="./data.js"></script>
+  <style>
+    :root {
+      --bg: #0b1c33;
+      --bg-2: #0f2744;
+      --panel: #122b4a;
+      --panel-2: #163557;
+      --line: rgba(148, 175, 205, 0.22);
+      --text: #e8eef7;
+      --muted: #8fa6c2;
+      --soft: #b7c7db;
+      --accent: #5eead4;
+      --accent-2: #38bdf8;
+      --accent-3: #a78bfa;
+      --accent-4: #fbbf24;
+      --accent-5: #fb7185;
+      --good: #34d399;
+      --warn: #f59e0b;
+      --danger: #f87171;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(56, 189, 248, 0.12), transparent 55%),
+        radial-gradient(900px 500px at 95% 0%, rgba(94, 234, 212, 0.10), transparent 50%),
+        linear-gradient(180deg, #081526 0%, var(--bg) 40%, #0a1930 100%);
+      min-height: 100vh;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    /* ===== TOC / Cover sidebar ===== */
+    .toc {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      padding: 28px 22px 32px;
+      background: linear-gradient(180deg, #071526 0%, #0b1c33 55%, #0c2038 100%);
+      border-right: 1px solid rgba(148, 175, 205, 0.12);
+    }
+
+    .toc-brand {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 22px;
+    }
+
+    .meta {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 13px;
+      margin-bottom: 28px;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 11px 0;
+      border-bottom: 1px dotted rgba(148, 175, 205, 0.35);
+      color: var(--soft);
+    }
+    .meta-row span:last-child {
+      color: var(--text);
+      text-align: right;
+      font-weight: 500;
+    }
+
+    .toc-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .toc-link {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      color: #9eb2cb;
+      text-decoration: none;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 14px;
+      line-height: 1.35;
+      border-left: 2px solid transparent;
+      transition: background .18s ease, color .18s ease, border-color .18s ease;
+    }
+    .toc-link:hover {
+      background: rgba(148, 175, 205, 0.08);
+      color: #d7e4f5;
+    }
+    .toc-link.active {
+      background: rgba(148, 175, 205, 0.12);
+      color: #ffffff;
+      border-left-color: var(--accent);
+    }
+    .toc-link .num { color: inherit; opacity: 0.85; }
+
+    .toc-foot {
+      margin-top: 28px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ===== Main ===== */
+    .main {
+      padding: 28px 32px 56px;
+      max-width: 1280px;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-end;
+      margin-bottom: 22px;
+    }
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 3vw, 40px);
+      letter-spacing: -0.03em;
+      font-weight: 700;
+    }
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 640px;
+      line-height: 1.55;
+    }
+    .pill {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      color: var(--accent);
+      border: 1px solid rgba(94, 234, 212, 0.35);
+      background: rgba(94, 234, 212, 0.08);
+      padding: 8px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    section.block {
+      scroll-margin-top: 24px;
+      margin-bottom: 28px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .section-head .idx {
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--accent);
+      font-size: 13px;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+    .section-head p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .kpi {
+      background: linear-gradient(180deg, rgba(22, 53, 87, 0.92), rgba(15, 39, 68, 0.95));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 3px;
+      background: var(--accent);
+    }
+    .kpi:nth-child(2)::before { background: var(--accent-2); }
+    .kpi:nth-child(3)::before { background: var(--accent-3); }
+    .kpi:nth-child(4)::before { background: var(--accent-4); }
+    .kpi:nth-child(5)::before { background: var(--good); }
+    .kpi:nth-child(6)::before { background: var(--accent-5); }
+    .kpi:nth-child(7)::before { background: #60a5fa; }
+    .kpi:nth-child(8)::before { background: #c084fc; }
+    .kpi .label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .kpi .value {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .kpi .sub {
+      margin-top: 8px;
+      color: var(--soft);
+      font-size: 13px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 14px;
+    }
+    .grid-2.equal { grid-template-columns: 1fr 1fr; }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: rgba(18, 43, 74, 0.88);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+    .card h3 {
+      margin: 0 0 4px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .card .hint {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      height: 340px;
+    }
+    .chart-wrap.tall { height: 420px; }
+    .chart-wrap.short { height: 280px; }
+    .chart-wrap canvas { width: 100% !important; height: 100% !important; }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 460px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(148, 175, 205, 0.12);
+      white-space: nowrap;
+    }
+    th {
+      position: sticky;
+      top: 0;
+      background: #163557;
+      color: var(--soft);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    tr:hover td { background: rgba(94, 234, 212, 0.04); }
+
+    .findings {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .finding {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 14px;
+      border-radius: 12px;
+      background: rgba(15, 39, 68, 0.75);
+      border: 1px solid var(--line);
+    }
+    .finding .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex: 0 0 auto;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(94, 234, 212, 0.12);
+    }
+    .finding:nth-child(2) .dot { background: var(--accent-2); box-shadow: 0 0 0 4px rgba(56,189,248,.12); }
+    .finding:nth-child(3) .dot { background: var(--accent-3); box-shadow: 0 0 0 4px rgba(167,139,250,.12); }
+    .finding:nth-child(4) .dot { background: var(--accent-4); box-shadow: 0 0 0 4px rgba(251,191,36,.12); }
+    .finding:nth-child(5) .dot { background: var(--accent-5); box-shadow: 0 0 0 4px rgba(251,113,133,.12); }
+    .finding:nth-child(6) .dot { background: var(--good); box-shadow: 0 0 0 4px rgba(52,211,153,.12); }
+    .finding .label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .finding .value { font-size: 14px; line-height: 1.4; color: var(--text); }
+
+    .heat {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    .heat table { min-width: 760px; }
+    .heat td.cell {
+      text-align: center;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      min-width: 64px;
+    }
+
+    .recs {
+      display: grid;
+      gap: 12px;
+    }
+    .rec {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 14px;
+      padding: 16px 16px;
+      border-radius: 14px;
+      background: linear-gradient(90deg, rgba(94,234,212,0.08), rgba(18,43,74,0.9) 28%);
+      border: 1px solid var(--line);
+    }
+    .rec .n {
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--accent);
+      font-size: 18px;
+      font-weight: 600;
+      padding-top: 2px;
+    }
+    .rec h4 { margin: 0 0 6px; font-size: 15px; }
+    .rec p { margin: 0; color: var(--soft); font-size: 14px; line-height: 1.55; }
+
+    .bars {
+      display: grid;
+      gap: 10px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(90px, 180px) 1fr 52px;
+      gap: 10px;
+      align-items: center;
+      font-size: 13px;
+    }
+    .bar-row .name {
+      color: var(--soft);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(148, 175, 205, 0.12);
+      overflow: hidden;
+    }
+    .fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    }
+    .bar-row .count {
+      text-align: right;
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--text);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chip {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.10);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      color: #dbeafe;
+    }
+    .chip.teal {
+      background: rgba(94, 234, 212, 0.10);
+      border-color: rgba(94, 234, 212, 0.25);
+      color: #ccfbf1;
+    }
+    .chip.violet {
+      background: rgba(167, 139, 250, 0.12);
+      border-color: rgba(167, 139, 250, 0.25);
+      color: #ede9fe;
+    }
+
+    .note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 1fr; }
+      .toc {
+        position: relative;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(148, 175, 205, 0.12);
+      }
+      .kpi-grid, .grid-2, .grid-2.equal, .grid-3, .findings {
+        grid-template-columns: 1fr;
+      }
+      .main { padding: 20px 16px 40px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="toc" id="toc">
+      <div class="toc-brand">CMC Intelligence</div>
+      <div class="meta" id="metaBox"></div>
+      <nav class="toc-nav" id="tocNav"></nav>
+      <div class="toc-foot" id="tocFoot"></div>
+    </aside>
+
+    <main class="main">
+      <div class="hero">
+        <div>
+          <h1>CMC Response Portfolio Report</h1>
+          <p>Shareable analytics across health-authority RFIs, products, deficiency themes, and quarterly demand — built from extracted CMC response documents.</p>
+        </div>
+      </div>
+
+      <section class="block" id="sec-00">
+        <div class="section-head">
+          <div>
+            <div class="idx">00</div>
+            <h2>Overview</h2>
+            <p>Portfolio snapshot: volume, coverage, and answer quality.</p>
+          </div>
+        </div>
+        <div class="kpi-grid" id="kpiGrid"></div>
+      </section>
+
+      <section class="block" id="sec-01">
+        <div class="section-head">
+          <div>
+            <div class="idx">01</div>
+            <h2>HA / Country Split</h2>
+            <p>Where questions concentrate across health authorities / markets.</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Questions by country (Top 15)</h3>
+            <p class="hint">Horizontal bars — easier to compare long market names</p>
+            <div class="chart-wrap tall"><canvas id="chartCountry"></canvas></div>
+          </div>
+          <div class="card">
+            <h3>Share of total questions</h3>
+            <p class="hint">Top markets only (remainder grouped)</p>
+            <div class="chart-wrap"><canvas id="chartCountryPie"></canvas></div>
+            <div class="note" id="countryNote"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block" id="sec-02">
+        <div class="section-head">
+          <div>
+            <div class="idx">02</div>
+            <h2>Top Findings</h2>
+            <p>Headline signals from the current extraction corpus.</p>
+          </div>
+        </div>
+        <div class="findings" id="findings"></div>
+        <div class="grid-2 equal" style="margin-top:14px">
+          <div class="card">
+            <h3>Top deficiency themes</h3>
+            <p class="hint">Keyword frequency across answered questions</p>
+            <div class="chart-wrap"><canvas id="chartKeywords"></canvas></div>
+          </div>
+          <div class="card">
+            <h3>Top CTD / code references</h3>
+            <p class="hint">Most cited dossier section codes</p>
+            <div class="chart-wrap"><canvas id="chartCodes"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block" id="sec-03">
+        <div class="section-head">
+          <div>
+            <div class="idx">03</div>
+            <h2>Quarterly Analysis</h2>
+            <p>Approve-date volume by calendar quarter.</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Questions per quarter</h3>
+            <p class="hint">Jan 2025 – Jul 2026 window</p>
+            <div class="chart-wrap"><canvas id="chartQuarterly"></canvas></div>
+          </div>
+          <div class="card">
+            <h3>Quarterly composition (Top HAs)</h3>
+            <p class="hint">Stacked view of leading markets each quarter</p>
+            <div class="chart-wrap"><canvas id="chartQuarterStack"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block" id="sec-04">
+        <div class="section-head">
+          <div>
+            <div class="idx">04</div>
+            <h2>Trend Breakdown</h2>
+            <p>Month-level demand and month-over-month change.</p>
+          </div>
+        </div>
+        <div class="grid-2 equal">
+          <div class="card">
+            <h3>Monthly question volume</h3>
+            <p class="hint">Approve date month</p>
+            <div class="chart-wrap"><canvas id="chartMonthly"></canvas></div>
+          </div>
+          <div class="card">
+            <h3>Month-over-month % change</h3>
+            <p class="hint">Green = up vs prior month · Rose = down</p>
+            <div class="chart-wrap"><canvas id="chartMom"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block" id="sec-05">
+        <div class="section-head">
+          <div>
+            <div class="idx">05</div>
+            <h2>Trend Analysis</h2>
+            <p>Processing status and response completeness over the corpus.</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Extraction / analysis status</h3>
+            <p class="hint">Row-level last_action</p>
+            <div class="chart-wrap short"><canvas id="chartStatus"></canvas></div>
+          </div>
+          <div class="card">
+            <h3>Answer completeness</h3>
+            <p class="hint">Substantive vs brief vs empty</p>
+            <div class="chart-wrap short"><canvas id="chartAnswers"></canvas></div>
+          </div>
+          <div class="card">
+            <h3>Document language mix</h3>
+            <p class="hint">Unique documents</p>
+            <div class="chart-wrap short"><canvas id="chartLang"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block" id="sec-06">
+        <div class="section-head">
+          <div>
+            <div class="idx">06</div>
+            <h2>Product Analysis</h2>
+            <p>Which molecules attract the most CMC questioning.</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Top products by questions</h3>
+            <p class="hint">Top 12</p>
+            <div class="chart-wrap tall"><canvas id="chartProducts"></canvas></div>
+          </div>
+          <div class="card">
+            <h3>Product table</h3>
+            <p class="hint">Questions, documents, intensity</p>
+            <div class="table-wrap" id="productTable"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block" id="sec-07">
+        <div class="section-head">
+          <div>
+            <div class="idx">07</div>
+            <h2>HA Analysis</h2>
+            <p>Health-authority intensity: volume, documents, and avg questions/doc.</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Most active health authorities</h3>
+          <p class="hint">Sorted by question volume · scroll for full list</p>
+          <div class="table-wrap" id="haTable"></div>
+        </div>
+      </section>
+
+      <section class="block" id="sec-08">
+        <div class="section-head">
+          <div>
+            <div class="idx">08</div>
+            <h2>Additional Insights</h2>
+            <p>Country × product concentration and recent document activity.</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Country × product heat (Top 12 × Top 10)</h3>
+            <p class="hint">Darker cells = more questions</p>
+            <div class="heat" id="heatmap"></div>
+          </div>
+          <div class="card">
+            <h3>Top country–product pairs</h3>
+            <p class="hint">Highest concentration combinations</p>
+            <div class="bars" id="pairBars"></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3>Recently approved documents</h3>
+          <p class="hint">Latest approve dates in the extract</p>
+          <div class="table-wrap" id="recentTable"></div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3>Theme chips</h3>
+          <p class="hint">Quick scan of recurring deficiency language</p>
+          <div class="chip-row" id="themeChips"></div>
+        </div>
+      </section>
+
+      <section class="block" id="sec-09">
+        <div class="section-head">
+          <div>
+            <div class="idx">09</div>
+            <h2>Recommendations</h2>
+            <p>Actionable priorities derived from the numbers above.</p>
+          </div>
+        </div>
+        <div class="recs" id="recs"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const D = window.CMC_DATA;
+    if (!D) {
+      document.body.innerHTML = "<p style='padding:40px;font-family:monospace'>Missing data.js</p>";
+      throw new Error("CMC_DATA missing");
+    }
+
+    const TOC = [
+      ["00", "Overview", "sec-00"],
+      ["01", "HA / Country Split", "sec-01"],
+      ["02", "Top Findings", "sec-02"],
+      ["03", "Quarterly Analysis", "sec-03"],
+      ["04", "Trend Breakdown", "sec-04"],
+      ["05", "Trend Analysis", "sec-05"],
+      ["06", "Product Analysis", "sec-06"],
+      ["07", "HA Analysis", "sec-07"],
+      ["08", "Additional Insights", "sec-08"],
+      ["09", "Recommendations", "sec-09"],
+    ];
+
+    const PALETTE = [
+      "#5eead4", "#38bdf8", "#a78bfa", "#fbbf24", "#fb7185",
+      "#34d399", "#60a5fa", "#c084fc", "#f472b6", "#2dd4bf",
+      "#93c5fd", "#fcd34d", "#86efac", "#fda4af", "#67e8f9"
+    ];
+
+    Chart.defaults.color = "#9eb2cb";
+    Chart.defaults.borderColor = "rgba(148,175,205,0.12)";
+    Chart.defaults.font.family = "'IBM Plex Sans', system-ui, sans-serif";
+    Chart.defaults.plugins.legend.labels.boxWidth = 12;
+    Chart.defaults.plugins.legend.labels.boxHeight = 12;
+    Chart.defaults.plugins.tooltip.backgroundColor = "rgba(8,21,38,0.95)";
+    Chart.defaults.plugins.tooltip.titleColor = "#e8eef7";
+    Chart.defaults.plugins.tooltip.bodyColor = "#c9d7ea";
+    Chart.defaults.plugins.tooltip.borderColor = "rgba(94,234,212,0.35)";
+    Chart.defaults.plugins.tooltip.borderWidth = 1;
+    Chart.defaults.plugins.tooltip.padding = 10;
+
+    function fmt(n) {
+      return Number(n).toLocaleString("en-US");
+    }
+
+    function shortPeriod(min, max) {
+      const a = new Date(min), b = new Date(max);
+      const m = (d) => d.toLocaleString("en-US", { month: "short" });
+      return `${m(a)} '${String(a.getFullYear()).slice(2)} – ${m(b)} '${String(b.getFullYear()).slice(2)}`;
+    }
+
+    /* TOC */
+    const nav = document.getElementById("tocNav");
+    TOC.forEach(([num, label, id], i) => {
+      const a = document.createElement("a");
+      a.className = "toc-link" + (i === 0 ? " active" : "");
+      a.href = "#" + id;
+      a.dataset.target = id;
+      a.innerHTML = `<span class="num">${num}</span><span>${label}</span>`;
+      nav.appendChild(a);
+    });
+
+    const k = D.kpis;
+    document.getElementById("metaBox").innerHTML = `
+      <div class="meta-row"><span>Doc. Type</span><span>Portfolio Report</span></div>
+      <div class="meta-row"><span>Records</span><span>${fmt(k.total_rows)}</span></div>
+      <div class="meta-row"><span>Questions</span><span>${fmt(k.total_questions)}</span></div>
+      <div class="meta-row"><span>Period</span><span>${shortPeriod(k.date_range.min, k.date_range.max)}</span></div>
+      <div class="meta-row"><span>Status</span><span>Analyzed</span></div>
+    `;
+    document.getElementById("tocFoot").textContent =
+      `Docs ${fmt(k.unique_documents)} · Markets ${fmt(k.unique_countries)} · Products ${fmt(k.unique_products)}`;
+
+    /* Active TOC on scroll */
+    const links = [...document.querySelectorAll(".toc-link")];
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        links.forEach((l) => l.classList.toggle("active", l.dataset.target === e.target.id));
+      });
+    }, { rootMargin: "-35% 0px -55% 0px", threshold: 0.01 });
+    TOC.forEach(([, , id]) => observer.observe(document.getElementById(id)));
+
+    /* KPIs */
+    const statusAnalyzed = k.status.analyzed || 0;
+    document.getElementById("kpiGrid").innerHTML = [
+      ["Total questions", fmt(k.total_questions), "Real Q&A rows"],
+      ["Documents", fmt(k.unique_documents), "Unique doc versions"],
+      ["Health authorities", fmt(k.unique_countries), "Markets / countries"],
+      ["Products", fmt(k.unique_products), "Molecules in scope"],
+      ["Avg Q / document", k.avg_questions_per_doc, "Intensity signal"],
+      ["Avg pages / doc", k.avg_pages, "Document size"],
+      ["Analyzed rows", fmt(statusAnalyzed), `${Math.round(100 * statusAnalyzed / k.total_rows)}% of records`],
+      ["Substantive answers", fmt(k.answer_quality.substantive || 0), `${Math.round(100 * (k.answer_quality.substantive || 0) / k.total_questions)}% of questions`],
+    ].map(([label, value, sub]) => `
+      <div class="kpi">
+        <div class="label">${label}</div>
+        <div class="value">${value}</div>
+        <div class="sub">${sub}</div>
+      </div>
+    `).join("");
+
+    /* Findings */
+    const findingColors = PALETTE;
+    document.getElementById("findings").innerHTML = D.findings.map((f, i) => `
+      <div class="finding">
+        <div class="dot" style="background:${findingColors[i % findingColors.length]}"></div>
+        <div>
+          <div class="label">${f.label}</div>
+          <div class="value">${f.value}</div>
+        </div>
+      </div>
+    `).join("");
+
+    /* Tables */
+    function table(headers, rows, numericIdx = []) {
+      const th = headers.map((h, i) => `<th class="${numericIdx.includes(i) ? "num" : ""}">${h}</th>`).join("");
+      const body = rows.map((r) => `<tr>${r.map((c, i) => `<td class="${numericIdx.includes(i) ? "num" : ""}">${c}</td>`).join("")}</tr>`).join("");
+      return `<table><thead><tr>${th}</tr></thead><tbody>${body}</tbody></table>`;
+    }
+
+    document.getElementById("productTable").innerHTML = table(
+      ["Product", "Questions", "Docs", "Avg Q/Doc", "Share %"],
+      D.product_analysis.slice(0, 20).map((p) => [
+        p.product, fmt(p.questions), fmt(p.documents), p.avg_q_per_doc, p.share_pct
+      ]),
+      [1, 2, 3, 4]
+    );
+
+    document.getElementById("haTable").innerHTML = table(
+      ["Health Authority", "Questions", "Documents", "Avg Q/Doc", "Share %"],
+      D.ha_analysis.map((h) => [
+        h.ha, fmt(h.questions), fmt(h.documents), h.avg_q_per_doc, h.share_pct
+      ]),
+      [1, 2, 3, 4]
+    );
+
+    document.getElementById("recentTable").innerHTML = table(
+      ["Document", "Country", "Product", "Date", "Pages", "Questions", "Status"],
+      D.recent_documents.map((d) => [
+        (d.name || "").slice(0, 48) + ((d.name || "").length > 48 ? "…" : ""),
+        d.country, d.product, d.date, d.pages, d.questions, d.status
+      ]),
+      [4, 5]
+    );
+
+    /* Heatmap */
+    const hm = D.heatmap;
+    const maxCell = Math.max(...hm.matrix.flat(), 1);
+    function heatColor(v) {
+      const t = v / maxCell;
+      const a = 0.08 + t * 0.75;
+      return `rgba(56, 189, 248, ${a.toFixed(3)})`;
+    }
+    let heatHtml = `<table><thead><tr><th>Country \\ Product</th>${hm.products.map((p) => `<th>${p}</th>`).join("")}</tr></thead><tbody>`;
+    hm.countries.forEach((c, i) => {
+      heatHtml += `<tr><th>${c}</th>`;
+      hm.matrix[i].forEach((v) => {
+        heatHtml += `<td class="cell" style="background:${heatColor(v)};color:${v / maxCell > 0.55 ? "#041018" : "#dbeafe"}">${v || "·"}</td>`;
+      });
+      heatHtml += `</tr>`;
+    });
+    heatHtml += `</tbody></table>`;
+    document.getElementById("heatmap").innerHTML = heatHtml;
+
+    /* Pair bars */
+    const maxPair = D.top_country_product_pairs[0]?.questions || 1;
+    document.getElementById("pairBars").innerHTML = D.top_country_product_pairs.slice(0, 10).map((p) => `
+      <div class="bar-row">
+        <div class="name" title="${p.country} × ${p.product}">${p.country} · ${p.product}</div>
+        <div class="track"><div class="fill" style="width:${(100 * p.questions / maxPair).toFixed(1)}%"></div></div>
+        <div class="count">${p.questions}</div>
+      </div>
+    `).join("");
+
+    document.getElementById("themeChips").innerHTML = D.top_keywords.slice(0, 14).map((k, i) => {
+      const cls = i % 3 === 0 ? "teal" : i % 3 === 1 ? "" : "violet";
+      return `<span class="chip ${cls}">${k.keyword} · ${k.count}</span>`;
+    }).join("");
+
+    document.getElementById("recs").innerHTML = D.recommendations.map((r, i) => `
+      <div class="rec">
+        <div class="n">${String(i + 1).padStart(2, "0")}</div>
+        <div>
+          <h4>${r.title}</h4>
+          <p>${r.detail}</p>
+        </div>
+      </div>
+    `).join("");
+
+    /* Charts */
+    function barOpts(horizontal = false) {
+      return {
+        indexAxis: horizontal ? "y" : "x",
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+        },
+        scales: {
+          x: {
+            grid: { color: "rgba(148,175,205,0.08)" },
+            ticks: { color: "#9eb2cb", maxRotation: 0, autoSkip: true }
+          },
+          y: {
+            grid: { color: "rgba(148,175,205,0.08)" },
+            ticks: { color: "#c9d7ea", font: { size: 11 } }
+          }
+        }
+      };
+    }
+
+    // Country horizontal bars
+    const countries = D.chart_country_top15;
+    new Chart(document.getElementById("chartCountry"), {
+      type: "bar",
+      data: {
+        labels: countries.map((c) => c.country),
+        datasets: [{
+          data: countries.map((c) => c.questions),
+          backgroundColor: countries.map((_, i) => PALETTE[i % PALETTE.length] + "cc"),
+          borderRadius: 6,
+          borderSkipped: false,
+          maxBarThickness: 22
+        }]
+      },
+      options: {
+        ...barOpts(true),
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => ` ${fmt(ctx.raw)} questions`
+            }
+          }
+        }
+      }
+    });
+
+    // Country pie with Other
+    const pieTop = countries.slice(0, 8);
+    const pieRest = countries.slice(8).reduce((s, c) => s + c.questions, 0)
+      + Math.max(0, k.total_questions - countries.reduce((s, c) => s + c.questions, 0));
+    const pieLabels = pieTop.map((c) => c.country).concat(pieRest ? ["Other"] : []);
+    const pieData = pieTop.map((c) => c.questions).concat(pieRest ? [pieRest] : []);
+    new Chart(document.getElementById("chartCountryPie"), {
+      type: "doughnut",
+      data: {
+        labels: pieLabels,
+        datasets: [{
+          data: pieData,
+          backgroundColor: PALETTE.slice(0, pieLabels.length),
+          borderWidth: 2,
+          borderColor: "#0b1c33",
+          hoverOffset: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "58%",
+        plugins: {
+          legend: {
+            position: "right",
+            labels: { color: "#c9d7ea", font: { size: 11 }, padding: 10 }
+          }
+        }
+      }
+    });
+    document.getElementById("countryNote").textContent =
+      `Top market: ${countries[0].country} (${countries[0].questions} Q, ${((100 * countries[0].questions) / k.total_questions).toFixed(1)}%)`;
+
+    // Keywords
+    new Chart(document.getElementById("chartKeywords"), {
+      type: "bar",
+      data: {
+        labels: D.top_keywords.slice(0, 12).map((x) => x.keyword),
+        datasets: [{
+          data: D.top_keywords.slice(0, 12).map((x) => x.count),
+          backgroundColor: "#5eead4cc",
+          borderRadius: 6,
+          maxBarThickness: 20
+        }]
+      },
+      options: barOpts(true)
+    });
+
+    // Codes
+    new Chart(document.getElementById("chartCodes"), {
+      type: "bar",
+      data: {
+        labels: D.top_codes.slice(0, 12).map((x) => x.code),
+        datasets: [{
+          data: D.top_codes.slice(0, 12).map((x) => x.count),
+          backgroundColor: "#a78bfacc",
+          borderRadius: 6,
+          maxBarThickness: 20
+        }]
+      },
+      options: barOpts(true)
+    });
+
+    // Quarterly
+    new Chart(document.getElementById("chartQuarterly"), {
+      type: "bar",
+      data: {
+        labels: D.quarterly.map((q) => q.quarter),
+        datasets: [{
+          label: "Questions",
+          data: D.quarterly.map((q) => q.questions),
+          backgroundColor: "#38bdf8cc",
+          borderRadius: 8,
+          maxBarThickness: 42
+        }]
+      },
+      options: {
+        ...barOpts(false),
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    // Quarterly stacked top HAs
+    const qLabels = D.quarterly.map((q) => q.quarter);
+    const topHAsForStack = D.ha_analysis.slice(0, 6).map((h) => h.ha);
+    const stackDatasets = topHAsForStack.map((ha, i) => ({
+      label: ha,
+      data: qLabels.map((q) => {
+        const row = (D.quarterly_top_countries[q] || []).find((x) => x.country === ha);
+        return row ? row.questions : 0;
+      }),
+      backgroundColor: PALETTE[i % PALETTE.length],
+      stack: "ha",
+      borderWidth: 0
+    }));
+    new Chart(document.getElementById("chartQuarterStack"), {
+      type: "bar",
+      data: { labels: qLabels, datasets: stackDatasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: { color: "#c9d7ea", font: { size: 10 }, boxWidth: 10, padding: 12 }
+          }
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { color: "#9eb2cb" } },
+          y: { stacked: true, grid: { color: "rgba(148,175,205,0.08)" }, ticks: { color: "#9eb2cb" } }
+        }
+      }
+    });
+
+    // Monthly
+    new Chart(document.getElementById("chartMonthly"), {
+      type: "line",
+      data: {
+        labels: D.monthly.map((m) => m.month),
+        datasets: [{
+          label: "Questions",
+          data: D.monthly.map((m) => m.questions),
+          borderColor: "#5eead4",
+          backgroundColor: "rgba(94,234,212,0.18)",
+          fill: true,
+          tension: 0.35,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          pointBackgroundColor: "#5eead4",
+          borderWidth: 2.5
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: {
+            ticks: {
+              color: "#9eb2cb",
+              maxRotation: 45,
+              minRotation: 45,
+              autoSkip: true,
+              maxTicksLimit: 12
+            },
+            grid: { display: false }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: { color: "#9eb2cb" },
+            grid: { color: "rgba(148,175,205,0.08)" }
+          }
+        }
+      }
+    });
+
+    // MoM
+    const momColors = D.monthly.map((m) => {
+      if (m.mom_pct == null) return "rgba(148,175,205,0.35)";
+      return m.mom_pct >= 0 ? "#34d399cc" : "#fb7185cc";
+    });
+    new Chart(document.getElementById("chartMom"), {
+      type: "bar",
+      data: {
+        labels: D.monthly.map((m) => m.month),
+        datasets: [{
+          label: "MoM %",
+          data: D.monthly.map((m) => m.mom_pct == null ? 0 : m.mom_pct),
+          backgroundColor: momColors,
+          borderRadius: 5,
+          maxBarThickness: 18
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const m = D.monthly[ctx.dataIndex];
+                return m.mom_pct == null ? " n/a (first month)" : ` ${m.mom_pct}%`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: "#9eb2cb", maxRotation: 45, minRotation: 45, maxTicksLimit: 12 },
+            grid: { display: false }
+          },
+          y: {
+            ticks: {
+              color: "#9eb2cb",
+              callback: (v) => v + "%"
+            },
+            grid: { color: "rgba(148,175,205,0.08)" }
+          }
+        }
+      }
+    });
+
+    // Status / answers / language
+    const statusEntries = Object.entries(k.status);
+    new Chart(document.getElementById("chartStatus"), {
+      type: "doughnut",
+      data: {
+        labels: statusEntries.map(([s]) => s),
+        datasets: [{
+          data: statusEntries.map(([, n]) => n),
+          backgroundColor: ["#34d399", "#fbbf24", "#fb7185", "#38bdf8"],
+          borderColor: "#0b1c33",
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "55%",
+        plugins: { legend: { position: "bottom", labels: { font: { size: 11 }, padding: 10 } } }
+      }
+    });
+
+    const aq = Object.entries(k.answer_quality);
+    new Chart(document.getElementById("chartAnswers"), {
+      type: "doughnut",
+      data: {
+        labels: aq.map(([s]) => s),
+        datasets: [{
+          data: aq.map(([, n]) => n),
+          backgroundColor: ["#5eead4", "#fbbf24", "#fb7185"],
+          borderColor: "#0b1c33",
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "55%",
+        plugins: { legend: { position: "bottom", labels: { font: { size: 11 }, padding: 10 } } }
+      }
+    });
+
+    new Chart(document.getElementById("chartLang"), {
+      type: "doughnut",
+      data: {
+        labels: D.languages.map((l) => l.language),
+        datasets: [{
+          data: D.languages.map((l) => l.documents),
+          backgroundColor: PALETTE,
+          borderColor: "#0b1c33",
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "55%",
+        plugins: { legend: { position: "bottom", labels: { font: { size: 11 }, padding: 10 } } }
+      }
+    });
+
+    // Products
+    new Chart(document.getElementById("chartProducts"), {
+      type: "bar",
+      data: {
+        labels: D.chart_product_top12.map((p) => p.product),
+        datasets: [{
+          data: D.chart_product_top12.map((p) => p.questions),
+          backgroundColor: D.chart_product_top12.map((_, i) => PALETTE[i % PALETTE.length] + "cc"),
+          borderRadius: 6,
+          maxBarThickness: 22
+        }]
+      },
+      options: barOpts(true)
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Render Blueprint — connect this repo/folder and set env vars in the dashboard.
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: cmc-dashboard-rag
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    envVars:
+      - key: LLM_PROVIDER
+        value: mga
+      - key: MGA_API_KEY
+        sync: false
+      - key: MGA_BASE_URL
+        sync: false
+      - key: MGA_MODEL
+        value: gpt-4o
+      - key: MGA_AUTH_HEADER
+        value: Authorization
+      - key: EMBED_PROVIDER
+        value: local
+      - key: APP_USERNAME
+        value: cmc
+      - key: APP_PASSWORD
+        sync: false
+      - key: QNA_PATH
+        value: /app/QnA_pairs_extracted.json
+      - key: CHROMA_DIR
+        value: /app/backend/chroma_data
