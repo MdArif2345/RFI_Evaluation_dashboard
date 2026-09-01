@@ -40,12 +40,16 @@ def check_chat(settings) -> bool:
 
     try:
         client = chat_client(settings)
+        # No max_tokens: a low cap makes this gateway return an empty message with
+        # finish_reason=length, which would look like a failure.
         completion = client.chat.completions.create(
             model=settings.chat_model(),
             messages=[{"role": "user", "content": "Reply with exactly: ok"}],
-            max_tokens=5,
         )
         reply = (completion.choices[0].message.content or "").strip()
+        if not reply:
+            print("FAIL: connected but the model returned empty content")
+            return False
         print(f"OK: reply={reply!r}")
         return True
     except Exception as exc:

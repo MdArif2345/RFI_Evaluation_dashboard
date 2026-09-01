@@ -53,7 +53,6 @@ class Settings(BaseSettings):
     chroma_collection: str = "cmc_qna"
 
     retrieve_top_k: int = 5
-    min_relevance: float = 0.25
 
     def chat_key(self) -> str:
         return self.mga_api_key if self.llm_provider == "mga" else self.openai_api_key

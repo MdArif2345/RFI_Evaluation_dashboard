@@ -14,7 +14,10 @@ This folder is **independent of `yaap-infra-v2`**. Do not mix the two projects.
 | `data.js` / `metrics.json` | Pre-aggregated metrics |
 | `code_catalog.json` | CTD code titles |
 | `QnA_pairs_extracted.json` | Knowledge base for RAG (~2k Q&A pairs) |
-| `backend/` | FastAPI app, Chroma index, ingest/verify/diagnose scripts |
+| `qna_insights.json` | Precomputed clustering/analytics for dashboard section 10 (generated) |
+| `backend/` | FastAPI app, Chroma index, ingest/verify/insights scripts |
+| `backend/app/corpus.py` | Exact (non-semantic) index for CTD-code and theme lookups |
+| `backend/app/tools.py` | Tools the chat model can call, with their schemas |
 | `backend/.env` | **Your secrets** — replace placeholders (gitignored) |
 | `backend/.env.example` | Same key list, safe to commit |
 | `Dockerfile` / `render.yaml` | Shareable hosting on Render |
@@ -58,6 +61,26 @@ If MGA answers behave oddly, `scripts/diagnose_mga.py` probes system-prompt and 
 
 The index is already built (2,048 pairs). Re-run `ingest.py` only when the Q&A JSON changes.
 
+## Q&A Corpus Insights (section 10)
+
+`qna_insights.json` powers the analytics section: semantic themes, question intent, most challenged CTD sections, response posture, repeat-question backlog, and answer effort. It also stores `theme_by_id`, the per-pair cluster assignment the chat assistant filters on.
+
+```bash
+cd backend
+.venv/bin/python scripts/build_insights.py
+```
+
+The script reuses the embeddings already in Chroma (nothing is re-embedded) and clusters them with a numpy spherical k-means at `K=12`. Cluster names come from one short myGenAssist call each; if MGA is unreachable it falls back to top-term labels and still completes. Re-run it only when `QnA_pairs_extracted.json` changes, after `ingest.py`.
+
+If the file is missing the dashboard still loads and section 10 shows a build hint instead.
+
+Two helper checks:
+
+```bash
+node backend/scripts/check_dashboard.js   # element/chart wiring in index.html
+node backend/scripts/check_insights.js    # JSON field contract and totals
+```
+
 ---
 
 ## Run locally (dashboard + chatbot)
@@ -90,12 +113,20 @@ Browser (index.html + chat)
         ▼
 FastAPI (backend/app/main.py)
   ├─ serves static dashboard files
-  ├─ /api/chat  → Chroma retrieve (local) → MGA generate (+ sources)
+  ├─ /api/chat, /api/chat/stream → agent loop (max 4 rounds)
+  │     MGA decides → search_qna (Chroma, semantic)
+  │                 → list_questions (corpus.py, exact code/theme filter)
+  │     → MGA answers from the tool output (+ accumulated sources)
   └─ /api/ingest → (re)build vector index from QnA JSON
 ```
 
 - One Q&A pair = one Chroma document (`Question: …\nAnswer: …`).
-- Answers are restricted to retrieved context; otherwise the bot says it has no match.
+- The model chooses its own tools, so it can count, list, and compare across the
+  whole corpus instead of answering from one fixed top-5 retrieval.
+- `list_questions` matches CTD codes with boundary-aware regex, so `S.4.1`
+  returns 75 and does not absorb `S.4.10`. `3.2.S.4.1` resolves to the same key.
+- When the corpus has no coverage the model answers from general CMC regulatory
+  knowledge. The sources panel stays empty in that case, which is the provenance cue.
 - Empty / `n.a.` pairs are dropped at ingest.
 
 ---

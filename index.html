@@ -893,8 +893,73 @@
         <div class="section-head">
           <div>
             <div class="idx">10</div>
+            <h2>Q&amp;A Corpus Insights</h2>
+            <p>Clustering and pattern analysis across the extracted question/answer pairs. Themes are derived from on-device embeddings.</p>
+          </div>
+        </div>
+        <div id="insightsBody">
+          <div class="kpi-grid" id="insKpis"></div>
+          <div class="grid-2" style="margin-top:14px">
+            <div class="card">
+              <h3>Question themes</h3>
+              <p class="hint">Semantic clusters over all pairs</p>
+              <div class="chart-wrap tall"><canvas id="chartThemes"></canvas></div>
+            </div>
+            <div class="card">
+              <h3>What is being asked</h3>
+              <p class="hint">Primary intent per question</p>
+              <div class="chart-wrap tall"><canvas id="chartIntent"></canvas></div>
+            </div>
+          </div>
+          <div class="grid-2" style="margin-top:14px">
+            <div class="card">
+              <h3>Most challenged CTD sections</h3>
+              <p class="hint">Codes cited in questions or responses</p>
+              <div class="chart-wrap tall"><canvas id="chartInsCodes"></canvas></div>
+            </div>
+            <div class="card">
+              <h3>How we respond</h3>
+              <p class="hint">Response posture across answers</p>
+              <div class="chart-wrap tall"><canvas id="chartPosture"></canvas></div>
+            </div>
+          </div>
+          <div class="grid-2" style="margin-top:14px">
+            <div class="card">
+              <h3>Reuse backlog</h3>
+              <p class="hint">Questions asked repeatedly — candidates for canned responses</p>
+              <div class="table-wrap" id="reuseTable"></div>
+            </div>
+            <div class="card">
+              <h3>Sections challenged together</h3>
+              <p class="hint">CTD code pairs appearing in the same exchange</p>
+              <div class="table-wrap" id="cooccurTable"></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <h3>Response effort by theme</h3>
+            <p class="hint">Median answer length — taller bars cost more writing time</p>
+            <div class="chart-wrap"><canvas id="chartEffort"></canvas></div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <h3>Theme detail</h3>
+            <p class="hint">Representative question and dominant CTD codes per cluster</p>
+            <div class="table-wrap" id="themeTable"></div>
+          </div>
+        </div>
+        <div class="card" id="insightsMissing" style="display:none">
+          <p class="hint">
+            <code>qna_insights.json</code> not found. Generate it with
+            <code>backend/.venv/bin/python scripts/build_insights.py</code>.
+          </p>
+        </div>
+      </section>
+
+      <section class="block" id="sec-11">
+        <div class="section-head">
+          <div>
+            <div class="idx">11</div>
             <h2>CMC Q&amp;A Assistant</h2>
-            <p>RAG chatbot over extracted CMC question/answer pairs. Retrieval runs on-device; answers come only from retrieved sources.</p>
+            <p>Reasoning assistant over extracted CMC question/answer pairs. It searches, counts, and filters the corpus on-device, and shows the pairs it used.</p>
           </div>
         </div>
         <div class="chat-panel" id="chatPanel">
@@ -902,7 +967,7 @@
             <span><span class="dot" id="chatDot"></span><span id="chatHealthLabel">Checking API…</span></span>
           </div>
           <div class="chat-messages" id="chatMessages">
-            <div class="chat-bubble system">Ask a CMC / regulatory question. Responses are grounded in indexed Q&amp;A pairs.</div>
+            <div class="chat-bubble system">Ask a CMC / regulatory question — including counts, like &ldquo;how many questions for S.4.1?&rdquo;. Answers drawn from the corpus list their sources.</div>
           </div>
           <form class="chat-form" id="chatForm">
             <input id="chatInput" type="text" autocomplete="off" placeholder="e.g. What leachables data was provided for the drug product?" />
@@ -931,6 +996,12 @@
         }
       }
     } catch (_) { /* graceful fallback — raw codes only */ }
+
+    let INSIGHTS = null;
+    try {
+      const res = await fetch("./qna_insights.json");
+      if (res.ok) INSIGHTS = await res.json();
+    } catch (_) { /* section shows a build hint instead */ }
 
     const CODE_TOKEN = /\b(?:[A-Z]\.\d+(?:\.\d+)*|\d+\.\d+\.[A-Z]\.\d+(?:\.\d+)*|STED\.[\d.]+|M3\.[\d.]+|MD\.[\d.]+)\b/g;
 
@@ -1016,7 +1087,8 @@
       ["07", "HA Analysis", "sec-07"],
       ["08", "Additional Insights", "sec-08"],
       ["09", "Recommendations", "sec-09"],
-      ["10", "CMC Q&A Assistant", "sec-10"],
+      ["10", "Q&A Corpus Insights", "sec-10"],
+      ["11", "CMC Q&A Assistant", "sec-11"],
     ];
 
     const PALETTE = [
@@ -1536,6 +1608,197 @@
       options: barOpts(true)
     });
 
+    // ----- Q&A corpus insights -----
+    function renderInsights() {
+      if (!INSIGHTS) {
+        document.getElementById("insightsBody").style.display = "none";
+        document.getElementById("insightsMissing").style.display = "";
+        return;
+      }
+      const I = INSIGHTS;
+
+      document.getElementById("insKpis").innerHTML = [
+        ["Q&A pairs analysed", fmt(I.total_pairs), "Empty and n.a. rows excluded"],
+        ["Themes identified", I.themes.length, "Semantic clusters"],
+        ["Repeat rate", I.reuse.duplicate_rate_pct + "%", fmt(I.reuse.duplicated_pairs) + " near-duplicate questions"],
+        ["CTD coverage", I.codes.coverage_pct + "%", I.codes.distinct_codes + " distinct sections"]
+      ].map(([label, value, sub]) => `
+        <div class="kpi">
+          <div class="label">${label}</div>
+          <div class="value">${value}</div>
+          <div class="sub">${sub}</div>
+        </div>`).join("");
+
+      new Chart(document.getElementById("chartThemes"), {
+        type: "bar",
+        data: {
+          labels: I.themes.map((t) => t.name),
+          datasets: [{
+            data: I.themes.map((t) => t.size),
+            backgroundColor: I.themes.map((_, i) => PALETTE[i % PALETTE.length] + "cc"),
+            borderRadius: 6,
+            maxBarThickness: 22
+          }]
+        },
+        options: {
+          ...barOpts(true),
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                afterLabel: (ctx) => {
+                  const t = I.themes[ctx.dataIndex];
+                  return [" cohesion " + t.cohesion, " " + t.terms.slice(0, 5).join(", ")];
+                }
+              }
+            }
+          }
+        }
+      });
+
+      const intentEntries = I.intents;
+      new Chart(document.getElementById("chartIntent"), {
+        type: "doughnut",
+        data: {
+          labels: intentEntries.map((x) => x.intent),
+          datasets: [{
+            data: intentEntries.map((x) => x.count),
+            backgroundColor: PALETTE,
+            borderColor: "#0b1c33",
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "55%",
+          plugins: { legend: { position: "bottom", labels: { font: { size: 11 }, padding: 10 } } }
+        }
+      });
+
+      const insCodes = I.codes.top;
+      new Chart(document.getElementById("chartInsCodes"), {
+        type: "bar",
+        data: {
+          labels: insCodes.map((x) => formatCodeChartLabel(x.code)),
+          datasets: [{
+            data: insCodes.map((x) => x.count),
+            backgroundColor: "#38bdf8cc",
+            borderRadius: 6,
+            maxBarThickness: 20
+          }]
+        },
+        options: {
+          ...barOpts(true),
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                title: (items) => {
+                  const row = insCodes[items[0].dataIndex];
+                  return getCodeEntry(row.code)?.title || row.code;
+                },
+                label: (ctx) => {
+                  const row = insCodes[ctx.dataIndex];
+                  return [` ${row.code}`, ` ${fmt(ctx.raw)} questions`];
+                }
+              }
+            }
+          }
+        }
+      });
+
+      new Chart(document.getElementById("chartPosture"), {
+        type: "doughnut",
+        data: {
+          labels: I.postures.map((x) => x.posture),
+          datasets: [{
+            data: I.postures.map((x) => x.count),
+            backgroundColor: PALETTE.slice(2).concat(PALETTE),
+            borderColor: "#0b1c33",
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "55%",
+          plugins: { legend: { position: "bottom", labels: { font: { size: 11 }, padding: 10 } } }
+        }
+      });
+
+      new Chart(document.getElementById("chartEffort"), {
+        type: "bar",
+        data: {
+          labels: I.themes.map((t) => t.name),
+          datasets: [{
+            label: "Median answer characters",
+            data: I.themes.map((t) => t.median_answer_chars),
+            backgroundColor: "#a78bfacc",
+            borderRadius: 6,
+            maxBarThickness: 34
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                afterLabel: (ctx) => " p90: " + fmt(I.themes[ctx.dataIndex].p90_answer_chars) + " chars"
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: "#9eb2cb", maxRotation: 45, minRotation: 45 }, grid: { display: false } },
+            y: { beginAtZero: true, ticks: { color: "#9eb2cb" }, grid: { color: "rgba(148,175,205,0.08)" } }
+          }
+        }
+      });
+
+      document.getElementById("reuseTable").innerHTML = `
+        <table>
+          <thead><tr><th>Times asked</th><th>Question</th></tr></thead>
+          <tbody>
+            ${I.reuse.top_groups.map((g) => `
+              <tr>
+                <td><strong>${g.count}x</strong></td>
+                <td>${enrichCodeText(g.question)}</td>
+              </tr>`).join("")}
+          </tbody>
+        </table>`;
+
+      document.getElementById("cooccurTable").innerHTML = `
+        <table>
+          <thead><tr><th>Section A</th><th>Section B</th><th>Together</th></tr></thead>
+          <tbody>
+            ${I.codes.co_occurrence.map((p) => `
+              <tr>
+                <td>${formatCodeRich(p.a)}</td>
+                <td>${formatCodeRich(p.b)}</td>
+                <td>${p.count}</td>
+              </tr>`).join("")}
+          </tbody>
+        </table>`;
+
+      document.getElementById("themeTable").innerHTML = `
+        <table>
+          <thead><tr><th>Theme</th><th>Pairs</th><th>Top CTD codes</th><th>Representative question</th></tr></thead>
+          <tbody>
+            ${I.themes.map((t) => `
+              <tr>
+                <td><strong>${escapeHtml(t.name)}</strong></td>
+                <td>${t.size}</td>
+                <td>${t.top_codes.map((c) => formatCodeTag(c.code)).join(" ") || "&mdash;"}</td>
+                <td>${escapeHtml((t.examples[0] || "").slice(0, 160))}</td>
+              </tr>`).join("")}
+          </tbody>
+        </table>`;
+    }
+
+    renderInsights();
+
     // ----- CMC RAG chatbot -----
     const chatMessages = document.getElementById("chatMessages");
     const chatForm = document.getElementById("chatForm");
@@ -1606,15 +1869,24 @@
         set(text) {
           if (rotator) { clearInterval(rotator); rotator = null; }
           label.textContent = text;
+          // The agent can look something up after it has started writing, so the
+          // indicator has to be able to come back below the answer bubble.
+          if (!el.isConnected) chatMessages.appendChild(el);
+          scrollChat();
         },
         rotate() {
           step = 0;
           label.textContent = GENERATING_STEPS[0];
+          if (!el.isConnected) chatMessages.appendChild(el);
           if (rotator) clearInterval(rotator);
           rotator = setInterval(() => {
             step = Math.min(step + 1, GENERATING_STEPS.length - 1);
             label.textContent = GENERATING_STEPS[step];
           }, 3000);
+        },
+        hide() {
+          if (rotator) { clearInterval(rotator); rotator = null; }
+          el.remove();
         },
         remove() {
           if (rotator) clearInterval(rotator);
@@ -1624,8 +1896,7 @@
     }
 
     const STAGE_TEXT = {
-      retrieving: "Searching the CMC Q&A index",
-      retrieved: (n) => "Found " + n + " matching response" + (n === 1 ? "" : "s") + ", reading them"
+      thinking: "Thinking about what to look up"
     };
 
     async function refreshChatHealth() {
@@ -1671,19 +1942,18 @@
 
       const handle = (evt) => {
         if (evt.type === "stage") {
-          if (evt.stage === "generating") {
-            thinking.rotate();
-          } else {
-            const t = STAGE_TEXT[evt.stage];
-            thinking.set(typeof t === "function" ? t(evt.count) : (t || "Working"));
-          }
+          const t = STAGE_TEXT[evt.stage];
+          thinking.set(typeof t === "function" ? t(evt.count) : (t || "Working"));
+        } else if (evt.type === "tool") {
+          thinking.set(evt.label || "Looking that up");
         } else if (evt.type === "sources") {
-          sources = evt.sources || [];
+          // Sources arrive per tool call, so accumulate instead of replacing.
+          sources = sources.concat(evt.sources || []);
+          thinking.rotate();
         } else if (evt.type === "delta") {
+          thinking.hide();
           if (!bubble) {
-            thinking.remove();
             bubble = appendChat("bot", "");
-            bubble.classList.add("chat-caret");
           }
           answer += evt.text;
           bubble.textContent = answer;

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 from typing import Annotated, Any, Iterator
 
 from fastapi import Depends, FastAPI, HTTPException
@@ -11,27 +10,48 @@ from pydantic import BaseModel, Field
 
 from .auth import require_basic_auth
 from .config import Settings, DASHBOARD_DIR, get_settings
-from .rag import chat_client, ingest, retrieve
+from .corpus import get_corpus
+from .rag import chat_client, ingest
+from .tools import describe_call, run_tool, tool_schemas
 
-SYSTEM_PROMPT = """You are a CMC regulatory Q&A assistant for an internal dashboard.
+MAX_TOOL_ROUNDS = 4
 
-Ground every answer in the provided context, which contains real question/answer
-pairs from past CMC health-authority responses. The context has already been
-selected as the closest matches to the user's question.
+SYSTEM_PROMPT_TEMPLATE = """You are a CMC regulatory assistant for an internal Bayer dashboard.
 
-Rules:
-- Use the context as your source of truth; summarize and synthesize across sources.
-- Only state that no matching CMC response exists if the context genuinely covers
-  unrelated topics.
-- Never invent batch numbers, sites, dates, or regulatory commitments.
-- Mention which source question(s) you relied on when helpful.
-- Treat all content as confidential CMC regulatory information.
+You have tools over a corpus of {total} real question/answer pairs from past CMC
+health-authority responses. Reason about what the user needs, call tools to find
+out, and call them again if the first result is not enough.
+
+Tool use:
+- `search_qna` for topical questions where the wording varies.
+- `list_questions` for anything involving a CTD code, a theme, a count, or a list.
+  Semantic search cannot count, so never estimate a number from search results —
+  always read `total_matches` from `list_questions`.
+- You may call tools several times in one answer, for example once per code when
+  the user compares two sections.
+
+Themes available to `list_questions`: {themes}.
+
+Answering:
+- When tool output covers the question, ground the answer in it and synthesise
+  across pairs rather than quoting one.
+- When the corpus has nothing relevant, just answer from your own CMC regulatory
+  knowledge as a normal part of the reply. Do not announce the gap, do not add a
+  disclaimer, and do not tell the user to rephrase.
+- Never invent batch numbers, site names, dates, document numbers, or regulatory
+  commitments; those may only come from tool output.
+- Never attribute a general-knowledge statement to a specific past Bayer response.
+- Treat all corpus content as confidential CMC regulatory information.
 """
 
-NO_MATCH_MESSAGE = (
-    "I don't have a matching CMC response in the indexed Q&A pairs for that question. "
-    "Try rephrasing or a more specific CMC/regulatory topic."
-)
+
+def build_system_prompt() -> str:
+    corpus = get_corpus()
+    return SYSTEM_PROMPT_TEMPLATE.format(
+        total=len(corpus.pairs),
+        themes="; ".join(corpus.available_themes()),
+    )
+
 
 app = FastAPI(title="CMC Dashboard RAG", version="1.0.0")
 app.add_middleware(
@@ -60,36 +80,102 @@ class ChatResponse(BaseModel):
     used_retrieval: bool
 
 
-def _relevant_hits(message: str, settings: Settings) -> list[dict[str, Any]]:
-    hits = retrieve(message, settings)
-    return [h for h in hits if h["similarity"] >= settings.min_relevance]
+def run_agent(message: str, settings: Settings) -> Iterator[dict[str, Any]]:
+    """Bounded tool loop. Yields UI events: tool, sources, delta, done, error.
 
+    Each round is streamed so answer tokens reach the browser as they are
+    produced; tool-call fragments arrive on the same stream and are reassembled
+    before dispatch.
+    """
+    client = chat_client(settings)
+    schemas = tool_schemas()
+    messages: list[dict[str, Any]] = [
+        {"role": "system", "content": build_system_prompt()},
+        {"role": "user", "content": message},
+    ]
 
-def _to_sources(hits: list[dict[str, Any]]) -> list[SourceOut]:
-    return [
-        SourceOut(
-            id=h["id"],
-            question=h["question"],
-            answer_preview=h["answer_preview"],
-            similarity=h["similarity"],
+    seen_source_ids: set[str] = set()
+    used_retrieval = False
+
+    for round_index in range(MAX_TOOL_ROUNDS):
+        # On the final round the tools are withheld so the model must answer.
+        last_round = round_index == MAX_TOOL_ROUNDS - 1
+        extra = {} if last_round else {"tools": schemas}
+        stream = client.chat.completions.create(
+            model=settings.chat_model(),
+            temperature=0.2,
+            messages=messages,
+            stream=True,
+            **extra,
         )
-        for h in hits
-    ]
 
+        content = ""
+        # Reassembled by index: providers split arguments across many chunks.
+        calls: dict[int, dict[str, str]] = {}
 
-def _build_messages(message: str, hits: list[dict[str, Any]]) -> list[dict[str, str]]:
-    # Similarity scores stay out of the prompt: the model reads low decimals as a
-    # signal the context is weak and refuses to answer.
-    context = "\n\n---\n\n".join(
-        f"[Source {i}]\n{h['document']}" for i, h in enumerate(hits, start=1)
-    )
-    return [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {
-            "role": "user",
-            "content": f"Context from CMC Q&A index:\n\n{context}\n\nUser question:\n{message}",
-        },
-    ]
+        for chunk in stream:
+            if not chunk.choices:
+                continue
+            delta = chunk.choices[0].delta
+
+            if delta.content:
+                content += delta.content
+                yield {"type": "delta", "text": delta.content}
+
+            for fragment in delta.tool_calls or []:
+                call = calls.setdefault(
+                    fragment.index, {"id": "", "name": "", "arguments": ""}
+                )
+                if fragment.id:
+                    call["id"] = fragment.id
+                if fragment.function and fragment.function.name:
+                    call["name"] = fragment.function.name
+                if fragment.function and fragment.function.arguments:
+                    call["arguments"] += fragment.function.arguments
+
+        if not calls:
+            yield {"type": "done", "used_retrieval": used_retrieval}
+            return
+
+        ordered = [calls[i] for i in sorted(calls)]
+        messages.append(
+            {
+                "role": "assistant",
+                "content": content or None,
+                "tool_calls": [
+                    {
+                        "id": c["id"] or f"call_{i}",
+                        "type": "function",
+                        "function": {"name": c["name"], "arguments": c["arguments"] or "{}"},
+                    }
+                    for i, c in enumerate(ordered)
+                ],
+            }
+        )
+
+        for i, call in enumerate(ordered):
+            yield {
+                "type": "tool",
+                "name": call["name"],
+                "label": describe_call(call["name"], call["arguments"]),
+            }
+            payload, sources = run_tool(call["name"], call["arguments"], settings)
+
+            fresh = [s for s in sources if s["id"] not in seen_source_ids]
+            seen_source_ids.update(s["id"] for s in fresh)
+            if fresh:
+                used_retrieval = True
+                yield {"type": "sources", "sources": fresh}
+
+            messages.append(
+                {
+                    "role": "tool",
+                    "tool_call_id": call["id"] or f"call_{i}",
+                    "content": payload,
+                }
+            )
+
+    yield {"type": "done", "used_retrieval": used_retrieval}
 
 
 @app.get("/api/health")
@@ -122,35 +208,29 @@ def api_chat(
     _: Annotated[str, Depends(require_basic_auth)],
     settings: Annotated[Settings, Depends(get_settings)],
 ) -> ChatResponse:
-    message = body.message.strip()
-    try:
-        relevant = _relevant_hits(message, settings)
-    except Exception as exc:
-        raise HTTPException(
-            status_code=503,
-            detail=f"Retrieval failed (index missing? run scripts/ingest.py): {exc}",
-        ) from exc
-
-    if not relevant:
-        return ChatResponse(answer=NO_MATCH_MESSAGE, sources=[], used_retrieval=False)
-
-    sources = _to_sources(relevant)
+    answer_parts: list[str] = []
+    sources: list[SourceOut] = []
+    used_retrieval = False
 
     try:
-        client = chat_client(settings)
-        completion = client.chat.completions.create(
-            model=settings.chat_model(),
-            temperature=0.2,
-            messages=_build_messages(message, relevant),
-        )
-        answer = (completion.choices[0].message.content or "").strip()
+        for event in run_agent(body.message.strip(), settings):
+            if event["type"] == "delta":
+                answer_parts.append(event["text"])
+            elif event["type"] == "sources":
+                sources.extend(SourceOut(**s) for s in event["sources"])
+            elif event["type"] == "done":
+                used_retrieval = event["used_retrieval"]
     except Exception as exc:
         raise HTTPException(
             status_code=502,
             detail=f"{settings.llm_provider.upper()} chat failed: {exc}",
         ) from exc
 
-    return ChatResponse(answer=answer, sources=sources, used_retrieval=True)
+    return ChatResponse(
+        answer="".join(answer_parts).strip(),
+        sources=sources,
+        used_retrieval=used_retrieval,
+    )
 
 
 @app.post("/api/chat/stream")
@@ -167,39 +247,9 @@ def api_chat_stream(
 
     def generate() -> Iterator[str]:
         try:
-            yield emit({"type": "stage", "stage": "retrieving"})
-            relevant = _relevant_hits(message, settings)
-
-            if not relevant:
-                yield emit({"type": "sources", "sources": []})
-                yield emit({"type": "delta", "text": NO_MATCH_MESSAGE})
-                yield emit({"type": "done", "used_retrieval": False})
-                return
-
-            yield emit({"type": "stage", "stage": "retrieved", "count": len(relevant)})
-            yield emit(
-                {
-                    "type": "sources",
-                    "sources": [s.model_dump() for s in _to_sources(relevant)],
-                }
-            )
-            yield emit({"type": "stage", "stage": "generating"})
-
-            client = chat_client(settings)
-            stream = client.chat.completions.create(
-                model=settings.chat_model(),
-                temperature=0.2,
-                messages=_build_messages(message, relevant),
-                stream=True,
-            )
-            for chunk in stream:
-                if not chunk.choices:
-                    continue
-                piece = chunk.choices[0].delta.content
-                if piece:
-                    yield emit({"type": "delta", "text": piece})
-
-            yield emit({"type": "done", "used_retrieval": True})
+            yield emit({"type": "stage", "stage": "thinking"})
+            for event in run_agent(message, settings):
+                yield emit(event)
         except Exception as exc:
             yield emit({"type": "error", "detail": str(exc)})
 
