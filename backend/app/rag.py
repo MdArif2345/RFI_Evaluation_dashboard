@@ -15,7 +15,7 @@ import chromadb
 from chromadb.utils import embedding_functions
 from openai import OpenAI
 
-from .config import Settings, get_settings
+from .config import FALLBACK_QNA_PATH, Settings, get_settings
 
 _WS = re.compile(r"\s+")
 
@@ -29,12 +29,91 @@ def _is_bad(value: str) -> bool:
     return not v or v in {"n.a.", "n/a", "na", "none", "-"}
 
 
-def load_qna_pairs(path: Path) -> list[dict[str, str]]:
+def _parse_codes_field(value: Any) -> list[str]:
+    """Extract CTD codes from the JSONL `codes` column (string or list)."""
+    if isinstance(value, list):
+        return [str(c).strip() for c in value if str(c).strip()]
+    if isinstance(value, str) and value.strip():
+        return [c.strip() for c in re.split(r"[;,\n]+", value) if c.strip()]
+    return []
+
+
+def _parse_keywords_field(value: Any) -> list[str]:
+    if isinstance(value, list):
+        return [str(k).strip() for k in value if str(k).strip()]
+    if isinstance(value, str) and value.strip():
+        return [k.strip() for k in re.split(r"[;,\n]+", value) if k.strip()]
+    return []
+
+
+def _load_jsonl(path: Path) -> list[dict[str, Any]]:
+    """Parse the JSONL enriched file — one JSON object per line.
+
+    Deduplicates by (question + answer) so that the same question answered
+    differently for different products/countries is kept, while true
+    duplicates (same Q, same A) are dropped.
+    """
+    cleaned: list[dict[str, Any]] = []
+    seen_pairs: set[str] = set()
+    seen_questions: set[str] = set()
+    idx = 0
+
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(row, dict):
+            continue
+
+        question = _normalize(str(
+            row.get("Question/Consideration", "")
+            or row.get("question", "")
+            or row.get("Question", "")
+        ))
+        answer = _normalize(str(
+            row.get("Answer/Response", "")
+            or row.get("answer", "")
+            or row.get("Answer", "")
+        ))
+        if _is_bad(question) or _is_bad(answer):
+            continue
+
+        pair_key = (question + "\n" + answer).lower()
+        if pair_key in seen_pairs:
+            continue
+        seen_pairs.add(pair_key)
+        seen_questions.add(question.lower())
+
+        cleaned.append(
+            {
+                "id": f"qna-{idx}",
+                "question": question,
+                "answer": answer,
+                "document": f"Question: {question}\n\nAnswer: {answer}",
+                "product": _normalize(str(row.get("doc_product", "") or "")),
+                "country": _normalize(str(row.get("doc_country", "") or "")),
+                "date": _normalize(str(row.get("doc_approve_date", "") or "")),
+                "doc_name": _normalize(str(row.get("doc_name", "") or "")),
+                "codes": _parse_codes_field(row.get("codes", "")),
+                "keywords": _parse_keywords_field(row.get("keywords", "")),
+            }
+        )
+        idx += 1
+
+    return cleaned, seen_questions
+
+
+def _load_flat_json(path: Path) -> list[dict[str, Any]]:
+    """Parse the original flat JSON array of {Question, Answer}."""
     raw = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(raw, list):
         raise ValueError(f"Expected a JSON array in {path}")
 
-    cleaned: list[dict[str, str]] = []
+    cleaned: list[dict[str, Any]] = []
     for i, row in enumerate(raw):
         if not isinstance(row, dict):
             continue
@@ -48,9 +127,42 @@ def load_qna_pairs(path: Path) -> list[dict[str, str]]:
                 "question": question,
                 "answer": answer,
                 "document": f"Question: {question}\n\nAnswer: {answer}",
+                "product": "",
+                "country": "",
+                "date": "",
+                "doc_name": "",
+                "codes": [],
+                "keywords": [],
             }
         )
     return cleaned
+
+
+def load_qna_pairs(path: Path) -> list[dict[str, Any]]:
+    """Load Q&A pairs from JSONL (primary) with fallback merge from flat JSON.
+
+    The JSONL is a superset of the flat JSON but carries rich metadata. The
+    original QnA_pairs_extracted.json is never modified; any pair whose
+    normalised question text is missing from the JSONL is appended with
+    empty metadata fields.
+    """
+    if path.suffix == ".jsonl" or path.name.endswith(".jsonl"):
+        pairs, seen = _load_jsonl(path)
+
+        # Merge any pairs from the original flat JSON that the JSONL missed.
+        if FALLBACK_QNA_PATH.exists() and FALLBACK_QNA_PATH != path:
+            fallback = _load_flat_json(FALLBACK_QNA_PATH)
+            next_idx = len(pairs)
+            for p in fallback:
+                if p["question"].lower() not in seen:
+                    p["id"] = f"qna-{next_idx}"
+                    pairs.append(p)
+                    seen.add(p["question"].lower())
+                    next_idx += 1
+        return pairs
+
+    # Legacy path: plain JSON array (no metadata).
+    return _load_flat_json(path)
 
 
 def _placeholder(value: str) -> bool:
@@ -126,6 +238,8 @@ def ingest(settings: Settings | None = None, *, reset: bool = True) -> dict[str,
                 {
                     "question": p["question"][:500],
                     "answer_preview": p["answer"][:500],
+                    "product": (p.get("product") or "")[:200],
+                    "country": (p.get("country") or "")[:200],
                 }
                 for p in batch
             ],

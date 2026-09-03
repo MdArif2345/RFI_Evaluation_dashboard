@@ -515,6 +515,18 @@
     }
     .chat-status .dot.ok { background: var(--good); }
     .chat-status .dot.err { background: var(--danger); }
+    .chat-newchat {
+      margin-left: auto;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .chat-newchat:hover { color: var(--fg); border-color: var(--muted); }
     .chat-messages {
       flex: 1;
       overflow: auto;
@@ -541,6 +553,43 @@
       align-self: flex-start;
       background: rgba(94, 234, 212, 0.08);
       border: 1px solid rgba(94, 234, 212, 0.22);
+      white-space: normal;
+    }
+    .chat-bubble.bot h1, .chat-bubble.bot h2, .chat-bubble.bot h3,
+    .chat-bubble.bot h4, .chat-bubble.bot h5 {
+      margin: 10px 0 4px 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+    .chat-bubble.bot h1 { font-size: 17px; }
+    .chat-bubble.bot h2 { font-size: 16px; }
+    .chat-bubble.bot p {
+      margin: 4px 0;
+    }
+    .chat-bubble.bot ul, .chat-bubble.bot ol {
+      margin: 4px 0 4px 18px;
+      padding: 0;
+    }
+    .chat-bubble.bot li {
+      margin: 2px 0;
+    }
+    .chat-bubble.bot code {
+      background: rgba(255,255,255,0.08);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .chat-bubble.bot pre {
+      background: rgba(0,0,0,0.25);
+      padding: 10px 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 6px 0;
+    }
+    .chat-bubble.bot pre code {
+      background: none;
+      padding: 0;
     }
     .chat-bubble.system {
       align-self: center;
@@ -965,9 +1014,9 @@
         <div class="chat-panel" id="chatPanel">
           <div class="chat-status" id="chatStatus">
             <span><span class="dot" id="chatDot"></span><span id="chatHealthLabel">Checking API…</span></span>
+            <button type="button" class="chat-newchat" id="chatNewBtn">New chat</button>
           </div>
           <div class="chat-messages" id="chatMessages">
-            <div class="chat-bubble system">Ask a CMC / regulatory question — including counts, like &ldquo;how many questions for S.4.1?&rdquo;. Answers drawn from the corpus list their sources.</div>
           </div>
           <form class="chat-form" id="chatForm">
             <input id="chatInput" type="text" autocomplete="off" placeholder="e.g. What leachables data was provided for the drug product?" />
@@ -1806,6 +1855,7 @@
     const chatSend = document.getElementById("chatSend");
     const chatDot = document.getElementById("chatDot");
     const chatHealthLabel = document.getElementById("chatHealthLabel");
+    const chatNewBtn = document.getElementById("chatNewBtn");
 
     function scrollChat() {
       chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -1831,14 +1881,122 @@
       return wrap;
     }
 
+    function renderMarkdown(md) {
+      if (!md) return "";
+      let html = md
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
+        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
+        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.+?)\*/g, "<em>$1</em>")
+        .replace(/`([^`]+)`/g, "<code>$1</code>")
+        .replace(/^[-*] (.+)$/gm, "<li>$1</li>")
+        .replace(/^(\d+)\. (.+)$/gm, "<li>$2</li>");
+      html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>");
+      html = html.replace(/\n{2,}/g, "</p><p>");
+      html = "<p>" + html + "</p>";
+      html = html.replace(/<p>\s*<(h[1-5]|ul|ol|pre)/g, "<$1");
+      html = html.replace(/<\/(h[1-5]|ul|ol|pre)>\s*<\/p>/g, "</$1>");
+      html = html.replace(/<p>\s*<\/p>/g, "");
+      return html;
+    }
+
     function appendChat(role, text, sources) {
       const el = document.createElement("div");
       el.className = "chat-bubble " + role;
-      el.textContent = text;
+      if (role === "bot" && text) {
+        el.innerHTML = renderMarkdown(text);
+      } else {
+        el.textContent = text;
+      }
       if (sources && sources.length) el.appendChild(buildSources(sources));
       chatMessages.appendChild(el);
       scrollChat();
       return el;
+    }
+
+    // ----- Transcript persistence (browser-local, survives a refresh) -----
+    // Versioned key so a future shape change cannot crash an old open tab.
+    const CHAT_STORE_KEY = "cmc-chat-v1";
+    const MAX_STORED_TURNS = 40;
+    const MAX_STORED_SOURCES = 10;
+    const MAX_STORED_PREVIEW = 400;
+
+    let TRANSCRIPT = [];
+
+    // Source previews are the only field big enough to threaten the ~5MB quota.
+    function trimForStorage(turns) {
+      return turns.slice(-MAX_STORED_TURNS).map((t) => ({
+        role: t.role,
+        text: t.text,
+        sources: (t.sources || []).slice(0, MAX_STORED_SOURCES).map((s) => ({
+          id: s.id,
+          question: s.question,
+          answer_preview: (s.answer_preview || "").slice(0, MAX_STORED_PREVIEW),
+          similarity: s.similarity
+        }))
+      }));
+    }
+
+    function saveTranscript() {
+      let turns = trimForStorage(TRANSCRIPT);
+      // Quota is per-origin and shared with anything else on this page, so on
+      // rejection shed the oldest turns rather than losing the transcript.
+      for (;;) {
+        try {
+          localStorage.setItem(CHAT_STORE_KEY, JSON.stringify(turns));
+          return;
+        } catch (_) {
+          if (turns.length <= 1) {
+            try { localStorage.removeItem(CHAT_STORE_KEY); } catch (_) { /* private mode */ }
+            return;
+          }
+          turns = turns.slice(Math.ceil(turns.length / 2));
+        }
+      }
+    }
+
+    function recordTurn(role, text, sources) {
+      TRANSCRIPT.push({ role, text, sources: sources || [] });
+      saveTranscript();
+    }
+
+    function loadTranscript() {
+      let raw = null;
+      try {
+        raw = localStorage.getItem(CHAT_STORE_KEY);
+      } catch (_) {
+        return [];   // Safari private mode throws on access
+      }
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+        return parsed.filter((t) => t && (t.role === "user" || t.role === "bot") && typeof t.text === "string");
+      } catch (_) {
+        return [];
+      }
+    }
+
+    function restoreTranscript() {
+      TRANSCRIPT = loadTranscript();
+      TRANSCRIPT.forEach((t) => appendChat(t.role, t.text, t.sources));
+    }
+
+    // The wire format uses assistant/user; the DOM uses bot/user for styling.
+    function historyPayload() {
+      return TRANSCRIPT.map((t) => ({
+        role: t.role === "bot" ? "assistant" : "user",
+        content: t.text
+      }));
+    }
+
+    function clearTranscript() {
+      TRANSCRIPT = [];
+      try { localStorage.removeItem(CHAT_STORE_KEY); } catch (_) { /* private mode */ }
+      chatMessages.innerHTML = "";
+      chatInput.focus();
     }
 
     // Generation is the long phase (~5-10s); rotate wording so it never looks frozen.
@@ -1919,12 +2077,12 @@
       }
     }
 
-    async function askStreaming(message, thinking) {
+    async function askStreaming(message, history, thinking) {
       const res = await fetch("/api/chat/stream", {
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message })
+        body: JSON.stringify({ message, history })
       });
       if (res.status === 401) {
         thinking.remove();
@@ -1939,6 +2097,7 @@
       let sources = [];
       let bubble = null;
       let answer = "";
+      let failed = false;
 
       const handle = (evt) => {
         if (evt.type === "stage") {
@@ -1956,10 +2115,11 @@
             bubble = appendChat("bot", "");
           }
           answer += evt.text;
-          bubble.textContent = answer;
+          bubble.innerHTML = renderMarkdown(answer);
           bubble.classList.add("chat-caret");
           scrollChat();
         } else if (evt.type === "error") {
+          failed = true;
           thinking.remove();
           if (bubble) bubble.classList.remove("chat-caret");
           appendChat("bot", evt.detail || "The assistant hit an error.");
@@ -1984,16 +2144,19 @@
         if (sources.length) bubble.appendChild(buildSources(sources));
         scrollChat();
       }
+      // Only successful answers enter the transcript; a partial reply cut off by
+      // an error would otherwise be replayed as context on the next question.
+      if (!failed && answer.trim()) recordTurn("bot", answer, sources);
       return true;
     }
 
-    async function askFallback(message, thinking) {
+    async function askFallback(message, history, thinking) {
       thinking.rotate();
       const res = await fetch("/api/chat", {
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message })
+        body: JSON.stringify({ message, history })
       });
       const data = await res.json().catch(() => ({}));
       thinking.remove();
@@ -2002,7 +2165,10 @@
       } else if (!res.ok) {
         appendChat("bot", data.detail || ("Chat failed (" + res.status + ")."));
       } else {
-        appendChat("bot", data.answer || "(empty response)", data.sources || []);
+        const answer = data.answer || "(empty response)";
+        const sources = data.sources || [];
+        appendChat("bot", answer, sources);
+        if (data.answer) recordTurn("bot", answer, sources);
       }
     }
 
@@ -2010,13 +2176,16 @@
       e.preventDefault();
       const message = (chatInput.value || "").trim();
       if (!message) return;
+      // Snapshot before recording, so the model is not sent this message twice.
+      const history = historyPayload();
       appendChat("user", message);
+      recordTurn("user", message);
       chatInput.value = "";
       chatSend.disabled = true;
       const thinking = createThinking();
       try {
-        const streamed = await askStreaming(message, thinking);
-        if (!streamed) await askFallback(message, thinking);
+        const streamed = await askStreaming(message, history, thinking);
+        if (!streamed) await askFallback(message, history, thinking);
       } catch (err) {
         thinking.remove();
         appendChat("bot", "Could not reach the chatbot API. Start the backend from cmc-dashboard/backend.");
@@ -2026,6 +2195,9 @@
       }
     });
 
+    chatNewBtn.addEventListener("click", clearTranscript);
+
+    restoreTranscript();
     refreshChatHealth();
     })();
   </script>

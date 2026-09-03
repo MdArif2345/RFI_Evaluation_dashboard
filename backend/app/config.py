@@ -6,7 +6,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 DASHBOARD_DIR = BACKEND_DIR.parent
-DEFAULT_QNA_PATH = DASHBOARD_DIR / "QnA_pairs_extracted.json"
+DEFAULT_QNA_PATH = DASHBOARD_DIR / "cmc_response_documents.jsonl"
+FALLBACK_QNA_PATH = DASHBOARD_DIR / "QnA_pairs_extracted.json"
+CODE_CATALOG_PATH = DASHBOARD_DIR / "code_catalog.json"
 DEFAULT_CHROMA_DIR = BACKEND_DIR / "chroma_data"
 
 

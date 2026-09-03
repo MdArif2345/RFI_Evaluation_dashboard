@@ -79,6 +79,7 @@ Two helper checks:
 ```bash
 node backend/scripts/check_dashboard.js   # element/chart wiring in index.html
 node backend/scripts/check_insights.js    # JSON field contract and totals
+node backend/scripts/check_chat_memory.js # transcript storage, caps, and clearing
 ```
 
 ---
@@ -128,6 +129,21 @@ FastAPI (backend/app/main.py)
 - When the corpus has no coverage the model answers from general CMC regulatory
   knowledge. The sources panel stays empty in that case, which is the provenance cue.
 - Empty / `n.a.` pairs are dropped at ingest.
+
+### Conversation memory
+
+The chat is multi-turn, so follow-ups like "and P.8.3?" resolve against earlier
+turns. The transcript lives in the browser's `localStorage` (`cmc-chat-v1`) and
+is replayed to the server on each request, so it survives a refresh but is
+per-browser — nothing is stored server-side and nobody sees anyone else's chat.
+"New chat" clears it.
+
+Only plain user/assistant text is replayed. Tool calls and their results are not:
+the chat API requires each `tool_calls` message to be followed by its matching
+results, and one `list_questions` payload would swamp the context. The model
+re-calls a tool when it needs the data again, so counts are never stale. The
+server trims history to `HISTORY_CHAR_BUDGET` (6,000 chars) regardless of what
+the browser sends.
 
 ---
 

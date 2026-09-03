@@ -38,7 +38,7 @@ def tool_schemas() -> list[dict[str, Any]]:
                         },
                         "top_k": {
                             "type": "integer",
-                            "description": "How many pairs to return (1-20). Default 8.",
+                            "description": "How many pairs to return (1-20). Default 5.",
                         },
                     },
                     "required": ["query"],
@@ -50,9 +50,9 @@ def tool_schemas() -> list[dict[str, Any]]:
             "function": {
                 "name": "list_questions",
                 "description": (
-                    "Exact filter over the whole corpus by CTD code and/or theme. "
-                    "Returns total_matches plus sample questions. This is the only "
-                    "way to count or enumerate; semantic search cannot count."
+                    "Exact filter over the whole corpus by CTD code, theme, product, "
+                    "and/or country. Returns total_matches plus sample questions. "
+                    "This is the only way to count or enumerate; semantic search cannot count."
                 ),
                 "parameters": {
                     "type": "object",
@@ -68,11 +68,84 @@ def tool_schemas() -> list[dict[str, Any]]:
                             "type": "string",
                             "description": "One of: " + "; ".join(themes),
                         },
+                        "product": {
+                            "type": "string",
+                            "description": "Filter by product/substance name (e.g. Gadoquatrane, Aflibercept).",
+                        },
+                        "country": {
+                            "type": "string",
+                            "description": "Filter by submission country (e.g. India, Germany, USA).",
+                        },
                         "limit": {
                             "type": "integer",
                             "description": f"Sample questions to return (1-{MAX_LIST_LIMIT}). Default 20.",
                         },
                     },
+                },
+            },
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "query_metadata",
+                "description": (
+                    "Aggregate and count Q&A pairs grouped by product, country, or date. "
+                    "Use for questions like 'which product has the most questions', "
+                    "'how many questions from India', or 'which month had the most submissions'. "
+                    "Optionally filter by code, theme, product, or country before aggregating."
+                ),
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "group_by": {
+                            "type": "string",
+                            "enum": ["product", "country", "date"],
+                            "description": "Dimension to group and count by.",
+                        },
+                        "code": {
+                            "type": "string",
+                            "description": "Optional CTD code filter before aggregation.",
+                        },
+                        "theme": {
+                            "type": "string",
+                            "description": "Optional theme filter before aggregation.",
+                        },
+                        "product": {
+                            "type": "string",
+                            "description": "Optional product filter before aggregation.",
+                        },
+                        "country": {
+                            "type": "string",
+                            "description": "Optional country filter before aggregation.",
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Max groups to return (1-50). Default 15.",
+                        },
+                    },
+                    "required": ["group_by"],
+                },
+            },
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "lookup_code",
+                "description": (
+                    "Look up a CTD code in the code catalog to find its title, chapter, "
+                    "and subchapter. Use when the user asks 'what does P.8.3 cover?' or "
+                    "'what is S.4.1?'. The catalog has 706 entries covering Drug Substance, "
+                    "Drug Product, Appendices, STED, Module 3, and Medical Devices."
+                ),
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string",
+                            "description": "The CTD code to look up (e.g. P.8.3, S.4.1, A.1.01).",
+                        },
+                    },
+                    "required": ["code"],
                 },
             },
         },
@@ -96,8 +169,8 @@ def _search_qna(args: dict[str, Any], settings: Settings) -> tuple[dict[str, Any
     if not query:
         return {"error": "query is required"}, []
 
-    top_k = max(1, min(int(args.get("top_k") or 8), 20))
-    hits = retrieve(query, settings, top_k=top_k)
+    top_k = max(1, min(int(args.get("top_k") or 5), 20))
+    hits = retrieve(query, settings, top_k=top_k)[:5]
 
     result = {
         "query": query,
@@ -113,8 +186,10 @@ def _search_qna(args: dict[str, Any], settings: Settings) -> tuple[dict[str, Any
 def _list_questions(args: dict[str, Any], _settings: Settings) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     code = (args.get("code") or "").strip() or None
     theme = (args.get("theme") or "").strip() or None
-    if not code and not theme:
-        return {"error": "provide code, theme, or both"}, []
+    product = (args.get("product") or "").strip() or None
+    country = (args.get("country") or "").strip() or None
+    if not code and not theme and not product and not country:
+        return {"error": "provide at least one filter: code, theme, product, or country"}, []
 
     corpus = get_corpus()
     if theme and corpus.resolve_theme(theme) is None:
@@ -124,24 +199,52 @@ def _list_questions(args: dict[str, Any], _settings: Settings) -> tuple[dict[str
         }, []
 
     limit = int(args.get("limit") or 20)
-    summary = corpus.summarise(code=code, theme=theme, limit=limit)
+    summary = corpus.summarise(code=code, theme=theme, product=product, country=country, limit=limit)
 
-    sources = [
-        {
-            "id": q["id"],
-            "question": q["question"],
-            "answer_preview": q["answer_preview"],
-            # Exact filter, not a ranked match: no meaningful similarity score.
-            "similarity": 1.0,
-        }
-        for q in summary["questions"]
-    ]
-    return summary, sources
+    return summary, []
+
+
+def _query_metadata(args: dict[str, Any], _settings: Settings) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    group_by = (args.get("group_by") or "").strip().lower()
+    if group_by not in ("product", "country", "date"):
+        return {"error": "group_by must be one of: product, country, date"}, []
+
+    code = (args.get("code") or "").strip() or None
+    theme = (args.get("theme") or "").strip() or None
+    product = (args.get("product") or "").strip() or None
+    country = (args.get("country") or "").strip() or None
+    limit = int(args.get("limit") or 15)
+
+    corpus = get_corpus()
+    result = corpus.aggregate(
+        group_by=group_by,
+        code=code,
+        theme=theme,
+        product=product,
+        country=country,
+        limit=limit,
+    )
+    return result, []
+
+
+def _lookup_code(args: dict[str, Any], _settings: Settings) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    code = (args.get("code") or "").strip()
+    if not code:
+        return {"error": "code is required"}, []
+
+    corpus = get_corpus()
+    entry = corpus.lookup_code(code)
+    if entry is None:
+        return {"error": f"code '{code}' not found in the catalog"}, []
+
+    return entry, []
 
 
 DISPATCH = {
     "search_qna": _search_qna,
     "list_questions": _list_questions,
+    "query_metadata": _query_metadata,
+    "lookup_code": _lookup_code,
 }
 
 
@@ -173,17 +276,30 @@ def describe_call(name: str, raw_args: str) -> str:
 
     if name == "search_qna":
         query = str(args.get("query") or "").strip()
-        return f"Searching the corpus for “{query[:60]}”" if query else "Searching the corpus"
+        return f"Searching the corpus for \u201c{query[:60]}\u201d" if query else "Searching the corpus"
 
     if name == "list_questions":
+        parts = []
         code = (args.get("code") or "").strip()
         theme = (args.get("theme") or "").strip()
-        if code and theme:
-            return f"Counting {code} questions under {theme}"
+        product = (args.get("product") or "").strip()
+        country = (args.get("country") or "").strip()
         if code:
-            return f"Counting matches for {code}"
+            parts.append(code)
         if theme:
-            return f"Listing questions under {theme}"
-        return "Filtering the corpus"
+            parts.append(theme)
+        if product:
+            parts.append(product)
+        if country:
+            parts.append(country)
+        return f"Filtering corpus by {', '.join(parts)}" if parts else "Filtering the corpus"
+
+    if name == "query_metadata":
+        group_by = (args.get("group_by") or "").strip()
+        return f"Counting by {group_by}" if group_by else "Aggregating metadata"
+
+    if name == "lookup_code":
+        code = (args.get("code") or "").strip()
+        return f"Looking up {code}" if code else "Looking up a code"
 
     return f"Running {name}"

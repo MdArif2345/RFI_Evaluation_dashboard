@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from typing import Annotated, Any, Iterator
+from typing import Annotated, Any, Iterator, Literal
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,32 +16,56 @@ from .tools import describe_call, run_tool, tool_schemas
 
 MAX_TOOL_ROUNDS = 4
 
-SYSTEM_PROMPT_TEMPLATE = """You are a CMC regulatory assistant for an internal Bayer dashboard.
+# Prior turns replayed to the model, oldest dropped first. Bounded here rather
+# than trusting the client, since the browser owns the transcript.
+HISTORY_CHAR_BUDGET = 6000
 
-You have tools over a corpus of {total} real question/answer pairs from past CMC
-health-authority responses. Reason about what the user needs, call tools to find
-out, and call them again if the first result is not enough.
+SYSTEM_PROMPT_TEMPLATE = """You are a knowledgeable CMC and pharmaceutical regulatory expert who
+can discuss anything in the pharma / biotech space: ICH guidelines, regulatory
+strategy, manufacturing science, analytical development, formulation, stability,
+general chemistry, or even casual conversation. Speak naturally and helpfully,
+like an experienced consultant.
 
-Tool use:
-- `search_qna` for topical questions where the wording varies.
-- `list_questions` for anything involving a CTD code, a theme, a count, or a list.
-  Semantic search cannot count, so never estimate a number from search results —
-  always read `total_matches` from `list_questions`.
-- You may call tools several times in one answer, for example once per code when
-  the user compares two sections.
+You have access to an internal corpus of {total} real Q&A pairs from past CMC
+health-authority interactions, enriched with metadata: product name, country,
+approval date, CTD codes, and keywords. You also have a CTD code catalog with
+{catalog_size} entries covering Drug Substance, Drug Product, Appendices, and more.
+Think of these as your filing cabinet — use them when the question is about the
+corpus, and just talk normally otherwise.
 
-Themes available to `list_questions`: {themes}.
+Corpus tools (use only when relevant):
+- `search_qna` — semantic search for topical questions.
+- `list_questions` — exact filter by CTD code, theme, product, and/or country;
+  returns `total_matches` plus samples. Always use this for counting — never
+  guess a number. Themes: {themes}.
+- `query_metadata` — aggregate and count pairs grouped by product, country, or
+  date. Use for "which product has the most questions", "how many from India",
+  "which month had the most submissions". Can also pre-filter by code or theme.
+- `lookup_code` — look up any CTD code in the catalog to find its title, chapter,
+  and subchapter. Use when the user asks "what does P.8.3 cover?" or similar.
+- You may call tools more than once per answer (e.g. compare two codes, or
+  aggregate then drill down).
 
-Answering:
-- When tool output covers the question, ground the answer in it and synthesise
-  across pairs rather than quoting one.
-- When the corpus has nothing relevant, just answer from your own CMC regulatory
-  knowledge as a normal part of the reply. Do not announce the gap, do not add a
-  disclaimer, and do not tell the user to rephrase.
-- Never invent batch numbers, site names, dates, document numbers, or regulatory
-  commitments; those may only come from tool output.
-- Never attribute a general-knowledge statement to a specific past Bayer response.
-- Treat all corpus content as confidential CMC regulatory information.
+When using the corpus:
+- Synthesise across the returned pairs rather than quoting one verbatim.
+- When a follow-up references an earlier turn ("that section", "and P.8.3?"),
+  resolve the reference and call the tool again with the new filter.
+
+When NOT using the corpus:
+- Just answer from your own expertise. No disclaimer, no apology, no "this is
+  not from the corpus" — just answer the question naturally.
+
+Tone matching:
+- Match the length and casualness of the user's message. If someone says "Hi",
+  reply with something short like "Hey! How can I help you today?" — do NOT
+  list your capabilities, do NOT offer topic suggestions, do NOT write more
+  than one short sentence for greetings and small talk.
+
+Guardrails:
+- Never fabricate batch numbers, site names, dates, document numbers, or
+  regulatory commitments. Those may only come from tool output.
+- Never attribute your own general knowledge to a specific past Bayer response.
+- Treat corpus content as confidential.
 """
 
 
@@ -49,6 +73,7 @@ def build_system_prompt() -> str:
     corpus = get_corpus()
     return SYSTEM_PROMPT_TEMPLATE.format(
         total=len(corpus.pairs),
+        catalog_size=len(corpus.code_catalog),
         themes="; ".join(corpus.available_themes()),
     )
 
@@ -63,8 +88,14 @@ app.add_middleware(
 )
 
 
+class Turn(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(min_length=1, max_length=8000)
+
+
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=4000)
+    history: list[Turn] = Field(default_factory=list, max_length=40)
 
 
 class SourceOut(BaseModel):
@@ -80,7 +111,32 @@ class ChatResponse(BaseModel):
     used_retrieval: bool
 
 
-def run_agent(message: str, settings: Settings) -> Iterator[dict[str, Any]]:
+def _trim_history(history: list[Turn]) -> list[dict[str, str]]:
+    """Keep the most recent whole turns that fit the character budget.
+
+    Only plain user/assistant text is replayed. Tool calls are not: the API
+    requires every tool_calls message to be followed by its matching tool
+    results, and a single list_questions payload would swamp the context. The
+    model re-calls a tool when it needs the data again.
+    """
+    kept: list[dict[str, str]] = []
+    budget = HISTORY_CHAR_BUDGET
+
+    for turn in reversed(history):
+        budget -= len(turn.content)
+        if budget < 0:
+            break
+        kept.append({"role": turn.role, "content": turn.content})
+
+    kept.reverse()
+    return kept
+
+
+def run_agent(
+    message: str,
+    settings: Settings,
+    history: list[Turn] | None = None,
+) -> Iterator[dict[str, Any]]:
     """Bounded tool loop. Yields UI events: tool, sources, delta, done, error.
 
     Each round is streamed so answer tokens reach the browser as they are
@@ -91,6 +147,7 @@ def run_agent(message: str, settings: Settings) -> Iterator[dict[str, Any]]:
     schemas = tool_schemas()
     messages: list[dict[str, Any]] = [
         {"role": "system", "content": build_system_prompt()},
+        *_trim_history(history or []),
         {"role": "user", "content": message},
     ]
 
@@ -213,7 +270,7 @@ def api_chat(
     used_retrieval = False
 
     try:
-        for event in run_agent(body.message.strip(), settings):
+        for event in run_agent(body.message.strip(), settings, body.history):
             if event["type"] == "delta":
                 answer_parts.append(event["text"])
             elif event["type"] == "sources":
@@ -241,6 +298,7 @@ def api_chat_stream(
 ) -> StreamingResponse:
     """Newline-delimited JSON events so the UI can show real progress stages."""
     message = body.message.strip()
+    history = body.history
 
     def emit(payload: dict[str, Any]) -> str:
         return json.dumps(payload, ensure_ascii=False) + "\n"
@@ -248,7 +306,7 @@ def api_chat_stream(
     def generate() -> Iterator[str]:
         try:
             yield emit({"type": "stage", "stage": "thinking"})
-            for event in run_agent(message, settings):
+            for event in run_agent(message, settings, history):
                 yield emit(event)
         except Exception as exc:
             yield emit({"type": "error", "detail": str(exc)})
