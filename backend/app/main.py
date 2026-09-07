@@ -9,6 +9,7 @@ from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
 from .auth import require_basic_auth
+from .chat_db import delete_session, ensure_session, get_analytics, get_session_messages, get_sessions, init_db, save_message
 from .config import Settings, DASHBOARD_DIR, get_settings
 from .corpus import get_corpus
 from .rag import chat_client, ingest
@@ -30,11 +31,17 @@ You have access to an internal corpus of {total} real Q&A pairs from past CMC
 health-authority interactions, enriched with metadata: product name, country,
 approval date, CTD codes, and keywords. You also have a CTD code catalog with
 {catalog_size} entries covering Drug Substance, Drug Product, Appendices, and more.
-Think of these as your filing cabinet — use them when the question is about the
-corpus, and just talk normally otherwise.
+Think of these as your filing cabinet.
 
-Corpus tools (use only when relevant):
-- `search_qna` — semantic search for topical questions.
+**Important**: For ANY substantive CMC, regulatory, or pharma-technical question,
+ALWAYS call `search_qna` first to check if the corpus has relevant real-world
+examples before answering. Combine corpus results with your own expertise to give
+a richer, grounded answer. Only skip tools for casual greetings, small talk, or
+clearly non-pharma topics.
+
+Corpus tools:
+- `search_qna` — semantic search for topical questions. **Call this by default**
+  for any CMC/regulatory question.
 - `list_questions` — exact filter by CTD code, theme, product, and/or country;
   returns `total_matches` plus samples. Always use this for counting — never
   guess a number. Themes: {themes}.
@@ -50,10 +57,11 @@ When using the corpus:
 - Synthesise across the returned pairs rather than quoting one verbatim.
 - When a follow-up references an earlier turn ("that section", "and P.8.3?"),
   resolve the reference and call the tool again with the new filter.
+- Blend corpus evidence with your own expertise for a comprehensive answer.
 
-When NOT using the corpus:
-- Just answer from your own expertise. No disclaimer, no apology, no "this is
-  not from the corpus" — just answer the question naturally.
+When the corpus has no relevant results:
+- Just answer from your own expertise. No disclaimer, no apology — just answer
+  the question naturally.
 
 Tone matching:
 - Match the length and casualness of the user's message. If someone says "Hi",
@@ -88,6 +96,12 @@ app.add_middleware(
 )
 
 
+@app.on_event("startup")
+def _startup() -> None:
+    settings = get_settings()
+    init_db(settings.chat_db_path)
+
+
 class Turn(BaseModel):
     role: Literal["user", "assistant"]
     content: str = Field(min_length=1, max_length=8000)
@@ -96,12 +110,15 @@ class Turn(BaseModel):
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=4000)
     history: list[Turn] = Field(default_factory=list, max_length=40)
+    session_id: str | None = None
+    username: str | None = None
 
 
 class SourceOut(BaseModel):
     id: str
     question: str
     answer_preview: str
+    doc_id: str = ""
     similarity: float
 
 
@@ -154,10 +171,48 @@ def run_agent(
     seen_source_ids: set[str] = set()
     used_retrieval = False
 
+    # Detect casual / small-talk so we don't force a tool call for them.
+    import re as _re
+    _msg_lower = message.strip().lower()
+    _msg_clean = _re.sub(r"[!.,?]+$", "", _msg_lower)
+    _CASUAL_PHRASES = {
+        "hi", "hii", "hey", "hello", "yo", "sup",
+        "thanks", "thank you", "thank u", "thx",
+        "bye", "goodbye", "see you", "see ya",
+        "ok", "okay", "sure", "yes", "no", "yep", "nope",
+        "good morning", "good evening", "good afternoon", "good night",
+        "how are you", "how r u", "what's up", "whats up",
+        "i wanna talk", "i want to talk", "let's talk", "lets talk",
+        "i wanna talk about something", "i want to talk about something",
+        "tell me something", "can we talk", "can we chat",
+        "who are you", "what are you", "what can you do",
+    }
+    _PHARMA_KEYWORDS = _re.compile(
+        r"(ctd|cmc|api|drug|product|substance|batch|stability|leachable|"
+        r"extractable|specification|impurit|formulation|excipient|"
+        r"dissolution|validation|analytical|regulatory|ich|coa|"
+        r"p\.\d|s\.\d|m\.\d|shelf.life|container.closure|"
+        r"manufacturing|bioequi|pharmacop|assay|method|dossier)",
+        _re.IGNORECASE,
+    )
+    _word_count = len(_msg_lower.split())
+    is_casual = (
+        _msg_clean in _CASUAL_PHRASES
+        or (_word_count <= 6 and not _PHARMA_KEYWORDS.search(_msg_lower))
+    )
+
     for round_index in range(MAX_TOOL_ROUNDS):
         # On the final round the tools are withheld so the model must answer.
         last_round = round_index == MAX_TOOL_ROUNDS - 1
-        extra = {} if last_round else {"tools": schemas}
+        extra: dict[str, Any] = {}
+        if not last_round:
+            extra["tools"] = schemas
+            if round_index == 0 and not is_casual:
+                # Force the model to call a tool on the first round for
+                # substantive questions so the source panel always appears.
+                extra["tool_choice"] = "required"
+            else:
+                extra["tool_choice"] = "auto"
         stream = client.chat.completions.create(
             model=settings.chat_model(),
             temperature=0.2,
@@ -265,12 +320,18 @@ def api_chat(
     _: Annotated[str, Depends(require_basic_auth)],
     settings: Annotated[Settings, Depends(get_settings)],
 ) -> ChatResponse:
+    message = body.message.strip()
+
+    if body.session_id and body.username:
+        ensure_session(body.session_id, body.username)
+        save_message(body.session_id, "user", message)
+
     answer_parts: list[str] = []
     sources: list[SourceOut] = []
     used_retrieval = False
 
     try:
-        for event in run_agent(body.message.strip(), settings, body.history):
+        for event in run_agent(message, settings, body.history):
             if event["type"] == "delta":
                 answer_parts.append(event["text"])
             elif event["type"] == "sources":
@@ -283,8 +344,14 @@ def api_chat(
             detail=f"{settings.llm_provider.upper()} chat failed: {exc}",
         ) from exc
 
+    answer = "".join(answer_parts).strip()
+
+    if body.session_id and body.username and answer:
+        src_dicts = [s.model_dump() for s in sources] if sources else None
+        save_message(body.session_id, "assistant", answer, src_dicts)
+
     return ChatResponse(
-        answer="".join(answer_parts).strip(),
+        answer=answer,
         sources=sources,
         used_retrieval=used_retrieval,
     )
@@ -299,23 +366,76 @@ def api_chat_stream(
     """Newline-delimited JSON events so the UI can show real progress stages."""
     message = body.message.strip()
     history = body.history
+    sid = body.session_id
+    uname = body.username
+
+    if sid and uname:
+        ensure_session(sid, uname)
+        save_message(sid, "user", message)
 
     def emit(payload: dict[str, Any]) -> str:
         return json.dumps(payload, ensure_ascii=False) + "\n"
 
     def generate() -> Iterator[str]:
+        answer_parts: list[str] = []
+        all_sources: list[dict[str, Any]] = []
         try:
             yield emit({"type": "stage", "stage": "thinking"})
             for event in run_agent(message, settings, history):
                 yield emit(event)
+                if event["type"] == "delta":
+                    answer_parts.append(event["text"])
+                elif event["type"] == "sources":
+                    all_sources.extend(event.get("sources", []))
         except Exception as exc:
             yield emit({"type": "error", "detail": str(exc)})
+            return
+
+        answer = "".join(answer_parts).strip()
+        if sid and uname and answer:
+            save_message(sid, "assistant", answer, all_sources or None)
 
     return StreamingResponse(
         generate(),
         media_type="application/x-ndjson",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
+
+
+# ----- Session & analytics endpoints -----
+
+@app.get("/api/sessions")
+def api_sessions(
+    username: str,
+    _: Annotated[str, Depends(require_basic_auth)],
+) -> list[dict[str, Any]]:
+    return get_sessions(username)
+
+
+@app.delete("/api/sessions/{session_id}")
+def api_delete_session(
+    session_id: str,
+    _: Annotated[str, Depends(require_basic_auth)],
+) -> dict[str, Any]:
+    deleted = delete_session(session_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Session not found")
+    return {"deleted": True, "session_id": session_id}
+
+
+@app.get("/api/sessions/{session_id}/messages")
+def api_session_messages(
+    session_id: str,
+    _: Annotated[str, Depends(require_basic_auth)],
+) -> list[dict[str, Any]]:
+    return get_session_messages(session_id)
+
+
+@app.get("/api/analytics")
+def api_analytics(
+    _: Annotated[str, Depends(require_basic_auth)],
+) -> dict[str, Any]:
+    return get_analytics()
 
 
 # Static dashboard files (same folder as index.html)

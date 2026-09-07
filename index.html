@@ -527,6 +527,129 @@
       cursor: pointer;
     }
     .chat-newchat:hover { color: var(--fg); border-color: var(--muted); }
+    .chat-history-btn {
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .chat-history-btn:hover { color: var(--fg); border-color: var(--muted); }
+    .chat-sessions-dropdown {
+      position: absolute;
+      right: 12px;
+      top: 44px;
+      z-index: 100;
+      background: rgba(15, 39, 68, 0.98);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      min-width: 280px;
+      max-height: 320px;
+      overflow-y: auto;
+      display: none;
+    }
+    .chat-sessions-dropdown.open { display: block; }
+    .chat-sessions-dropdown .sess-item {
+      padding: 10px 14px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 13px;
+      color: var(--fg);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .chat-sessions-dropdown .sess-item:hover {
+      background: rgba(56, 189, 248, 0.1);
+    }
+    .chat-sessions-dropdown .sess-item .sess-content { flex: 1; min-width: 0; }
+    .chat-sessions-dropdown .sess-item .sess-delete {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 15px;
+      cursor: pointer;
+      padding: 0 4px;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.15s, color 0.15s;
+    }
+    .chat-sessions-dropdown .sess-item:hover .sess-delete { opacity: 1; }
+    .chat-sessions-dropdown .sess-item .sess-delete:hover { color: #f87171; }
+    .chat-sessions-dropdown .sess-item .sess-title {
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chat-sessions-dropdown .sess-item .sess-date {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .chat-sessions-dropdown .sess-empty {
+      padding: 14px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .username-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .username-modal {
+      background: linear-gradient(180deg, #1a3a5c, #0f2744);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 28px 32px;
+      min-width: 320px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+    .username-modal h3 {
+      margin: 0 0 6px 0;
+      font-size: 18px;
+      color: var(--fg);
+    }
+    .username-modal p {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .username-modal input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      color: var(--fg);
+      font-size: 14px;
+      outline: none;
+    }
+    .username-modal input:focus { border-color: var(--accent); }
+    .username-modal button {
+      margin-top: 12px;
+      padding: 8px 24px;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #0f2744;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .username-modal button:disabled { opacity: 0.5; cursor: not-allowed; }
     .chat-messages {
       flex: 1;
       overflow: auto;
@@ -1011,11 +1134,13 @@
             <p>Reasoning assistant over extracted CMC question/answer pairs. It searches, counts, and filters the corpus on-device, and shows the pairs it used.</p>
           </div>
         </div>
-        <div class="chat-panel" id="chatPanel">
+        <div class="chat-panel" id="chatPanel" style="position:relative;">
           <div class="chat-status" id="chatStatus">
             <span><span class="dot" id="chatDot"></span><span id="chatHealthLabel">Checking API…</span></span>
+            <button type="button" class="chat-history-btn" id="chatHistoryBtn">History</button>
             <button type="button" class="chat-newchat" id="chatNewBtn">New chat</button>
           </div>
+          <div class="chat-sessions-dropdown" id="chatSessionsDropdown"></div>
           <div class="chat-messages" id="chatMessages">
           </div>
           <form class="chat-form" id="chatForm">
@@ -1856,6 +1981,8 @@
     const chatDot = document.getElementById("chatDot");
     const chatHealthLabel = document.getElementById("chatHealthLabel");
     const chatNewBtn = document.getElementById("chatNewBtn");
+    const chatHistoryBtn = document.getElementById("chatHistoryBtn");
+    const chatSessionsDropdown = document.getElementById("chatSessionsDropdown");
 
     function scrollChat() {
       chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -1870,10 +1997,19 @@
       sources.forEach((s, i) => {
         const det = document.createElement("details");
         const sum = document.createElement("summary");
-        sum.textContent = "#" + (i + 1) + " · sim " + s.similarity + " · " + (s.question || s.id).slice(0, 120);
+        sum.textContent = "#" + (i + 1) + " \u00b7 sim " + s.similarity + " \u00b7 " + (s.question || s.id).slice(0, 120);
         const body = document.createElement("div");
         body.style.marginTop = "6px";
         body.textContent = s.answer_preview || "";
+        if (s.doc_id) {
+          const link = document.createElement("a");
+          link.href = "https://bayer-brave.veevavault.com/ui/#doc_info/" + s.doc_id;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "Open in Veeva Vault";
+          link.style.cssText = "display:inline-block;margin-top:6px;color:#38bdf8;font-size:12px;text-decoration:underline;";
+          body.appendChild(link);
+        }
         det.appendChild(sum);
         det.appendChild(body);
         wrap.appendChild(det);
@@ -1916,8 +2052,84 @@
       return el;
     }
 
-    // ----- Transcript persistence (browser-local, survives a refresh) -----
-    // Versioned key so a future shape change cannot crash an old open tab.
+    // ----- Username management -----
+    const USERNAME_KEY = "cmc-username";
+
+    function getUsername() {
+      try { return localStorage.getItem(USERNAME_KEY) || ""; } catch (_) { return ""; }
+    }
+
+    function setUsername(name) {
+      try { localStorage.setItem(USERNAME_KEY, name); } catch (_) { /* private mode */ }
+    }
+
+    function showUsernameModal() {
+      return new Promise((resolve) => {
+        const overlay = document.createElement("div");
+        overlay.className = "username-modal-overlay";
+        const modal = document.createElement("div");
+        modal.className = "username-modal";
+        modal.innerHTML = `
+          <h3>Welcome to CMC Assistant</h3>
+          <p>Enter your name to get started. This identifies your chat history.</p>
+        `;
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "e.g. Mohd Arif";
+        input.maxLength = 60;
+        const btn = document.createElement("button");
+        btn.textContent = "Continue";
+        btn.disabled = true;
+        input.addEventListener("input", () => {
+          btn.disabled = !input.value.trim();
+        });
+        const submit = () => {
+          const name = input.value.trim();
+          if (!name) return;
+          setUsername(name);
+          overlay.remove();
+          resolve(name);
+        };
+        btn.addEventListener("click", submit);
+        input.addEventListener("keydown", (e) => { if (e.key === "Enter") submit(); });
+        modal.appendChild(input);
+        modal.appendChild(btn);
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+        input.focus();
+      });
+    }
+
+    // ----- Session management -----
+    const SESSION_KEY = "cmc-session-id";
+
+    function generateSessionId() {
+      return crypto.randomUUID ? crypto.randomUUID() : (
+        "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+          const r = Math.random() * 16 | 0;
+          return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
+        })
+      );
+    }
+
+    function getSessionId() {
+      try { return localStorage.getItem(SESSION_KEY) || ""; } catch (_) { return ""; }
+    }
+
+    function setSessionId(id) {
+      try { localStorage.setItem(SESSION_KEY, id); } catch (_) { /* private mode */ }
+    }
+
+    function ensureSessionId() {
+      let sid = getSessionId();
+      if (!sid) {
+        sid = generateSessionId();
+        setSessionId(sid);
+      }
+      return sid;
+    }
+
+    // ----- Transcript persistence (browser-local, write-through cache) -----
     const CHAT_STORE_KEY = "cmc-chat-v1";
     const MAX_STORED_TURNS = 40;
     const MAX_STORED_SOURCES = 10;
@@ -1925,7 +2137,6 @@
 
     let TRANSCRIPT = [];
 
-    // Source previews are the only field big enough to threaten the ~5MB quota.
     function trimForStorage(turns) {
       return turns.slice(-MAX_STORED_TURNS).map((t) => ({
         role: t.role,
@@ -1941,8 +2152,6 @@
 
     function saveTranscript() {
       let turns = trimForStorage(TRANSCRIPT);
-      // Quota is per-origin and shared with anything else on this page, so on
-      // rejection shed the oldest turns rather than losing the transcript.
       for (;;) {
         try {
           localStorage.setItem(CHAT_STORE_KEY, JSON.stringify(turns));
@@ -1967,7 +2176,7 @@
       try {
         raw = localStorage.getItem(CHAT_STORE_KEY);
       } catch (_) {
-        return [];   // Safari private mode throws on access
+        return [];
       }
       if (!raw) return [];
       try {
@@ -1984,7 +2193,6 @@
       TRANSCRIPT.forEach((t) => appendChat(t.role, t.text, t.sources));
     }
 
-    // The wire format uses assistant/user; the DOM uses bot/user for styling.
     function historyPayload() {
       return TRANSCRIPT.map((t) => ({
         role: t.role === "bot" ? "assistant" : "user",
@@ -1996,14 +2204,110 @@
       TRANSCRIPT = [];
       try { localStorage.removeItem(CHAT_STORE_KEY); } catch (_) { /* private mode */ }
       chatMessages.innerHTML = "";
+    }
+
+    function startNewSession() {
+      clearTranscript();
+      const sid = generateSessionId();
+      setSessionId(sid);
       chatInput.focus();
     }
 
-    // Generation is the long phase (~5-10s); rotate wording so it never looks frozen.
+    // ----- History dropdown -----
+    async function toggleHistory() {
+      const dropdown = chatSessionsDropdown;
+      if (dropdown.classList.contains("open")) {
+        dropdown.classList.remove("open");
+        return;
+      }
+      const username = getUsername();
+      if (!username) return;
+      dropdown.innerHTML = '<div class="sess-empty">Loading...</div>';
+      dropdown.classList.add("open");
+      try {
+        const res = await fetch("/api/sessions?username=" + encodeURIComponent(username), { credentials: "same-origin" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const sessions = await res.json();
+        if (!sessions.length) {
+          dropdown.innerHTML = '<div class="sess-empty">No past sessions</div>';
+          return;
+        }
+        dropdown.innerHTML = "";
+        const currentSid = getSessionId();
+        sessions.forEach((s) => {
+          const item = document.createElement("div");
+          item.className = "sess-item";
+          if (s.id === currentSid) item.style.borderLeft = "3px solid var(--accent)";
+
+          const content = document.createElement("div");
+          content.className = "sess-content";
+          const titleDiv = document.createElement("div");
+          titleDiv.className = "sess-title";
+          titleDiv.textContent = s.title || "(untitled)";
+          const dateDiv = document.createElement("div");
+          dateDiv.className = "sess-date";
+          dateDiv.textContent = s.updated_at ? new Date(s.updated_at).toLocaleString() : "";
+          content.appendChild(titleDiv);
+          content.appendChild(dateDiv);
+          content.addEventListener("click", () => loadSession(s.id));
+
+          const delBtn = document.createElement("button");
+          delBtn.className = "sess-delete";
+          delBtn.title = "Delete this chat";
+          delBtn.textContent = "\u2715";
+          delBtn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            if (!confirm("Delete this chat?")) return;
+            try {
+              await fetch("/api/sessions/" + s.id, { method: "DELETE", credentials: "same-origin" });
+              item.remove();
+              if (s.id === getSessionId()) startNewSession();
+              if (!dropdown.querySelector(".sess-item")) {
+                dropdown.innerHTML = '<div class="sess-empty">No past sessions</div>';
+              }
+            } catch (_) { /* silently ignore */ }
+          });
+
+          item.appendChild(content);
+          item.appendChild(delBtn);
+          dropdown.appendChild(item);
+        });
+      } catch (_) {
+        dropdown.innerHTML = '<div class="sess-empty">Could not load sessions</div>';
+      }
+    }
+
+    async function loadSession(sessionId) {
+      chatSessionsDropdown.classList.remove("open");
+      try {
+        const res = await fetch("/api/sessions/" + sessionId + "/messages", { credentials: "same-origin" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const messages = await res.json();
+        clearTranscript();
+        setSessionId(sessionId);
+        messages.forEach((m) => {
+          const role = m.role === "assistant" ? "bot" : m.role;
+          appendChat(role, m.content, m.sources || []);
+          TRANSCRIPT.push({ role, text: m.content, sources: m.sources || [] });
+        });
+        saveTranscript();
+      } catch (_) {
+        appendChat("bot", "Could not load that session.");
+      }
+    }
+
+    chatHistoryBtn.addEventListener("click", toggleHistory);
+    document.addEventListener("click", (e) => {
+      if (!chatSessionsDropdown.contains(e.target) && e.target !== chatHistoryBtn) {
+        chatSessionsDropdown.classList.remove("open");
+      }
+    });
+
+    // ----- Thinking indicator -----
     const GENERATING_STEPS = [
       "Composing an answer from the sources",
       "Cross-referencing the matched CMC responses",
-      "Still writing — detailed answers take a moment"
+      "Still writing \u2014 detailed answers take a moment"
     ];
 
     function createThinking() {
@@ -2027,8 +2331,6 @@
         set(text) {
           if (rotator) { clearInterval(rotator); rotator = null; }
           label.textContent = text;
-          // The agent can look something up after it has started writing, so the
-          // indicator has to be able to come back below the answer bubble.
           if (!el.isConnected) chatMessages.appendChild(el);
           scrollChat();
         },
@@ -2066,15 +2368,24 @@
         const embed = data.embed_provider === "local" ? "local embeddings" : data.embed_provider + " embeddings";
         if (data.chat_key_configured) {
           chatDot.className = "dot ok";
-          chatHealthLabel.textContent = "API online · " + provider + " " + (data.chat_model || "") + " · " + embed;
+          chatHealthLabel.textContent = "API online \u00b7 " + provider + " " + (data.chat_model || "") + " \u00b7 " + embed;
         } else {
           chatDot.className = "dot err";
-          chatHealthLabel.textContent = "API online · " + embed + " · set " + (provider === "MGA" ? "MGA_API_KEY" : "OPENAI_API_KEY") + " in backend/.env";
+          chatHealthLabel.textContent = "API online \u00b7 " + embed + " \u00b7 set " + (provider === "MGA" ? "MGA_API_KEY" : "OPENAI_API_KEY") + " in backend/.env";
         }
       } catch (_) {
         chatDot.className = "dot err";
-        chatHealthLabel.textContent = "API offline — run the FastAPI backend (see README)";
+        chatHealthLabel.textContent = "API offline \u2014 run the FastAPI backend (see README)";
       }
+    }
+
+    function chatPayload(message, history) {
+      return {
+        message,
+        history,
+        session_id: ensureSessionId(),
+        username: getUsername()
+      };
     }
 
     async function askStreaming(message, history, thinking) {
@@ -2082,7 +2393,7 @@
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, history })
+        body: JSON.stringify(chatPayload(message, history))
       });
       if (res.status === 401) {
         thinking.remove();
@@ -2106,7 +2417,6 @@
         } else if (evt.type === "tool") {
           thinking.set(evt.label || "Looking that up");
         } else if (evt.type === "sources") {
-          // Sources arrive per tool call, so accumulate instead of replacing.
           sources = sources.concat(evt.sources || []);
           thinking.rotate();
         } else if (evt.type === "delta") {
@@ -2144,8 +2454,6 @@
         if (sources.length) bubble.appendChild(buildSources(sources));
         scrollChat();
       }
-      // Only successful answers enter the transcript; a partial reply cut off by
-      // an error would otherwise be replayed as context on the next question.
       if (!failed && answer.trim()) recordTurn("bot", answer, sources);
       return true;
     }
@@ -2156,7 +2464,7 @@
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, history })
+        body: JSON.stringify(chatPayload(message, history))
       });
       const data = await res.json().catch(() => ({}));
       thinking.remove();
@@ -2176,7 +2484,6 @@
       e.preventDefault();
       const message = (chatInput.value || "").trim();
       if (!message) return;
-      // Snapshot before recording, so the model is not sent this message twice.
       const history = historyPayload();
       appendChat("user", message);
       recordTurn("user", message);
@@ -2195,10 +2502,18 @@
       }
     });
 
-    chatNewBtn.addEventListener("click", clearTranscript);
+    chatNewBtn.addEventListener("click", startNewSession);
 
-    restoreTranscript();
-    refreshChatHealth();
+    // ----- Init: username modal + restore -----
+    (async function initChat() {
+      let username = getUsername();
+      if (!username) {
+        username = await showUsernameModal();
+      }
+      ensureSessionId();
+      restoreTranscript();
+      refreshChatHealth();
+    })();
     })();
   </script>
 </body>

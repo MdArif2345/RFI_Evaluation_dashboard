@@ -40,6 +40,14 @@ def tool_schemas() -> list[dict[str, Any]]:
                             "type": "integer",
                             "description": "How many pairs to return (1-20). Default 5.",
                         },
+                        "product": {
+                            "type": "string",
+                            "description": "Optional: restrict results to this product (e.g. Aflibercept, Gadoquatrane).",
+                        },
+                        "country": {
+                            "type": "string",
+                            "description": "Optional: restrict results to this country (e.g. India, Japan).",
+                        },
                     },
                     "required": ["query"],
                 },
@@ -158,6 +166,7 @@ def _sources_from_hits(hits: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "id": h["id"],
             "question": h["question"],
             "answer_preview": h["answer_preview"],
+            "doc_id": h.get("doc_id", ""),
             "similarity": h["similarity"],
         }
         for h in hits
@@ -170,11 +179,28 @@ def _search_qna(args: dict[str, Any], settings: Settings) -> tuple[dict[str, Any
         return {"error": "query is required"}, []
 
     top_k = max(1, min(int(args.get("top_k") or 5), 20))
-    hits = retrieve(query, settings, top_k=top_k)[:5]
+
+    # Build Chroma where clause from optional metadata filters.
+    conditions: list[dict[str, str]] = []
+    product = (args.get("product") or "").strip()
+    country = (args.get("country") or "").strip()
+    if product:
+        conditions.append({"product": product})
+    if country:
+        conditions.append({"country": country})
+
+    where: dict[str, Any] | None = None
+    if len(conditions) == 1:
+        where = conditions[0]
+    elif len(conditions) > 1:
+        where = {"$and": conditions}
+
+    hits = retrieve(query, settings, top_k=top_k, where=where)
 
     result = {
         "query": query,
         "returned": len(hits),
+        "filters": {"product": product or None, "country": country or None},
         "results": [
             {"id": h["id"], "question": h["question"], "answer": h["answer_preview"]}
             for h in hits
@@ -276,7 +302,16 @@ def describe_call(name: str, raw_args: str) -> str:
 
     if name == "search_qna":
         query = str(args.get("query") or "").strip()
-        return f"Searching the corpus for \u201c{query[:60]}\u201d" if query else "Searching the corpus"
+        parts = []
+        if query:
+            parts.append(f"\u201c{query[:60]}\u201d")
+        product = (args.get("product") or "").strip()
+        country = (args.get("country") or "").strip()
+        if product:
+            parts.append(product)
+        if country:
+            parts.append(country)
+        return f"Searching the corpus for {', '.join(parts)}" if parts else "Searching the corpus"
 
     if name == "list_questions":
         parts = []

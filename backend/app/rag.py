@@ -98,6 +98,7 @@ def _load_jsonl(path: Path) -> list[dict[str, Any]]:
                 "country": _normalize(str(row.get("doc_country", "") or "")),
                 "date": _normalize(str(row.get("doc_approve_date", "") or "")),
                 "doc_name": _normalize(str(row.get("doc_name", "") or "")),
+                "doc_id": str(row.get("doc_id", "") or ""),
                 "codes": _parse_codes_field(row.get("codes", "")),
                 "keywords": _parse_keywords_field(row.get("keywords", "")),
             }
@@ -131,6 +132,7 @@ def _load_flat_json(path: Path) -> list[dict[str, Any]]:
                 "country": "",
                 "date": "",
                 "doc_name": "",
+                "doc_id": "",
                 "codes": [],
                 "keywords": [],
             }
@@ -240,6 +242,7 @@ def ingest(settings: Settings | None = None, *, reset: bool = True) -> dict[str,
                     "answer_preview": p["answer"][:500],
                     "product": (p.get("product") or "")[:200],
                     "country": (p.get("country") or "")[:200],
+                    "doc_id": (p.get("doc_id") or "")[:50],
                 }
                 for p in batch
             ],
@@ -259,11 +262,15 @@ def retrieve(
     settings: Settings | None = None,
     *,
     top_k: int | None = None,
+    where: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     settings = settings or get_settings()
     collection = get_collection(settings)
     k = top_k or settings.retrieve_top_k
-    result = collection.query(query_texts=[query], n_results=k)
+    extra: dict[str, Any] = {}
+    if where:
+        extra["where"] = where
+    result = collection.query(query_texts=[query], n_results=k, **extra)
 
     docs = (result.get("documents") or [[]])[0]
     metas = (result.get("metadatas") or [[]])[0]
@@ -282,6 +289,7 @@ def retrieve(
                 "document": doc,
                 "question": (meta or {}).get("question", ""),
                 "answer_preview": (meta or {}).get("answer_preview", ""),
+                "doc_id": (meta or {}).get("doc_id", ""),
                 "similarity": round(similarity, 4),
                 "distance": round(distance, 4),
             }

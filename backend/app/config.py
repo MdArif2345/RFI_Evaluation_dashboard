@@ -10,6 +10,7 @@ DEFAULT_QNA_PATH = DASHBOARD_DIR / "cmc_response_documents.jsonl"
 FALLBACK_QNA_PATH = DASHBOARD_DIR / "QnA_pairs_extracted.json"
 CODE_CATALOG_PATH = DASHBOARD_DIR / "code_catalog.json"
 DEFAULT_CHROMA_DIR = BACKEND_DIR / "chroma_data"
+DEFAULT_CHAT_DB_PATH = BACKEND_DIR / "chat_history.db"
 
 
 class Settings(BaseSettings):
@@ -53,6 +54,7 @@ class Settings(BaseSettings):
     qna_path: Path = DEFAULT_QNA_PATH
     chroma_dir: Path = DEFAULT_CHROMA_DIR
     chroma_collection: str = "cmc_qna"
+    chat_db_path: Path = DEFAULT_CHAT_DB_PATH
 
     retrieve_top_k: int = 5
 
