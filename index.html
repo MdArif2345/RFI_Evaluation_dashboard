@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/diff@5/dist/diff.min.js"></script>
   <script src="./data.js"></script>
   <style>
     :root {
@@ -313,6 +314,10 @@
     }
     td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
     tr:hover td { background: rgba(94, 234, 212, 0.04); }
+    #codeSummaryTable td:nth-child(2),
+    #codeSummaryTable td:nth-child(6),
+    #codeSummaryTable td:nth-child(7) { white-space: normal; min-width: 120px; font-size: 12px; }
+    #codeSummaryTable th[data-sort]:hover { color: #5eead4; cursor: pointer; }
 
     .findings {
       display: grid;
@@ -821,6 +826,40 @@
       cursor: not-allowed;
     }
 
+    /* ===== CTD Comparison section ===== */
+    .compare-controls {
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;
+    }
+    .compare-field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 160px; }
+    .compare-field label { font-size: 11px; color: var(--soft); text-transform: uppercase; letter-spacing: 0.04em; font-family: "IBM Plex Mono", monospace; }
+    .compare-field select {
+      padding: 7px 10px; border-radius: 6px;
+      border: 1px solid rgba(148,175,205,0.25);
+      background: rgba(0,16,36,0.5); color: #c9d7ea;
+      font-size: 13px; font-family: inherit;
+    }
+    .compare-field select:disabled { opacity: 0.5; }
+    .cmp-btn {
+      padding: 8px 20px; border-radius: 6px; border: none;
+      background: linear-gradient(135deg, #5eead4, #38bdf8);
+      color: #0a1929; font-weight: 600; font-family: "IBM Plex Mono", monospace;
+      font-size: 13px; cursor: pointer; white-space: nowrap; align-self: flex-end;
+    }
+    .cmp-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .cmp-btn:hover:not(:disabled) { filter: brightness(1.1); }
+    .cmp-legend { display: flex; gap: 18px; margin-bottom: 10px; font-size: 12px; color: var(--soft); }
+    .cmp-legend-item { display: flex; align-items: center; gap: 5px; }
+    .cmp-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; }
+    .cmp-swatch.cmp-added { background: rgba(52, 211, 153, 0.35); border: 1px solid #34d399; }
+    .cmp-swatch.cmp-removed { background: rgba(251, 113, 133, 0.35); border: 1px solid #fb7185; }
+    .cmp-swatch.cmp-common { background: rgba(148,175,205,0.12); border: 1px solid rgba(148,175,205,0.3); }
+    .cmp-qa-block { margin-bottom: 18px; padding: 12px; border-radius: 8px; background: rgba(0,16,36,0.4); border: 1px solid var(--line); }
+    .cmp-qa-block h4 { font-size: 12px; color: var(--soft); margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .cmp-qa-block .cmp-text { font-size: 13px; line-height: 1.6; color: #c9d7ea; white-space: pre-wrap; }
+    .cmp-diff-add { background: rgba(52, 211, 153, 0.25); border-radius: 2px; padding: 0 2px; }
+    .cmp-diff-del { background: rgba(251, 113, 133, 0.25); border-radius: 2px; padding: 0 2px; text-decoration: line-through; }
+    .cmp-empty { padding: 30px; text-align: center; color: var(--soft); font-size: 13px; }
+
     @media (max-width: 1100px) {
       .shell { grid-template-columns: 1fr; }
       .toc {
@@ -1065,63 +1104,83 @@
         <div class="section-head">
           <div>
             <div class="idx">10</div>
-            <h2>Q&amp;A Corpus Insights</h2>
-            <p>Clustering and pattern analysis across the extracted question/answer pairs. Themes are derived from on-device embeddings.</p>
+            <h2>Corpus Insights</h2>
+            <p>Deficiency letter statistics and CTD section analysis across the enriched CMC response corpus.</p>
           </div>
         </div>
         <div id="insightsBody">
           <div class="kpi-grid" id="insKpis"></div>
-          <div class="grid-2" style="margin-top:14px">
-            <div class="card">
-              <h3>Question themes</h3>
-              <p class="hint">Semantic clusters over all pairs</p>
-              <div class="chart-wrap tall"><canvas id="chartThemes"></canvas></div>
-            </div>
-            <div class="card">
-              <h3>What is being asked</h3>
-              <p class="hint">Primary intent per question</p>
-              <div class="chart-wrap tall"><canvas id="chartIntent"></canvas></div>
-            </div>
+          <div class="card" style="margin-top:14px">
+            <h3>Number of Deficiency Letters per Product Family</h3>
+            <p class="hint">Questions grouped by product, sorted alphabetically</p>
+            <div class="chart-wrap tall"><canvas id="insChartProduct"></canvas></div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <h3>Number of Questions per Country</h3>
+            <p class="hint">Geographic distribution of deficiency questions</p>
+            <div class="chart-wrap"><canvas id="insChartCountry"></canvas></div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <h3>Number of Questions per CTD Section — Drug Substance</h3>
+            <p class="hint">S-part sections (includes older T-Codes replaced by S-codes)</p>
+            <div class="chart-wrap tall"><canvas id="insChartCtdS"></canvas></div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <h3>Number of Questions per CTD Section — Drug Product</h3>
+            <p class="hint">P-part sections (includes older T-Codes replaced by P-codes)</p>
+            <div class="chart-wrap tall"><canvas id="insChartCtdP"></canvas></div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <h3>CTD Sections — Appendices &amp; Regional</h3>
+            <p class="hint">A-part and R-part sections</p>
+            <div class="table-wrap" id="insArTable"></div>
           </div>
           <div class="grid-2" style="margin-top:14px">
             <div class="card">
-              <h3>Most challenged CTD sections</h3>
-              <p class="hint">Codes cited in questions or responses</p>
-              <div class="chart-wrap tall"><canvas id="chartInsCodes"></canvas></div>
+              <h3>Number of Deficiency Letters per Year</h3>
+              <p class="hint">Questions by year, split by molecule type</p>
+              <div class="chart-wrap tall"><canvas id="insChartYearQ"></canvas></div>
             </div>
             <div class="card">
-              <h3>How we respond</h3>
-              <p class="hint">Response posture across answers</p>
-              <div class="chart-wrap tall"><canvas id="chartPosture"></canvas></div>
-            </div>
-          </div>
-          <div class="grid-2" style="margin-top:14px">
-            <div class="card">
-              <h3>Reuse backlog</h3>
-              <p class="hint">Questions asked repeatedly — candidates for canned responses</p>
-              <div class="table-wrap" id="reuseTable"></div>
-            </div>
-            <div class="card">
-              <h3>Sections challenged together</h3>
-              <p class="hint">CTD code pairs appearing in the same exchange</p>
-              <div class="table-wrap" id="cooccurTable"></div>
+              <h3>Number of Documents per Year</h3>
+              <p class="hint">Unique documents by year, split by molecule type</p>
+              <div class="chart-wrap tall"><canvas id="insChartYearD"></canvas></div>
             </div>
           </div>
           <div class="card" style="margin-top:14px">
-            <h3>Response effort by theme</h3>
-            <p class="hint">Median answer length — taller bars cost more writing time</p>
-            <div class="chart-wrap"><canvas id="chartEffort"></canvas></div>
+            <h3>CTD Characteristics Matching</h3>
+            <p class="hint">Number of products affected per CTD section — bubble size shows breadth of impact</p>
+            <div class="chart-wrap tall"><canvas id="insChartBubble"></canvas></div>
           </div>
           <div class="card" style="margin-top:14px">
-            <h3>Theme detail</h3>
-            <p class="hint">Representative question and dominant CTD codes per cluster</p>
-            <div class="table-wrap" id="themeTable"></div>
+            <h3>Summary of Q&amp;A per CTD Code (SM vs LM)</h3>
+            <p class="hint">Questions split by Small Molecule and Large Molecule products for each CTD code</p>
+            <div style="margin-bottom:10px">
+              <input type="text" id="codeSummaryFilter" placeholder="Filter by code or title…"
+                style="width:100%;max-width:360px;padding:6px 10px;border-radius:6px;border:1px solid rgba(148,175,205,0.25);background:rgba(0,16,36,0.5);color:#c9d7ea;font-size:13px;" />
+            </div>
+            <div class="table-wrap" style="max-height:520px;overflow-y:auto;">
+              <table id="codeSummaryTable">
+                <thead>
+                  <tr>
+                    <th style="cursor:pointer" data-sort="code">CTD Code &#9650;</th>
+                    <th>Title</th>
+                    <th style="cursor:pointer;text-align:right" data-sort="sm">SM Qs</th>
+                    <th style="cursor:pointer;text-align:right" data-sort="lm">LM Qs</th>
+                    <th style="cursor:pointer;text-align:right" data-sort="total">Total</th>
+                    <th>SM Products</th>
+                    <th>LM Products</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div class="card" id="insightsMissing" style="display:none">
           <p class="hint">
-            <code>qna_insights.json</code> not found. Generate it with
-            <code>backend/.venv/bin/python scripts/build_insights.py</code>.
+            <code>corpus_stats.json</code> not found. Generate it with
+            <code>backend/.venv/bin/python scripts/build_corpus_stats.py</code>.
           </p>
         </div>
       </section>
@@ -1147,6 +1206,51 @@
             <input id="chatInput" type="text" autocomplete="off" placeholder="e.g. What leachables data was provided for the drug product?" />
             <button type="submit" id="chatSend">Ask</button>
           </form>
+        </div>
+      </section>
+
+      <section class="block" id="sec-12">
+        <div class="section-head">
+          <div>
+            <div class="idx">12</div>
+            <h2>CTD Code Comparison</h2>
+            <p>Select a CTD code and two products to compare Q&amp;A answers side-by-side with red-line differences highlighted.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="compare-controls">
+            <div class="compare-field">
+              <label for="cmpCode">CTD Code</label>
+              <select id="cmpCode"><option value="">— Select a code —</option></select>
+            </div>
+            <div class="compare-field">
+              <label for="cmpProdA">Product A</label>
+              <select id="cmpProdA" disabled><option value="">— Select Product A —</option></select>
+            </div>
+            <div class="compare-field">
+              <label for="cmpProdB">Product B</label>
+              <select id="cmpProdB" disabled><option value="">— Select Product B —</option></select>
+            </div>
+            <button type="button" id="cmpBtn" class="cmp-btn" disabled>Compare</button>
+          </div>
+          <div id="cmpStatus" class="hint" style="margin-top:10px;display:none;"></div>
+        </div>
+        <div id="cmpResults" style="margin-top:14px;display:none;">
+          <div class="cmp-legend">
+            <span class="cmp-legend-item"><span class="cmp-swatch cmp-added"></span> Only in Product A</span>
+            <span class="cmp-legend-item"><span class="cmp-swatch cmp-removed"></span> Only in Product B</span>
+            <span class="cmp-legend-item"><span class="cmp-swatch cmp-common"></span> Shared text</span>
+          </div>
+          <div class="grid-2" id="cmpGrid">
+            <div class="card" id="cmpColA">
+              <h3 id="cmpHeaderA">Product A</h3>
+              <div id="cmpBodyA"></div>
+            </div>
+            <div class="card" id="cmpColB">
+              <h3 id="cmpHeaderB">Product B</h3>
+              <div id="cmpBodyB"></div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -1176,6 +1280,12 @@
       const res = await fetch("./qna_insights.json");
       if (res.ok) INSIGHTS = await res.json();
     } catch (_) { /* section shows a build hint instead */ }
+
+    let CORPUS_STATS = null;
+    try {
+      const res2 = await fetch("./corpus_stats.json");
+      if (res2.ok) CORPUS_STATS = await res2.json();
+    } catch (_) { /* fallback */ }
 
     const CODE_TOKEN = /\b(?:[A-Z]\.\d+(?:\.\d+)*|\d+\.\d+\.[A-Z]\.\d+(?:\.\d+)*|STED\.[\d.]+|M3\.[\d.]+|MD\.[\d.]+)\b/g;
 
@@ -1261,8 +1371,9 @@
       ["07", "HA Analysis", "sec-07"],
       ["08", "Additional Insights", "sec-08"],
       ["09", "Recommendations", "sec-09"],
-      ["10", "Q&A Corpus Insights", "sec-10"],
+      ["10", "Corpus Insights", "sec-10"],
       ["11", "CMC Q&A Assistant", "sec-11"],
+      ["12", "CTD Comparison", "sec-12"],
     ];
 
     const PALETTE = [
@@ -1784,191 +1895,265 @@
 
     // ----- Q&A corpus insights -----
     function renderInsights() {
-      if (!INSIGHTS) {
+      if (!CORPUS_STATS) {
         document.getElementById("insightsBody").style.display = "none";
         document.getElementById("insightsMissing").style.display = "";
         return;
       }
-      const I = INSIGHTS;
+      try { _renderInsightsInner(); } catch (e) { console.error("renderInsights error:", e); }
+    }
 
+    function _renderInsightsInner() {
+      const S = CORPUS_STATS;
+      const K = S.kpis;
+
+      const vertBarOpts = {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: "#9eb2cb", maxRotation: 50, minRotation: 30, font: { size: 10 } }, grid: { display: false } },
+          y: { beginAtZero: true, ticks: { color: "#9eb2cb" }, grid: { color: "rgba(148,175,205,0.08)" } },
+        },
+      };
+
+      // --- KPIs ---
       document.getElementById("insKpis").innerHTML = [
-        ["Q&A pairs analysed", fmt(I.total_pairs), "Empty and n.a. rows excluded"],
-        ["Themes identified", I.themes.length, "Semantic clusters"],
-        ["Repeat rate", I.reuse.duplicate_rate_pct + "%", fmt(I.reuse.duplicated_pairs) + " near-duplicate questions"],
-        ["CTD coverage", I.codes.coverage_pct + "%", I.codes.distinct_codes + " distinct sections"]
-      ].map(([label, value, sub]) => `
-        <div class="kpi">
-          <div class="label">${label}</div>
-          <div class="value">${value}</div>
-          <div class="sub">${sub}</div>
-        </div>`).join("");
+        ["DL Documents", fmt(K.total_documents), "Unique deficiency letters"],
+        ["Total Questions", fmt(K.total_questions), "Across all products"],
+        ["Small Molecule", fmt(K.small_molecule_questions), "Questions for SM products"],
+        ["Large Molecule", fmt(K.large_molecule_questions), "Questions for Biotech products"],
+      ].map(function(arr) {
+        return '<div class="kpi"><div class="label">' + arr[0] + '</div><div class="value">' + arr[1] + '</div><div class="sub">' + arr[2] + '</div></div>';
+      }).join("");
 
-      new Chart(document.getElementById("chartThemes"), {
+      // --- Product Family bar chart (vertical) ---
+      new Chart(document.getElementById("insChartProduct"), {
         type: "bar",
         data: {
-          labels: I.themes.map((t) => t.name),
+          labels: S.questions_per_product.map(function(x) { return x.product; }),
           datasets: [{
-            data: I.themes.map((t) => t.size),
-            backgroundColor: I.themes.map((_, i) => PALETTE[i % PALETTE.length] + "cc"),
-            borderRadius: 6,
-            maxBarThickness: 22
-          }]
-        },
-        options: {
-          ...barOpts(true),
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                afterLabel: (ctx) => {
-                  const t = I.themes[ctx.dataIndex];
-                  return [" cohesion " + t.cohesion, " " + t.terms.slice(0, 5).join(", ")];
-                }
-              }
-            }
-          }
-        }
-      });
-
-      const intentEntries = I.intents;
-      new Chart(document.getElementById("chartIntent"), {
-        type: "doughnut",
-        data: {
-          labels: intentEntries.map((x) => x.intent),
-          datasets: [{
-            data: intentEntries.map((x) => x.count),
-            backgroundColor: PALETTE,
-            borderColor: "#0b1c33",
-            borderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          cutout: "55%",
-          plugins: { legend: { position: "bottom", labels: { font: { size: 11 }, padding: 10 } } }
-        }
-      });
-
-      const insCodes = I.codes.top;
-      new Chart(document.getElementById("chartInsCodes"), {
-        type: "bar",
-        data: {
-          labels: insCodes.map((x) => formatCodeChartLabel(x.code)),
-          datasets: [{
-            data: insCodes.map((x) => x.count),
+            label: "Questions",
+            data: S.questions_per_product.map(function(x) { return x.count; }),
             backgroundColor: "#38bdf8cc",
-            borderRadius: 6,
-            maxBarThickness: 20
-          }]
+            borderRadius: 4,
+          }],
         },
-        options: {
-          ...barOpts(true),
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                title: (items) => {
-                  const row = insCodes[items[0].dataIndex];
-                  return getCodeEntry(row.code)?.title || row.code;
-                },
-                label: (ctx) => {
-                  const row = insCodes[ctx.dataIndex];
-                  return [` ${row.code}`, ` ${fmt(ctx.raw)} questions`];
-                }
-              }
-            }
-          }
-        }
+        options: vertBarOpts,
       });
 
-      new Chart(document.getElementById("chartPosture"), {
-        type: "doughnut",
-        data: {
-          labels: I.postures.map((x) => x.posture),
-          datasets: [{
-            data: I.postures.map((x) => x.count),
-            backgroundColor: PALETTE.slice(2).concat(PALETTE),
-            borderColor: "#0b1c33",
-            borderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          cutout: "55%",
-          plugins: { legend: { position: "bottom", labels: { font: { size: 11 }, padding: 10 } } }
-        }
-      });
+      // --- Country bar chart ---
+      if (S.questions_per_country.length) {
+        new Chart(document.getElementById("insChartCountry"), {
+          type: "bar",
+          data: {
+            labels: S.questions_per_country.map(function(x) { return x.country; }),
+            datasets: [{
+              label: "Questions",
+              data: S.questions_per_country.map(function(x) { return x.count; }),
+              backgroundColor: "#a78bfacc",
+              borderRadius: 4,
+            }],
+          },
+          options: vertBarOpts,
+        });
+      } else {
+        document.getElementById("insChartCountry").closest(".card").querySelector(".hint").textContent = "No country data available (all marked N/A)";
+      }
 
-      new Chart(document.getElementById("chartEffort"), {
+      // --- CTD S-sections bar chart (Drug Substance) ---
+      new Chart(document.getElementById("insChartCtdS"), {
         type: "bar",
         data: {
-          labels: I.themes.map((t) => t.name),
+          labels: S.ctd_s_sections.map(function(x) { return x.code; }),
           datasets: [{
-            label: "Median answer characters",
-            data: I.themes.map((t) => t.median_answer_chars),
-            backgroundColor: "#a78bfacc",
-            borderRadius: 6,
-            maxBarThickness: 34
-          }]
+            label: "Questions",
+            data: S.ctd_s_sections.map(function(x) { return x.count; }),
+            backgroundColor: "#f59e0bcc",
+            borderRadius: 4,
+          }],
+        },
+        options: vertBarOpts,
+      });
+
+      // --- CTD P-sections bar chart (Drug Product) ---
+      new Chart(document.getElementById("insChartCtdP"), {
+        type: "bar",
+        data: {
+          labels: S.ctd_p_sections.map(function(x) { return x.code; }),
+          datasets: [{
+            label: "Questions",
+            data: S.ctd_p_sections.map(function(x) { return x.count; }),
+            backgroundColor: "#34d399cc",
+            borderRadius: 4,
+          }],
+        },
+        options: vertBarOpts,
+      });
+
+      // --- A & R sections table ---
+      if (S.ctd_ar_sections.length) {
+        var arHtml = '<table><thead><tr><th>Section</th><th>Questions</th></tr></thead><tbody>';
+        S.ctd_ar_sections.forEach(function(x) {
+          arHtml += '<tr><td>' + x.code + '</td><td>' + x.count + '</td></tr>';
+        });
+        arHtml += '</tbody></table>';
+        document.getElementById("insArTable").innerHTML = arHtml;
+      } else {
+        document.getElementById("insArTable").innerHTML = '<p class="hint">No A/R sections found</p>';
+      }
+
+      // --- Questions per year stacked bar ---
+      new Chart(document.getElementById("insChartYearQ"), {
+        type: "bar",
+        data: {
+          labels: S.questions_per_year.map(function(x) { return x.year; }),
+          datasets: [
+            { label: "Small Molecule", data: S.questions_per_year.map(function(x) { return x.small; }), backgroundColor: "#f59e0bcc", borderRadius: 4 },
+            { label: "Large Molecule", data: S.questions_per_year.map(function(x) { return x.large; }), backgroundColor: "#34d399cc", borderRadius: 4 },
+          ],
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: "top", labels: { font: { size: 11 }, color: "#9eb2cb", padding: 12 } } },
+          scales: {
+            x: { stacked: true, ticks: { color: "#9eb2cb" }, grid: { display: false } },
+            y: { stacked: true, beginAtZero: true, ticks: { color: "#9eb2cb" }, grid: { color: "rgba(148,175,205,0.08)" } },
+          },
+        },
+      });
+
+      // --- Documents per year stacked bar ---
+      new Chart(document.getElementById("insChartYearD"), {
+        type: "bar",
+        data: {
+          labels: S.documents_per_year.map(function(x) { return x.year; }),
+          datasets: [
+            { label: "Small Molecule", data: S.documents_per_year.map(function(x) { return x.small; }), backgroundColor: "#f59e0bcc", borderRadius: 4 },
+            { label: "Large Molecule", data: S.documents_per_year.map(function(x) { return x.large; }), backgroundColor: "#34d399cc", borderRadius: 4 },
+          ],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: "top", labels: { font: { size: 11 }, color: "#9eb2cb", padding: 12 } } },
+          scales: {
+            x: { stacked: true, ticks: { color: "#9eb2cb" }, grid: { display: false } },
+            y: { stacked: true, beginAtZero: true, ticks: { color: "#9eb2cb" }, grid: { color: "rgba(148,175,205,0.08)" } },
+          },
+        },
+      });
+
+      // --- CTD Characteristics bubble chart ---
+      var bubbleData = S.ctd_characteristics
+        .filter(function(c) { return c.product_count > 0; })
+        .map(function(c, i) {
+          return { x: i, y: c.product_count, r: Math.max(4, Math.min(c.product_count * 2.5, 30)), code: c.code, products: c.products };
+        });
+      new Chart(document.getElementById("insChartBubble"), {
+        type: "bubble",
+        data: {
+          datasets: [{
+            label: "CTD Sections",
+            data: bubbleData,
+            backgroundColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length] + "99"; }),
+            borderColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length]; }),
+            borderWidth: 1,
+          }],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
           plugins: {
             legend: { display: false },
             tooltip: {
               callbacks: {
-                afterLabel: (ctx) => " p90: " + fmt(I.themes[ctx.dataIndex].p90_answer_chars) + " chars"
-              }
-            }
+                title: function(items) {
+                  var d = bubbleData[items[0].dataIndex];
+                  var entry = getCodeEntry(d.code);
+                  return d.code + (entry ? " — " + entry.title : "");
+                },
+                label: function(ctx) {
+                  var d = bubbleData[ctx.dataIndex];
+                  var lines = [" " + d.product_count + " products"];
+                  d.products.slice(0, 6).forEach(function(p) { lines.push("  · " + p); });
+                  return lines;
+                },
+              },
+            },
           },
           scales: {
-            x: { ticks: { color: "#9eb2cb", maxRotation: 45, minRotation: 45 }, grid: { display: false } },
-            y: { beginAtZero: true, ticks: { color: "#9eb2cb" }, grid: { color: "rgba(148,175,205,0.08)" } }
-          }
-        }
+            x: {
+              type: "linear",
+              ticks: {
+                color: "#9eb2cb",
+                callback: function(val) { var d = bubbleData[Math.round(val)]; return d ? d.code : ""; },
+                maxRotation: 60, minRotation: 40,
+              },
+              grid: { display: false },
+            },
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: "Products affected", color: "#9eb2cb" },
+              ticks: { color: "#9eb2cb" },
+              grid: { color: "rgba(148,175,205,0.08)" },
+            },
+          },
+        },
       });
 
-      document.getElementById("reuseTable").innerHTML = `
-        <table>
-          <thead><tr><th>Times asked</th><th>Question</th></tr></thead>
-          <tbody>
-            ${I.reuse.top_groups.map((g) => `
-              <tr>
-                <td><strong>${g.count}x</strong></td>
-                <td>${enrichCodeText(g.question)}</td>
-              </tr>`).join("")}
-          </tbody>
-        </table>`;
+      // --- Code Summary Table (SM vs LM) ---
+      if (S.code_summary && S.code_summary.length) {
+        var summaryData = S.code_summary.slice();
+        var tbody = document.querySelector("#codeSummaryTable tbody");
+        var sortCol = "code";
+        var sortAsc = true;
 
-      document.getElementById("cooccurTable").innerHTML = `
-        <table>
-          <thead><tr><th>Section A</th><th>Section B</th><th>Together</th></tr></thead>
-          <tbody>
-            ${I.codes.co_occurrence.map((p) => `
-              <tr>
-                <td>${formatCodeRich(p.a)}</td>
-                <td>${formatCodeRich(p.b)}</td>
-                <td>${p.count}</td>
-              </tr>`).join("")}
-          </tbody>
-        </table>`;
+        function renderSummaryRows(data) {
+          tbody.innerHTML = "";
+          data.forEach(function(row) {
+            var tr = document.createElement("tr");
+            tr.innerHTML =
+              "<td><code>" + row.code + "</code></td>" +
+              "<td>" + (row.title || "<em>—</em>") + "</td>" +
+              '<td style="text-align:right">' + row.sm_count + "</td>" +
+              '<td style="text-align:right">' + row.lm_count + "</td>" +
+              '<td style="text-align:right"><strong>' + row.total + "</strong></td>" +
+              "<td>" + (row.sm_products.length ? row.sm_products.join(", ") : "—") + "</td>" +
+              "<td>" + (row.lm_products.length ? row.lm_products.join(", ") : "—") + "</td>";
+            tbody.appendChild(tr);
+          });
+        }
 
-      document.getElementById("themeTable").innerHTML = `
-        <table>
-          <thead><tr><th>Theme</th><th>Pairs</th><th>Top CTD codes</th><th>Representative question</th></tr></thead>
-          <tbody>
-            ${I.themes.map((t) => `
-              <tr>
-                <td><strong>${escapeHtml(t.name)}</strong></td>
-                <td>${t.size}</td>
-                <td>${t.top_codes.map((c) => formatCodeTag(c.code)).join(" ") || "&mdash;"}</td>
-                <td>${escapeHtml((t.examples[0] || "").slice(0, 160))}</td>
-              </tr>`).join("")}
-          </tbody>
-        </table>`;
+        function sortSummary(col) {
+          if (sortCol === col) { sortAsc = !sortAsc; } else { sortCol = col; sortAsc = true; }
+          summaryData.sort(function(a, b) {
+            var va, vb;
+            if (col === "code") { va = a.code; vb = b.code; }
+            else if (col === "sm") { va = a.sm_count; vb = b.sm_count; }
+            else if (col === "lm") { va = a.lm_count; vb = b.lm_count; }
+            else { va = a.total; vb = b.total; }
+            if (typeof va === "string") return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+            return sortAsc ? va - vb : vb - va;
+          });
+          renderSummaryRows(summaryData);
+        }
+
+        document.querySelectorAll("#codeSummaryTable th[data-sort]").forEach(function(th) {
+          th.addEventListener("click", function() { sortSummary(th.getAttribute("data-sort")); });
+        });
+
+        document.getElementById("codeSummaryFilter").addEventListener("input", function() {
+          var q = this.value.toLowerCase();
+          var filtered = S.code_summary.filter(function(row) {
+            return row.code.toLowerCase().indexOf(q) !== -1 ||
+                   (row.title || "").toLowerCase().indexOf(q) !== -1 ||
+                   row.sm_products.join(" ").toLowerCase().indexOf(q) !== -1 ||
+                   row.lm_products.join(" ").toLowerCase().indexOf(q) !== -1;
+          });
+          summaryData = filtered;
+          renderSummaryRows(filtered);
+        });
+
+        renderSummaryRows(summaryData);
+      }
     }
 
     renderInsights();
@@ -2514,6 +2699,190 @@
       restoreTranscript();
       refreshChatHealth();
     })();
+
+    // ===== Section 12: CTD Code Comparison =====
+    (function initComparison() {
+      if (!CORPUS_STATS || !CORPUS_STATS.code_summary) return;
+
+      var cmpCode = document.getElementById("cmpCode");
+      var cmpProdA = document.getElementById("cmpProdA");
+      var cmpProdB = document.getElementById("cmpProdB");
+      var cmpBtn = document.getElementById("cmpBtn");
+      var cmpStatus = document.getElementById("cmpStatus");
+      var cmpResults = document.getElementById("cmpResults");
+      var cmpHeaderA = document.getElementById("cmpHeaderA");
+      var cmpHeaderB = document.getElementById("cmpHeaderB");
+      var cmpBodyA = document.getElementById("cmpBodyA");
+      var cmpBodyB = document.getElementById("cmpBodyB");
+
+      var codeSummaryMap = {};
+      CORPUS_STATS.code_summary.forEach(function(cs) {
+        codeSummaryMap[cs.code] = cs;
+        var opt = document.createElement("option");
+        opt.value = cs.code;
+        opt.textContent = cs.code + (cs.title ? " — " + cs.title : "") + " (" + cs.total + " Qs)";
+        cmpCode.appendChild(opt);
+      });
+
+      function populateProducts() {
+        var code = cmpCode.value;
+        cmpProdA.innerHTML = '<option value="">— Select Product A —</option>';
+        cmpProdB.innerHTML = '<option value="">— Select Product B —</option>';
+        cmpProdA.disabled = true;
+        cmpProdB.disabled = true;
+        cmpBtn.disabled = true;
+        cmpResults.style.display = "none";
+
+        if (!code || !codeSummaryMap[code]) return;
+        var cs = codeSummaryMap[code];
+        var allProducts = cs.sm_products.concat(cs.lm_products).sort();
+        var unique = [];
+        allProducts.forEach(function(p) { if (unique.indexOf(p) === -1) unique.push(p); });
+
+        unique.forEach(function(p) {
+          var optA = document.createElement("option");
+          optA.value = p; optA.textContent = p;
+          cmpProdA.appendChild(optA);
+          var optB = document.createElement("option");
+          optB.value = p; optB.textContent = p;
+          cmpProdB.appendChild(optB);
+        });
+
+        cmpProdA.disabled = unique.length < 2;
+        cmpProdB.disabled = unique.length < 2;
+      }
+
+      function checkReady() {
+        cmpBtn.disabled = !(cmpCode.value && cmpProdA.value && cmpProdB.value && cmpProdA.value !== cmpProdB.value);
+      }
+
+      cmpCode.addEventListener("change", function() { populateProducts(); checkReady(); });
+      cmpProdA.addEventListener("change", checkReady);
+      cmpProdB.addEventListener("change", checkReady);
+
+      function escHtml(s) {
+        var d = document.createElement("div"); d.textContent = s; return d.innerHTML;
+      }
+
+      function renderDiff(textA, textB) {
+        if (typeof Diff === "undefined" || !Diff.diffWords) {
+          return { htmlA: escHtml(textA), htmlB: escHtml(textB) };
+        }
+        var parts = Diff.diffWords(textA, textB);
+        var htmlA = "", htmlB = "";
+        parts.forEach(function(part) {
+          var safe = escHtml(part.value);
+          if (part.added) {
+            htmlB += '<span class="cmp-diff-add">' + safe + "</span>";
+          } else if (part.removed) {
+            htmlA += '<span class="cmp-diff-del">' + safe + "</span>";
+          } else {
+            htmlA += safe;
+            htmlB += safe;
+          }
+        });
+        return { htmlA: htmlA, htmlB: htmlB };
+      }
+
+      function renderQaBlocks(questions, containerId, diffFn) {
+        var container = document.getElementById(containerId);
+        container.innerHTML = "";
+        if (!questions.length) {
+          container.innerHTML = '<div class="cmp-empty">No Q&amp;A found for this product + code combination</div>';
+          return;
+        }
+        questions.forEach(function(qa, idx) {
+          var block = document.createElement("div");
+          block.className = "cmp-qa-block";
+          var qHtml = diffFn ? diffFn(qa.question, "q", idx) : escHtml(qa.question);
+          var aHtml = diffFn ? diffFn(qa.answer, "a", idx) : escHtml(qa.answer);
+          block.innerHTML =
+            '<h4>Question ' + (idx + 1) + '</h4>' +
+            '<div class="cmp-text">' + qHtml + '</div>' +
+            '<h4 style="margin-top:10px">Answer</h4>' +
+            '<div class="cmp-text">' + aHtml + '</div>';
+          container.appendChild(block);
+        });
+      }
+
+      cmpBtn.addEventListener("click", function() {
+        var code = cmpCode.value;
+        var prodA = cmpProdA.value;
+        var prodB = cmpProdB.value;
+
+        cmpBtn.disabled = true;
+        cmpStatus.style.display = "";
+        cmpStatus.textContent = "Loading comparison…";
+        cmpResults.style.display = "none";
+
+        var url = "./api/compare?" +
+          "code=" + encodeURIComponent(code) +
+          "&product_a=" + encodeURIComponent(prodA) +
+          "&product_b=" + encodeURIComponent(prodB);
+
+        fetch(url, {
+          credentials: "same-origin"
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          cmpStatus.style.display = "none";
+          cmpBtn.disabled = false;
+          cmpResults.style.display = "";
+
+          cmpHeaderA.textContent = data.product_a.name + " (" + data.product_a.questions.length + " Q&A)";
+          cmpHeaderB.textContent = data.product_b.name + " (" + data.product_b.questions.length + " Q&A)";
+
+          var qsA = data.product_a.questions;
+          var qsB = data.product_b.questions;
+
+          // Render side A with diff highlights
+          cmpBodyA.innerHTML = "";
+          cmpBodyB.innerHTML = "";
+
+          if (!qsA.length && !qsB.length) {
+            cmpBodyA.innerHTML = '<div class="cmp-empty">No Q&amp;A found</div>';
+            cmpBodyB.innerHTML = '<div class="cmp-empty">No Q&amp;A found</div>';
+            return;
+          }
+
+          // Pair up by index for diff (best-effort alignment)
+          var maxLen = Math.max(qsA.length, qsB.length);
+          for (var i = 0; i < maxLen; i++) {
+            var qaA = qsA[i] || { question: "", answer: "" };
+            var qaB = qsB[i] || { question: "", answer: "" };
+
+            var qDiff = renderDiff(qaA.question, qaB.question);
+            var aDiff = renderDiff(qaA.answer, qaB.answer);
+
+            var blockA = document.createElement("div");
+            blockA.className = "cmp-qa-block";
+            blockA.innerHTML = (qsA[i] ? (
+              '<h4>Question ' + (i + 1) + '</h4>' +
+              '<div class="cmp-text">' + qDiff.htmlA + '</div>' +
+              '<h4 style="margin-top:10px">Answer</h4>' +
+              '<div class="cmp-text">' + aDiff.htmlA + '</div>'
+            ) : '<div class="cmp-empty">No matching Q&amp;A at this position</div>');
+            cmpBodyA.appendChild(blockA);
+
+            var blockB = document.createElement("div");
+            blockB.className = "cmp-qa-block";
+            blockB.innerHTML = (qsB[i] ? (
+              '<h4>Question ' + (i + 1) + '</h4>' +
+              '<div class="cmp-text">' + qDiff.htmlB + '</div>' +
+              '<h4 style="margin-top:10px">Answer</h4>' +
+              '<div class="cmp-text">' + aDiff.htmlB + '</div>'
+            ) : '<div class="cmp-empty">No matching Q&amp;A at this position</div>');
+            cmpBodyB.appendChild(blockB);
+          }
+        })
+        .catch(function(err) {
+          cmpStatus.textContent = "Error: " + err.message;
+          cmpStatus.style.display = "";
+          cmpBtn.disabled = false;
+        });
+      });
+    })();
+
     })();
   </script>
 </body>

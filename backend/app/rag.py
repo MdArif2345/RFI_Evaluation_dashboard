@@ -15,7 +15,7 @@ import chromadb
 from chromadb.utils import embedding_functions
 from openai import OpenAI
 
-from .config import FALLBACK_QNA_PATH, Settings, get_settings
+from .config import EXTRA_QNA_PATH, FALLBACK_QNA_PATH, Settings, get_settings
 
 _WS = re.compile(r"\s+")
 
@@ -140,6 +140,56 @@ def _load_flat_json(path: Path) -> list[dict[str, Any]]:
     return cleaned
 
 
+def _merge_extra_json(
+    extra_path: Path,
+    pairs: list[dict[str, Any]],
+    seen_questions: set[str],
+) -> tuple[list[dict[str, Any]], set[str]]:
+    """Merge Q&A pairs from the extra enriched JSON array file.
+
+    Deduplicates by (question + answer) to avoid true duplicates while
+    keeping the same question with different answers.
+    """
+    raw = json.loads(extra_path.read_text(encoding="utf-8"))
+    if not isinstance(raw, list):
+        return pairs, seen_questions
+
+    seen_pairs = {(p["question"] + "\n" + p["answer"]).lower() for p in pairs}
+    next_idx = len(pairs)
+
+    for row in raw:
+        if not isinstance(row, dict):
+            continue
+        question = _normalize(str(row.get("Question/Consideration", "")))
+        answer = _normalize(str(row.get("Answer/Response", "")))
+        if _is_bad(question) or _is_bad(answer):
+            continue
+
+        pair_key = (question + "\n" + answer).lower()
+        if pair_key in seen_pairs:
+            continue
+        seen_pairs.add(pair_key)
+        seen_questions.add(question.lower())
+
+        pairs.append({
+            "id": f"qna-{next_idx}",
+            "question": question,
+            "answer": answer,
+            "document": f"Question: {question}\n\nAnswer: {answer}",
+            "product": _normalize(str(row.get("doc_product", "") or "")),
+            "country": _normalize(str(row.get("doc_country", "") or "")),
+            "date": _normalize(str(row.get("doc_approve_date", "") or "")),
+            "doc_name": _normalize(str(row.get("doc_name", "") or "")),
+            "doc_id": str(row.get("doc_id", "") or ""),
+            "doc_product_type": _normalize(str(row.get("doc_product_type", "") or "")),
+            "codes": _parse_codes_field(row.get("codes", "")),
+            "keywords": _parse_keywords_field(row.get("keywords", "")),
+        })
+        next_idx += 1
+
+    return pairs, seen_questions
+
+
 def load_qna_pairs(path: Path) -> list[dict[str, Any]]:
     """Load Q&A pairs from JSONL (primary) with fallback merge from flat JSON.
 
@@ -161,6 +211,12 @@ def load_qna_pairs(path: Path) -> list[dict[str, Any]]:
                     pairs.append(p)
                     seen.add(p["question"].lower())
                     next_idx += 1
+
+        # Merge the extra enriched JSON file (separate data source, not
+        # concatenated into the JSONL).  Dedup by (question+answer).
+        if EXTRA_QNA_PATH.exists() and EXTRA_QNA_PATH != path:
+            pairs, seen = _merge_extra_json(EXTRA_QNA_PATH, pairs, seen)
+
         return pairs
 
     # Legacy path: plain JSON array (no metadata).
