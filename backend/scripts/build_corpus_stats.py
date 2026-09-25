@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Precompute corpus statistics from the enriched 269-row JSON file.
+"""Precompute corpus statistics from the enriched dataset.
 
-Reads cmc_response_documents (3).json and outputs corpus_stats.json used
+Reads cmc_response_documents (4).json and outputs corpus_stats.json used
 exclusively by the Corpus Insights section (section 10) of the dashboard.
 
 Output: cmc-dashboard/corpus_stats.json
@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 DASHBOARD_DIR = Path(__file__).resolve().parent.parent.parent
-INPUT_PATH = DASHBOARD_DIR / "cmc_response_documents (3).json"
+INPUT_PATH = DASHBOARD_DIR / "cmc_response_documents (4).json"
 CODE_CATALOG_PATH = DASHBOARD_DIR / "code_catalog.json"
 OUTPUT_PATH = DASHBOARD_DIR / "corpus_stats.json"
 
@@ -26,11 +26,13 @@ def _is_large(product_type: str) -> bool:
     return "Biotech" in product_type
 
 
-def _parse_individual_codes(codes_str: str) -> list[str]:
-    """Split a semicolon/comma-separated codes string into individual codes."""
-    if not codes_str or not codes_str.strip():
+def _parse_individual_codes(codes_val: str | list) -> list[str]:
+    """Extract individual codes from the codes field (string or list)."""
+    if isinstance(codes_val, list):
+        return [str(c).strip() for c in codes_val if str(c).strip() and not str(c).strip().lower().startswith("n.a")]
+    if not codes_val or not codes_val.strip():
         return []
-    parts = re.split(r"[;,]+", codes_str)
+    parts = re.split(r"[;,]+", codes_val)
     return [p.strip() for p in parts if p.strip() and not p.strip().startswith("n.a")]
 
 

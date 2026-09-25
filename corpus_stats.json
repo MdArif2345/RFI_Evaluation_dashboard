@@ -1,1257 +1,3322 @@
 {
   "kpis": {
-    "total_documents": 72,
-    "total_questions": 269,
-    "small_molecule_questions": 250,
-    "large_molecule_questions": 19
+    "total_documents": 1483,
+    "total_questions": 5516,
+    "small_molecule_questions": 4397,
+    "large_molecule_questions": 1119
   },
   "questions_per_product": [
     {
+      "product": "Acarbose",
+      "count": 3
+    },
+    {
       "product": "Acetylsalicylic acid",
-      "count": 1
+      "count": 37
+    },
+    {
+      "product": "Acoramidis",
+      "count": 7
     },
     {
       "product": "Aflibercept",
-      "count": 4
+      "count": 655
     },
     {
       "product": "Amidotrizoic acid",
-      "count": 1
+      "count": 53
     },
     {
-      "product": "Copanlisib",
-      "count": 1
+      "product": "Asundexian",
+      "count": 22
     },
     {
-      "product": "Damoctocog alfa pegol",
-      "count": 13
+      "product": "BAY 2862789",
+      "count": 2
     },
     {
-      "product": "Darolutamide",
+      "product": "BAY 3401016",
+      "count": 24
+    },
+    {
+      "product": "BAY 3547926",
       "count": 11
     },
     {
-      "product": "Dienogest",
-      "count": 2
+      "product": "Ciprofloxacin",
+      "count": 16
     },
     {
-      "product": "Dienogest + Estradiol",
-      "count": 7
-    },
-    {
-      "product": "Dienogest + Ethinylestradiol",
-      "count": 1
-    },
-    {
-      "product": "Drospirenone + Ethinylestradiol",
-      "count": 3
-    },
-    {
-      "product": "Elinzanetant",
+      "product": "Copanlisib",
       "count": 9
     },
     {
-      "product": "Estradiol",
-      "count": 10
+      "product": "Cyproterone",
+      "count": 30
     },
     {
-      "product": "Ethinylestradiol + Levonorgestrel",
-      "count": 10
-    },
-    {
-      "product": "Finerenone",
-      "count": 4
-    },
-    {
-      "product": "Gadobutrol",
-      "count": 4
-    },
-    {
-      "product": "Gadoxetic acid",
-      "count": 29
-    },
-    {
-      "product": "Iopamidol",
+      "product": "Cyproterone + Estradiol",
       "count": 22
     },
     {
-      "product": "Iopromide",
-      "count": 5
+      "product": "Cyproterone + Ethinylestradiol",
+      "count": 106
     },
     {
-      "product": "Larotrectinib",
-      "count": 1
+      "product": "Damoctocog alfa pegol",
+      "count": 74
     },
     {
-      "product": "Levonorgestrel",
-      "count": 10
-    },
-    {
-      "product": "Octocog alfa",
-      "count": 2
-    },
-    {
-      "product": "Radium (Ra223) dichloride",
-      "count": 5
-    },
-    {
-      "product": "Rivaroxaban",
-      "count": 22
-    },
-    {
-      "product": "Sorafenib",
-      "count": 7
-    },
-    {
-      "product": "Sulprostone",
+      "product": "Damoctocog alfa pegol; Octocog alfa",
       "count": 3
     },
     {
+      "product": "Darolutamide",
+      "count": 132
+    },
+    {
+      "product": "Dienogest",
+      "count": 10
+    },
+    {
+      "product": "Dienogest + Estradiol",
+      "count": 43
+    },
+    {
+      "product": "Dienogest + Ethinylestradiol",
+      "count": 38
+    },
+    {
+      "product": "Drospirenone + Estradiol",
+      "count": 130
+    },
+    {
+      "product": "Drospirenone + Ethinylestradiol",
+      "count": 20
+    },
+    {
+      "product": "Drospirenone + Ethinylestradiol + Levomefolic acid",
+      "count": 16
+    },
+    {
+      "product": "Elinzanetant",
+      "count": 71
+    },
+    {
+      "product": "Estradiol",
+      "count": 32
+    },
+    {
+      "product": "Estradiol + Norethisterone",
+      "count": 18
+    },
+    {
+      "product": "Estradiol + Norgestrel",
+      "count": 36
+    },
+    {
+      "product": "Estradiol; Ethinylestradiol",
+      "count": 6
+    },
+    {
+      "product": "Estradiol; Mesterolone",
+      "count": 1
+    },
+    {
+      "product": "Ethinylestradiol + Gestodene",
+      "count": 37
+    },
+    {
+      "product": "Ethinylestradiol + Levonorgestrel",
+      "count": 72
+    },
+    {
+      "product": "Finerenone",
+      "count": 278
+    },
+    {
+      "product": "Gadobutrol",
+      "count": 122
+    },
+    {
+      "product": "Gadobutrol; Gadoxetic acid",
+      "count": 4
+    },
+    {
+      "product": "Gadopentetic acid",
+      "count": 43
+    },
+    {
+      "product": "Gadoquatrane",
+      "count": 269
+    },
+    {
+      "product": "Gadoteric acid",
+      "count": 63
+    },
+    {
+      "product": "Gadoxetic acid",
+      "count": 128
+    },
+    {
+      "product": "Iloprost",
+      "count": 116
+    },
+    {
+      "product": "Inclocibart",
+      "count": 1
+    },
+    {
+      "product": "Interferon beta-1b",
+      "count": 57
+    },
+    {
+      "product": "Iopromide",
+      "count": 319
+    },
+    {
+      "product": "Iotroxic acid",
+      "count": 8
+    },
+    {
+      "product": "Larotrectinib",
+      "count": 54
+    },
+    {
+      "product": "Levonorgestrel",
+      "count": 305
+    },
+    {
+      "product": "Levonorgestrel; Ethinylestradiol + Levonorgestrel",
+      "count": 1
+    },
+    {
+      "product": "Mesterolone",
+      "count": 62
+    },
+    {
+      "product": "Molidustat",
+      "count": 6
+    },
+    {
+      "product": "Moxifloxacin",
+      "count": 5
+    },
+    {
+      "product": "N/A",
+      "count": 45
+    },
+    {
+      "product": "Nifedipine",
+      "count": 90
+    },
+    {
+      "product": "Nifurtimox",
+      "count": 21
+    },
+    {
+      "product": "Nimodipine",
+      "count": 63
+    },
+    {
+      "product": "Norethisterone",
+      "count": 35
+    },
+    {
+      "product": "Norgestrel",
+      "count": 12
+    },
+    {
+      "product": "Nurandociguat",
+      "count": 8
+    },
+    {
+      "product": "Octocog alfa",
+      "count": 298
+    },
+    {
+      "product": "Radium (Ra223) dichloride",
+      "count": 42
+    },
+    {
+      "product": "Regorafenib",
+      "count": 13
+    },
+    {
+      "product": "Riociguat",
+      "count": 58
+    },
+    {
+      "product": "Rivaroxaban",
+      "count": 719
+    },
+    {
+      "product": "Sevabertinib",
+      "count": 198
+    },
+    {
+      "product": "Sorafenib",
+      "count": 151
+    },
+    {
+      "product": "Testosterone",
+      "count": 112
+    },
+    {
+      "product": "Vardenafil",
+      "count": 1
+    },
+    {
       "product": "Vericiguat",
-      "count": 82
+      "count": 73
     }
   ],
   "questions_per_country": [
     {
+      "country": "Russian Federation (the)",
+      "count": 304
+    },
+    {
+      "country": "China",
+      "count": 272
+    },
+    {
+      "country": "Japan",
+      "count": 250
+    },
+    {
+      "country": "Indonesia",
+      "count": 242
+    },
+    {
+      "country": "Thailand",
+      "count": 235
+    },
+    {
+      "country": "Korea (the Republic of)",
+      "count": 230
+    },
+    {
+      "country": "Turkey",
+      "count": 205
+    },
+    {
+      "country": "Hong Kong",
+      "count": 199
+    },
+    {
+      "country": "Egypt",
+      "count": 191
+    },
+    {
+      "country": "India",
+      "count": 181
+    },
+    {
+      "country": "Peru",
+      "count": 173
+    },
+    {
+      "country": "Colombia",
+      "count": 171
+    },
+    {
+      "country": "Costa Rica",
+      "count": 161
+    },
+    {
+      "country": "Taiwan",
+      "count": 150
+    },
+    {
+      "country": "Australia",
+      "count": 116
+    },
+    {
+      "country": "Viet Nam",
+      "count": 102
+    },
+    {
+      "country": "Israel",
+      "count": 92
+    },
+    {
+      "country": "Switzerland",
+      "count": 84
+    },
+    {
+      "country": "Singapore",
+      "count": 84
+    },
+    {
+      "country": "United Kingdom",
+      "count": 81
+    },
+    {
+      "country": "Malaysia",
+      "count": 80
+    },
+    {
+      "country": "Serbia",
+      "count": 78
+    },
+    {
+      "country": "Belarus",
+      "count": 77
+    },
+    {
+      "country": "United States",
+      "count": 73
+    },
+    {
+      "country": "Jordan",
+      "count": 73
+    },
+    {
+      "country": "Saudi Arabia",
+      "count": 68
+    },
+    {
+      "country": "Brazil",
+      "count": 60
+    },
+    {
+      "country": "Uruguay",
+      "count": 58
+    },
+    {
+      "country": "New Zealand",
+      "count": 56
+    },
+    {
+      "country": "Ecuador",
+      "count": 55
+    },
+    {
+      "country": "Ukraine",
+      "count": 54
+    },
+    {
+      "country": "Nigeria",
+      "count": 49
+    },
+    {
+      "country": "Canada",
+      "count": 49
+    },
+    {
       "country": "Italy",
+      "count": 43
+    },
+    {
+      "country": "Kuwait",
+      "count": 38
+    },
+    {
+      "country": "Philippines (the)",
+      "count": 38
+    },
+    {
+      "country": "Tunisia",
+      "count": 38
+    },
+    {
+      "country": "European Union",
+      "count": 37
+    },
+    {
+      "country": "South Africa",
+      "count": 36
+    },
+    {
+      "country": "Panama",
+      "count": 35
+    },
+    {
+      "country": "Portugal",
+      "count": 33
+    },
+    {
+      "country": "Kenya",
+      "count": 32
+    },
+    {
+      "country": "Ethiopia",
+      "count": 30
+    },
+    {
+      "country": "Nicaragua",
+      "count": 29
+    },
+    {
+      "country": "Montenegro",
+      "count": 29
+    },
+    {
+      "country": "Kazakhstan",
+      "count": 28
+    },
+    {
+      "country": "Chile",
+      "count": 28
+    },
+    {
+      "country": "Bolivia (Plurinational State of)",
+      "count": 26
+    },
+    {
+      "country": "Tanzania, the United Republic of",
+      "count": 25
+    },
+    {
+      "country": "Mexico",
+      "count": 24
+    },
+    {
+      "country": "Uganda",
+      "count": 24
+    },
+    {
+      "country": "Canada; Australia; Singapore; Switzerland",
+      "count": 24
+    },
+    {
+      "country": "Bosnia and Herzegovina",
+      "count": 22
+    },
+    {
+      "country": "Guatemala",
+      "count": 19
+    },
+    {
+      "country": "Slovenia",
+      "count": 18
+    },
+    {
+      "country": "Belgium",
+      "count": 17
+    },
+    {
+      "country": "France",
+      "count": 16
+    },
+    {
+      "country": "Argentina",
+      "count": 15
+    },
+    {
+      "country": "Poland",
+      "count": 15
+    },
+    {
+      "country": "Finland",
+      "count": 14
+    },
+    {
+      "country": "Canada; Australia; Switzerland",
+      "count": 14
+    },
+    {
+      "country": "Gabon",
+      "count": 14
+    },
+    {
+      "country": "United Arab Emirates (the)",
+      "count": 13
+    },
+    {
+      "country": "Paraguay",
+      "count": 12
+    },
+    {
+      "country": "Morocco",
+      "count": 11
+    },
+    {
+      "country": "Honduras",
+      "count": 11
+    },
+    {
+      "country": "Venezuela (Bolivarian Republic of)",
+      "count": 10
+    },
+    {
+      "country": "Spain",
+      "count": 10
+    },
+    {
+      "country": "Zambia",
+      "count": 10
+    },
+    {
+      "country": "Cuba",
+      "count": 10
+    },
+    {
+      "country": "Latvia",
       "count": 9
     },
     {
-      "country": "Russian Federation (the)",
+      "country": "Oman",
+      "count": 9
+    },
+    {
+      "country": "Moldova (the Republic of)",
+      "count": 9
+    },
+    {
+      "country": "Ireland",
+      "count": 9
+    },
+    {
+      "country": "Côte d'Ivoire",
+      "count": 8
+    },
+    {
+      "country": "El Salvador",
+      "count": 8
+    },
+    {
+      "country": "Brunei Darussalam",
+      "count": 7
+    },
+    {
+      "country": "Jamaica",
+      "count": 7
+    },
+    {
+      "country": "Germany",
+      "count": 6
+    },
+    {
+      "country": "Senegal",
+      "count": 6
+    },
+    {
+      "country": "Greece",
+      "count": 5
+    },
+    {
+      "country": "Germany; Spain",
+      "count": 5
+    },
+    {
+      "country": "Togo",
+      "count": 5
+    },
+    {
+      "country": "Benin",
+      "count": 5
+    },
+    {
+      "country": "World Health Organization",
+      "count": 5
+    },
+    {
+      "country": "Pakistan",
+      "count": 5
+    },
+    {
+      "country": "Uzbekistan",
+      "count": 4
+    },
+    {
+      "country": "Bahrain",
+      "count": 4
+    },
+    {
+      "country": "Czechia",
+      "count": 4
+    },
+    {
+      "country": "Qatar",
+      "count": 4
+    },
+    {
+      "country": "Norway",
+      "count": 4
+    },
+    {
+      "country": "North Macedonia",
+      "count": 4
+    },
+    {
+      "country": "Iraq",
+      "count": 4
+    },
+    {
+      "country": "Common (EU)",
       "count": 3
+    },
+    {
+      "country": "Austria",
+      "count": 3
+    },
+    {
+      "country": "Palestine, State of",
+      "count": 3
+    },
+    {
+      "country": "Romania",
+      "count": 3
+    },
+    {
+      "country": "Cameroon",
+      "count": 3
+    },
+    {
+      "country": "Mali",
+      "count": 3
+    },
+    {
+      "country": "Sri Lanka",
+      "count": 3
+    },
+    {
+      "country": "Sweden",
+      "count": 3
+    },
+    {
+      "country": "Rwanda",
+      "count": 3
+    },
+    {
+      "country": "Netherlands (the)",
+      "count": 2
+    },
+    {
+      "country": "Trinidad and Tobago",
+      "count": 2
+    },
+    {
+      "country": "Botswana",
+      "count": 2
+    },
+    {
+      "country": "Estonia",
+      "count": 2
+    },
+    {
+      "country": "Georgia",
+      "count": 2
+    },
+    {
+      "country": "Niger (the)",
+      "count": 2
+    },
+    {
+      "country": "Croatia",
+      "count": 2
+    },
+    {
+      "country": "Canada; Australia; Singapore",
+      "count": 2
+    },
+    {
+      "country": "Hungary",
+      "count": 1
+    },
+    {
+      "country": "Spain; France",
+      "count": 1
+    },
+    {
+      "country": "Denmark",
+      "count": 1
+    },
+    {
+      "country": "Denmark; Common (EU)",
+      "count": 1
+    },
+    {
+      "country": "Nepal",
+      "count": 1
+    },
+    {
+      "country": "Yemen",
+      "count": 1
+    },
+    {
+      "country": "Azerbaijan",
+      "count": 1
     }
   ],
   "ctd_s_sections": [
     {
-      "code": "S.2.1",
-      "count": 6
-    },
-    {
-      "code": "S.2.2",
+      "code": "S.1.1",
       "count": 5
     },
     {
-      "code": "S.2.3",
-      "count": 2
+      "code": "S.1.2",
+      "count": 13
     },
     {
-      "code": "S.2.4",
-      "count": 5
+      "code": "S.1.3",
+      "count": 40
     },
     {
-      "code": "S.2.5",
-      "count": 1
-    },
-    {
-      "code": "S.3.1",
-      "count": 1
-    },
-    {
-      "code": "S.3.2",
-      "count": 5
-    },
-    {
-      "code": "S.4.1",
-      "count": 4
-    },
-    {
-      "code": "S.4.2",
-      "count": 4
-    },
-    {
-      "code": "S.4.3",
+      "code": "S.2",
       "count": 3
     },
     {
+      "code": "S.2.1",
+      "count": 71
+    },
+    {
+      "code": "S.2.2",
+      "count": 129
+    },
+    {
+      "code": "S.2.3",
+      "count": 161
+    },
+    {
+      "code": "S.2.4",
+      "count": 147
+    },
+    {
+      "code": "S.2.5",
+      "count": 47
+    },
+    {
+      "code": "S.2.6",
+      "count": 66
+    },
+    {
+      "code": "S.3.1",
+      "count": 67
+    },
+    {
+      "code": "S.3.2",
+      "count": 91
+    },
+    {
+      "code": "S.4.1",
+      "count": 177
+    },
+    {
+      "code": "S.4.2",
+      "count": 142
+    },
+    {
+      "code": "S.4.3",
+      "count": 155
+    },
+    {
       "code": "S.4.4",
-      "count": 6
+      "count": 94
     },
     {
       "code": "S.4.5",
-      "count": 6
+      "count": 86
+    },
+    {
+      "code": "S.4.6",
+      "count": 1
     },
     {
       "code": "S.5.01",
+      "count": 45
+    },
+    {
+      "code": "S.5.02",
+      "count": 1
+    },
+    {
+      "code": "S.5.03",
+      "count": 2
+    },
+    {
+      "code": "S.5.05",
+      "count": 6
+    },
+    {
+      "code": "S.5.06",
+      "count": 2
+    },
+    {
+      "code": "S.5.07",
+      "count": 1
+    },
+    {
+      "code": "S.6",
+      "count": 1
+    },
+    {
+      "code": "S.6.01",
+      "count": 20
+    },
+    {
+      "code": "S.6.02",
+      "count": 10
+    },
+    {
+      "code": "S.6.03",
+      "count": 7
+    },
+    {
+      "code": "S.6.05",
+      "count": 1
+    },
+    {
+      "code": "S.6.30",
+      "count": 2
+    },
+    {
+      "code": "S.7",
       "count": 1
     },
     {
       "code": "S.7.1",
-      "count": 1
+      "count": 66
+    },
+    {
+      "code": "S.7.01",
+      "count": 2
+    },
+    {
+      "code": "S.7.2",
+      "count": 16
     },
     {
       "code": "S.7.3",
-      "count": 9
+      "count": 111
+    },
+    {
+      "code": "S.7.03",
+      "count": 1
     }
   ],
   "ctd_p_sections": [
     {
       "code": "P.1.01",
-      "count": 4
+      "count": 79
+    },
+    {
+      "code": "P.1.1",
+      "count": 1
     },
     {
       "code": "P.1.02",
-      "count": 8
+      "count": 38
+    },
+    {
+      "code": "P.2",
+      "count": 1
     },
     {
       "code": "P.2.1",
+      "count": 17
+    },
+    {
+      "code": "P.2.01",
       "count": 1
     },
     {
       "code": "P.2.2",
-      "count": 7
+      "count": 132
     },
     {
       "code": "P.2.3",
-      "count": 2
+      "count": 90
     },
     {
       "code": "P.2.4",
-      "count": 6
+      "count": 121
     },
     {
       "code": "P.2.5",
-      "count": 1
+      "count": 39
     },
     {
-      "code": "P.3.1",
-      "count": 3
-    },
-    {
-      "code": "P.3.2",
-      "count": 2
-    },
-    {
-      "code": "P.3.3",
-      "count": 12
-    },
-    {
-      "code": "P.3.4",
-      "count": 2
-    },
-    {
-      "code": "P.3.5",
-      "count": 5
-    },
-    {
-      "code": "P.4.1",
-      "count": 7
-    },
-    {
-      "code": "P.4.01",
-      "count": 1
-    },
-    {
-      "code": "P.4.4",
-      "count": 1
-    },
-    {
-      "code": "P.5.1",
-      "count": 34
-    },
-    {
-      "code": "P.5.2",
+      "code": "P.2.6",
       "count": 15
     },
     {
-      "code": "P.5.3",
-      "count": 18
+      "code": "P.3",
+      "count": 7
     },
     {
-      "code": "P.5.4",
-      "count": 16
+      "code": "P.3.1",
+      "count": 105
     },
     {
-      "code": "P.5.5",
-      "count": 13
+      "code": "P.3.2",
+      "count": 70
     },
     {
-      "code": "P.5.6",
-      "count": 6
+      "code": "P.3.3",
+      "count": 319
     },
     {
-      "code": "P.7.01",
-      "count": 6
+      "code": "P.3.4",
+      "count": 115
     },
     {
-      "code": "P.7.02",
+      "code": "P.3.5",
+      "count": 175
+    },
+    {
+      "code": "P.4",
+      "count": 1
+    },
+    {
+      "code": "P.4.1",
+      "count": 101
+    },
+    {
+      "code": "P.4.2",
+      "count": 10
+    },
+    {
+      "code": "P.4.3",
+      "count": 5
+    },
+    {
+      "code": "P.4.4",
+      "count": 36
+    },
+    {
+      "code": "P.4.5",
+      "count": 3
+    },
+    {
+      "code": "P.4.6",
+      "count": 1
+    },
+    {
+      "code": "P.5",
+      "count": 7
+    },
+    {
+      "code": "P.5.1",
+      "count": 439
+    },
+    {
+      "code": "P.5.01",
       "count": 4
     },
     {
+      "code": "P.5.2",
+      "count": 366
+    },
+    {
+      "code": "P.5.3",
+      "count": 438
+    },
+    {
+      "code": "P.5.4",
+      "count": 209
+    },
+    {
+      "code": "P.5.5",
+      "count": 156
+    },
+    {
+      "code": "P.5.6",
+      "count": 238
+    },
+    {
+      "code": "P.6.01",
+      "count": 23
+    },
+    {
+      "code": "P.6.02",
+      "count": 7
+    },
+    {
+      "code": "P.6.05",
+      "count": 7
+    },
+    {
+      "code": "P.7.01",
+      "count": 56
+    },
+    {
+      "code": "P.7.1",
+      "count": 1
+    },
+    {
+      "code": "P.7.02",
+      "count": 48
+    },
+    {
       "code": "P.7.03",
+      "count": 38
+    },
+    {
+      "code": "P.7.04",
+      "count": 21
+    },
+    {
+      "code": "P.7.4",
       "count": 1
     },
     {
       "code": "P.7.05",
+      "count": 14
+    },
+    {
+      "code": "P.7.07",
+      "count": 1
+    },
+    {
+      "code": "P.7.10",
+      "count": 1
+    },
+    {
+      "code": "P.7.11",
+      "count": 8
+    },
+    {
+      "code": "P.7.20",
+      "count": 1
+    },
+    {
+      "code": "P.8",
+      "count": 4
+    },
+    {
+      "code": "P.8.0",
       "count": 1
     },
     {
       "code": "P.8.1",
-      "count": 21
+      "count": 170
     },
     {
-      "code": "P.8.2",
+      "code": "P.8.01",
       "count": 3
     },
     {
+      "code": "P.8.2",
+      "count": 81
+    },
+    {
       "code": "P.8.3",
-      "count": 43
+      "count": 631
     }
   ],
   "ctd_ar_sections": [
     {
+      "code": "A.1.01",
+      "count": 14
+    },
+    {
+      "code": "A.1.1",
+      "count": 2
+    },
+    {
+      "code": "A.1.02",
+      "count": 14
+    },
+    {
+      "code": "A.1.03",
+      "count": 4
+    },
+    {
+      "code": "A.1.3",
+      "count": 1
+    },
+    {
       "code": "A.2.01",
+      "count": 28
+    },
+    {
+      "code": "A.2.02",
+      "count": 8
+    },
+    {
+      "code": "A.2.2",
+      "count": 5
+    },
+    {
+      "code": "A.2.03",
+      "count": 22
+    },
+    {
+      "code": "A.2.3",
+      "count": 3
+    },
+    {
+      "code": "A.2.4",
+      "count": 2
+    },
+    {
+      "code": "A.2.50",
+      "count": 6
+    },
+    {
+      "code": "A.3.1",
+      "count": 2
+    },
+    {
+      "code": "A.3.2",
+      "count": 2
+    },
+    {
+      "code": "A.3.4",
+      "count": 4
+    },
+    {
+      "code": "R.1.01",
+      "count": 25
+    },
+    {
+      "code": "R.2.01",
+      "count": 14
+    },
+    {
+      "code": "R.2.02",
+      "count": 28
+    },
+    {
+      "code": "R.2.05",
+      "count": 1
+    },
+    {
+      "code": "R.3.1",
+      "count": 36
+    },
+    {
+      "code": "R.3.2",
       "count": 2
     },
     {
       "code": "R.3.3",
+      "count": 48
+    },
+    {
+      "code": "R.4.05",
+      "count": 1
+    },
+    {
+      "code": "R.5.01",
+      "count": 1
+    },
+    {
+      "code": "R.5.02",
+      "count": 17
+    },
+    {
+      "code": "R.5.2",
+      "count": 1
+    },
+    {
+      "code": "R.6.01",
+      "count": 4
+    },
+    {
+      "code": "R.7.01",
+      "count": 2
+    },
+    {
+      "code": "R.10.01",
       "count": 1
     }
   ],
   "questions_per_year": [
     {
-      "year": "2021",
-      "total": 58,
-      "small": 55,
-      "large": 3
-    },
-    {
-      "year": "2022",
-      "total": 198,
-      "small": 182,
-      "large": 16
-    },
-    {
       "year": "2023",
-      "total": 3,
-      "small": 3,
-      "large": 0
+      "total": 308,
+      "small": 234,
+      "large": 74
+    },
+    {
+      "year": "2024",
+      "total": 1752,
+      "small": 1272,
+      "large": 480
     },
     {
       "year": "2025",
-      "total": 10,
-      "small": 10,
-      "large": 0
+      "total": 2153,
+      "small": 1703,
+      "large": 450
+    },
+    {
+      "year": "2026",
+      "total": 1303,
+      "small": 1188,
+      "large": 115
     }
   ],
   "documents_per_year": [
     {
-      "year": "2021",
-      "total": 21,
-      "small": 19,
-      "large": 2
-    },
-    {
-      "year": "2022",
-      "total": 49,
-      "small": 43,
-      "large": 6
-    },
-    {
       "year": "2023",
-      "total": 1,
-      "small": 1,
-      "large": 0
+      "total": 79,
+      "small": 68,
+      "large": 11
+    },
+    {
+      "year": "2024",
+      "total": 504,
+      "small": 413,
+      "large": 91
     },
     {
       "year": "2025",
-      "total": 1,
-      "small": 1,
-      "large": 0
+      "total": 559,
+      "small": 459,
+      "large": 100
+    },
+    {
+      "year": "2026",
+      "total": 341,
+      "small": 308,
+      "large": 33
     }
   ],
   "ctd_characteristics": [
     {
-      "code": "A.2.01",
-      "product_count": 2,
-      "products": [
-        "Estradiol",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.1.01",
-      "product_count": 3,
-      "products": [
-        "Dienogest + Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid"
-      ]
-    },
-    {
-      "code": "P.1.02",
-      "product_count": 3,
-      "products": [
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.2.1",
-      "product_count": 1,
-      "products": [
-        "Darolutamide"
-      ]
-    },
-    {
-      "code": "P.2.2",
-      "product_count": 2,
-      "products": [
-        "Darolutamide",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.2.3",
-      "product_count": 1,
-      "products": [
-        "Darolutamide"
-      ]
-    },
-    {
-      "code": "P.2.4",
-      "product_count": 5,
+      "code": "A.1.01",
+      "product_count": 8,
       "products": [
         "Aflibercept",
-        "Darolutamide",
-        "Gadoxetic acid",
-        "Iopamidol",
-        "Larotrectinib"
-      ]
-    },
-    {
-      "code": "P.2.5",
-      "product_count": 1,
-      "products": [
-        "Darolutamide"
-      ]
-    },
-    {
-      "code": "P.3.1",
-      "product_count": 3,
-      "products": [
-        "Acetylsalicylic acid",
-        "Ethinylestradiol + Levonorgestrel",
-        "Rivaroxaban"
-      ]
-    },
-    {
-      "code": "P.3.2",
-      "product_count": 2,
-      "products": [
-        "Ethinylestradiol + Levonorgestrel",
-        "Iopamidol"
-      ]
-    },
-    {
-      "code": "P.3.3",
-      "product_count": 4,
-      "products": [
-        "Aflibercept",
-        "Elinzanetant",
-        "Ethinylestradiol + Levonorgestrel",
-        "Iopamidol"
-      ]
-    },
-    {
-      "code": "P.3.4",
-      "product_count": 2,
-      "products": [
-        "Aflibercept",
-        "Gadoxetic acid"
-      ]
-    },
-    {
-      "code": "P.3.5",
-      "product_count": 5,
-      "products": [
-        "Darolutamide",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Rivaroxaban",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.4.1",
-      "product_count": 5,
-      "products": [
-        "Elinzanetant",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.4.01",
-      "product_count": 1,
-      "products": [
-        "Rivaroxaban"
-      ]
-    },
-    {
-      "code": "P.4.4",
-      "product_count": 1,
-      "products": [
-        "Dienogest + Estradiol"
-      ]
-    },
-    {
-      "code": "P.5.1",
-      "product_count": 10,
-      "products": [
-        "Aflibercept",
-        "Darolutamide",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
+        "Cyproterone + Ethinylestradiol",
         "Finerenone",
-        "Gadoxetic acid",
-        "Iopamidol",
-        "Rivaroxaban",
-        "Sulprostone",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.5.2",
-      "product_count": 5,
-      "products": [
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
+        "Gadoquatrane",
+        "Molidustat",
+        "Nifedipine",
         "Octocog alfa",
-        "Sulprostone",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.5.3",
-      "product_count": 4,
-      "products": [
-        "Finerenone",
-        "Gadoxetic acid",
-        "Octocog alfa",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.5.4",
-      "product_count": 9,
-      "products": [
-        "Aflibercept",
-        "Damoctocog alfa pegol",
-        "Darolutamide",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
-        "Levonorgestrel",
-        "Octocog alfa",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.5.5",
-      "product_count": 5,
-      "products": [
-        "Darolutamide",
-        "Estradiol",
-        "Gadoxetic acid",
-        "Iopromide",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.5.6",
-      "product_count": 5,
-      "products": [
-        "Damoctocog alfa pegol",
-        "Estradiol",
-        "Gadoxetic acid",
-        "Radium (Ra223) dichloride",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.7.01",
-      "product_count": 4,
-      "products": [
-        "Estradiol",
-        "Gadoxetic acid",
-        "Iopamidol",
         "Sorafenib"
       ]
     },
     {
-      "code": "P.7.02",
-      "product_count": 2,
-      "products": [
-        "Ethinylestradiol + Levonorgestrel",
-        "Iopamidol"
-      ]
-    },
-    {
-      "code": "P.7.03",
-      "product_count": 1,
-      "products": [
-        "Ethinylestradiol + Levonorgestrel"
-      ]
-    },
-    {
-      "code": "P.7.05",
-      "product_count": 1,
-      "products": [
-        "Ethinylestradiol + Levonorgestrel"
-      ]
-    },
-    {
-      "code": "P.8.1",
-      "product_count": 8,
-      "products": [
-        "Amidotrizoic acid",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
-        "Iopromide",
-        "Sorafenib",
-        "Sulprostone",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.8.2",
-      "product_count": 3,
-      "products": [
-        "Darolutamide",
-        "Sorafenib",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "P.8.3",
-      "product_count": 13,
-      "products": [
-        "Aflibercept",
-        "Amidotrizoic acid",
-        "Darolutamide",
-        "Dienogest + Ethinylestradiol",
-        "Drospirenone + Ethinylestradiol",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
-        "Iopromide",
-        "Larotrectinib",
-        "Radium (Ra223) dichloride",
-        "Sulprostone",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "R.3.3",
-      "product_count": 1,
-      "products": [
-        "Darolutamide"
-      ]
-    },
-    {
-      "code": "S.2.1",
-      "product_count": 2,
-      "products": [
-        "Gadoxetic acid",
-        "Vericiguat"
-      ]
-    },
-    {
-      "code": "S.2.2",
-      "product_count": 1,
-      "products": [
-        "Iopamidol"
-      ]
-    },
-    {
-      "code": "S.2.3",
-      "product_count": 1,
-      "products": [
-        "Elinzanetant"
-      ]
-    },
-    {
-      "code": "S.2.4",
-      "product_count": 3,
-      "products": [
-        "Aflibercept",
-        "Damoctocog alfa pegol",
-        "Iopamidol"
-      ]
-    },
-    {
-      "code": "S.2.5",
+      "code": "A.1.1",
       "product_count": 1,
       "products": [
         "Aflibercept"
       ]
     },
     {
-      "code": "S.3.1",
-      "product_count": 1,
+      "code": "A.1.02",
+      "product_count": 9,
       "products": [
-        "Elinzanetant"
+        "Aflibercept",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Elinzanetant",
+        "Octocog alfa",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Vericiguat"
       ]
     },
     {
-      "code": "S.3.2",
+      "code": "A.1.03",
+      "product_count": 2,
+      "products": [
+        "Aflibercept",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.1.3",
+      "product_count": 1,
+      "products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "A.2.01",
+      "product_count": 12,
+      "products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Finerenone",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.2.02",
+      "product_count": 6,
+      "products": [
+        "Estradiol",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Levonorgestrel",
+        "N/A"
+      ]
+    },
+    {
+      "code": "A.2.2",
+      "product_count": 2,
+      "products": [
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.2.03",
+      "product_count": 3,
+      "products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.2.3",
+      "product_count": 2,
+      "products": [
+        "Inclocibart",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.2.4",
+      "product_count": 1,
+      "products": [
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.2.50",
       "product_count": 4,
       "products": [
-        "Darolutamide",
+        "Aflibercept",
+        "BAY 3401016",
+        "BAY 3547926",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.3.1",
+      "product_count": 1,
+      "products": [
+        "Gadoxetic acid"
+      ]
+    },
+    {
+      "code": "A.3.2",
+      "product_count": 1,
+      "products": [
+        "Gadoxetic acid"
+      ]
+    },
+    {
+      "code": "A.3.4",
+      "product_count": 3,
+      "products": [
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Gadoxetic acid"
+      ]
+    },
+    {
+      "code": "P.1.01",
+      "product_count": 27,
+      "products": [
+        "Acetylsalicylic acid",
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "BAY 3401016",
+        "Dienogest",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
         "Finerenone",
         "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Nifedipine",
+        "Nimodipine",
+        "Norethisterone",
+        "Rivaroxaban",
+        "Sorafenib",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.1.1",
+      "product_count": 1,
+      "products": [
         "Iopromide"
       ]
     },
     {
-      "code": "S.4.1",
+      "code": "P.1.02",
+      "product_count": 18,
+      "products": [
+        "Amidotrizoic acid",
+        "Darolutamide",
+        "Dienogest",
+        "Drospirenone + Estradiol",
+        "Estradiol + Norethisterone",
+        "Ethinylestradiol + Levonorgestrel",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Levonorgestrel",
+        "Nifurtimox",
+        "Norethisterone",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.2",
+      "product_count": 1,
+      "products": [
+        "Gadoquatrane"
+      ]
+    },
+    {
+      "code": "P.2.1",
+      "product_count": 9,
+      "products": [
+        "Amidotrizoic acid",
+        "BAY 3401016",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Gadoquatrane",
+        "Iopromide",
+        "Levonorgestrel",
+        "Riociguat",
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.2.01",
+      "product_count": 1,
+      "products": [
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.2.2",
+      "product_count": 28,
+      "products": [
+        "Acetylsalicylic acid",
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Iloprost",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifurtimox",
+        "Octocog alfa",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.2.3",
+      "product_count": 21,
+      "products": [
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "Asundexian",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Elinzanetant",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Iloprost",
+        "Iopromide",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.2.4",
+      "product_count": 13,
+      "products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Drospirenone + Estradiol",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Octocog alfa",
+        "Rivaroxaban",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.2.5",
+      "product_count": 8,
+      "products": [
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Gadoquatrane",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Rivaroxaban",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.2.6",
+      "product_count": 6,
+      "products": [
+        "Aflibercept",
+        "Asundexian",
+        "BAY 3401016",
+        "Damoctocog alfa pegol",
+        "Octocog alfa",
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.3",
+      "product_count": 3,
+      "products": [
+        "Asundexian",
+        "Finerenone",
+        "Gadoquatrane"
+      ]
+    },
+    {
+      "code": "P.3.1",
+      "product_count": 25,
+      "products": [
+        "Acetylsalicylic acid",
+        "Aflibercept",
+        "Cyproterone + Ethinylestradiol",
+        "Dienogest + Estradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Nifedipine",
+        "Nifurtimox",
+        "Nimodipine",
+        "Octocog alfa",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sorafenib",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.3.2",
+      "product_count": 26,
+      "products": [
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "BAY 3401016",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Levonorgestrel",
+        "Nifurtimox",
+        "Norethisterone",
+        "Octocog alfa",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.3.3",
+      "product_count": 30,
+      "products": [
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Levonorgestrel",
+        "N/A",
+        "Nifedipine",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Regorafenib",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.3.4",
+      "product_count": 20,
+      "products": [
+        "Aflibercept",
+        "Copanlisib",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Iopromide",
+        "Levonorgestrel",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban",
+        "Sorafenib",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.3.5",
+      "product_count": 32,
+      "products": [
+        "Acetylsalicylic acid",
+        "Aflibercept",
+        "BAY 3547926",
+        "Copanlisib",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Nifurtimox",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Regorafenib",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.4",
+      "product_count": 1,
+      "products": [
+        "Finerenone"
+      ]
+    },
+    {
+      "code": "P.4.1",
+      "product_count": 31,
+      "products": [
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "BAY 3401016",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "N/A",
+        "Nifedipine",
+        "Nifurtimox",
+        "Norethisterone",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban",
+        "Sorafenib",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.4.2",
+      "product_count": 6,
+      "products": [
+        "Finerenone",
+        "Gadoteric acid",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Levonorgestrel",
+        "Norethisterone"
+      ]
+    },
+    {
+      "code": "P.4.3",
       "product_count": 3,
       "products": [
         "Darolutamide",
+        "Gadoteric acid",
+        "Levonorgestrel"
+      ]
+    },
+    {
+      "code": "P.4.4",
+      "product_count": 13,
+      "products": [
+        "Amidotrizoic acid",
+        "Cyproterone + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Levonorgestrel",
+        "Nifedipine",
+        "Rivaroxaban",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.4.5",
+      "product_count": 2,
+      "products": [
+        "Interferon beta-1b",
+        "Levonorgestrel"
+      ]
+    },
+    {
+      "code": "P.4.6",
+      "product_count": 1,
+      "products": [
+        "Levonorgestrel"
+      ]
+    },
+    {
+      "code": "P.5",
+      "product_count": 2,
+      "products": [
+        "Finerenone",
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.5.1",
+      "product_count": 43,
+      "products": [
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "BAY 3401016",
+        "Copanlisib",
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest",
+        "Dienogest + Estradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norethisterone",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
         "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Iotroxic acid",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifedipine",
+        "Nifurtimox",
+        "Norethisterone",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Regorafenib",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.5.01",
+      "product_count": 3,
+      "products": [
+        "Finerenone",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.5.2",
+      "product_count": 41,
+      "products": [
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "Asundexian",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Damoctocog alfa pegol; Octocog alfa",
+        "Darolutamide",
+        "Dienogest",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Iotroxic acid",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifurtimox",
+        "Norethisterone",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Regorafenib",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.5.3",
+      "product_count": 36,
+      "products": [
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Iotroxic acid",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Nifedipine",
+        "Nifurtimox",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.5.4",
+      "product_count": 31,
+      "products": [
+        "Aflibercept",
+        "BAY 2862789",
+        "Copanlisib",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Iotroxic acid",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "N/A",
+        "Nifurtimox",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.5.5",
+      "product_count": 30,
+      "products": [
+        "Acarbose",
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifedipine",
+        "Nifurtimox",
+        "Nimodipine",
+        "Norethisterone",
+        "Octocog alfa",
+        "Riociguat",
+        "Rivaroxaban",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.5.6",
+      "product_count": 30,
+      "products": [
+        "Acetylsalicylic acid",
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "Copanlisib",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Iotroxic acid",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Nifurtimox",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.6.01",
+      "product_count": 9,
+      "products": [
+        "Asundexian",
+        "Dienogest + Estradiol",
+        "Drospirenone + Estradiol",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Levonorgestrel",
+        "Rivaroxaban",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.6.02",
+      "product_count": 1,
+      "products": [
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.6.05",
+      "product_count": 1,
+      "products": [
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.7.01",
+      "product_count": 19,
+      "products": [
+        "Aflibercept",
+        "Cyproterone",
+        "Drospirenone + Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Levonorgestrel",
+        "Nifurtimox",
+        "Octocog alfa",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sorafenib",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.7.1",
+      "product_count": 1,
+      "products": [
+        "Levonorgestrel"
+      ]
+    },
+    {
+      "code": "P.7.02",
+      "product_count": 19,
+      "products": [
+        "Aflibercept",
+        "Cyproterone",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Nifurtimox",
+        "Norethisterone",
+        "Octocog alfa",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.7.03",
+      "product_count": 22,
+      "products": [
+        "Aflibercept",
+        "Cyproterone",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Levonorgestrel",
+        "Nifurtimox",
+        "Octocog alfa",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.7.04",
+      "product_count": 8,
+      "products": [
+        "Aflibercept",
+        "Darolutamide",
+        "Gadopentetic acid",
+        "Gadoxetic acid",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Nifurtimox",
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.7.4",
+      "product_count": 1,
+      "products": [
         "Gadoxetic acid"
+      ]
+    },
+    {
+      "code": "P.7.05",
+      "product_count": 10,
+      "products": [
+        "Aflibercept",
+        "Cyproterone",
+        "Cyproterone + Estradiol",
+        "Drospirenone + Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Gadoxetic acid",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.7.07",
+      "product_count": 1,
+      "products": [
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.7.10",
+      "product_count": 1,
+      "products": [
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.7.11",
+      "product_count": 5,
+      "products": [
+        "Aflibercept",
+        "Dienogest + Ethinylestradiol",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.7.20",
+      "product_count": 1,
+      "products": [
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.8",
+      "product_count": 3,
+      "products": [
+        "Asundexian",
+        "Gadoquatrane",
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.8.0",
+      "product_count": 1,
+      "products": [
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.8.1",
+      "product_count": 27,
+      "products": [
+        "Acetylsalicylic acid",
+        "Aflibercept",
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol + Norethisterone",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "N/A",
+        "Nifedipine",
+        "Norethisterone",
+        "Octocog alfa",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "P.8.01",
+      "product_count": 2,
+      "products": [
+        "BAY 3401016",
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "P.8.2",
+      "product_count": 21,
+      "products": [
+        "Aflibercept",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Nifedipine",
+        "Nifurtimox",
+        "Octocog alfa",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "P.8.3",
+      "product_count": 47,
+      "products": [
+        "Acetylsalicylic acid",
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "Asundexian",
+        "BAY 3401016",
+        "BAY 3547926",
+        "Ciprofloxacin",
+        "Copanlisib",
+        "Cyproterone",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norethisterone",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifurtimox",
+        "Norethisterone",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Regorafenib",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "R.1.01",
+      "product_count": 15,
+      "products": [
+        "Amidotrizoic acid",
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
+        "Dienogest + Estradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Ethinylestradiol + Gestodene",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Iopromide",
+        "Levonorgestrel",
+        "Norethisterone",
+        "Rivaroxaban",
+        "Testosterone"
+      ]
+    },
+    {
+      "code": "R.2.01",
+      "product_count": 3,
+      "products": [
+        "Aflibercept",
+        "Darolutamide",
+        "Interferon beta-1b"
+      ]
+    },
+    {
+      "code": "R.2.02",
+      "product_count": 6,
+      "products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "BAY 3547926",
+        "Damoctocog alfa pegol",
+        "Inclocibart",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "R.2.05",
+      "product_count": 1,
+      "products": [
+        "Gadoquatrane"
+      ]
+    },
+    {
+      "code": "R.3.1",
+      "product_count": 11,
+      "products": [
+        "Aflibercept",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Gadoquatrane",
+        "Levonorgestrel",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "R.3.2",
+      "product_count": 1,
+      "products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "R.3.3",
+      "product_count": 15,
+      "products": [
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Levonorgestrel",
+        "N/A",
+        "Nifurtimox",
+        "Riociguat",
+        "Sevabertinib",
+        "Sorafenib",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "R.4.05",
+      "product_count": 1,
+      "products": [
+        "Gadoquatrane"
+      ]
+    },
+    {
+      "code": "R.5.01",
+      "product_count": 1,
+      "products": [
+        "Molidustat"
+      ]
+    },
+    {
+      "code": "R.5.02",
+      "product_count": 6,
+      "products": [
+        "Aflibercept",
+        "Darolutamide",
+        "Finerenone",
+        "Interferon beta-1b",
+        "Octocog alfa",
+        "Sorafenib"
+      ]
+    },
+    {
+      "code": "R.5.2",
+      "product_count": 1,
+      "products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "R.6.01",
+      "product_count": 2,
+      "products": [
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "R.7.01",
+      "product_count": 1,
+      "products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "R.10.01",
+      "product_count": 1,
+      "products": [
+        "Gadoquatrane"
+      ]
+    },
+    {
+      "code": "S.1.1",
+      "product_count": 4,
+      "products": [
+        "Drospirenone + Estradiol",
+        "Octocog alfa",
+        "Riociguat",
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "S.1.2",
+      "product_count": 8,
+      "products": [
+        "Aflibercept",
+        "Dienogest",
+        "Drospirenone + Estradiol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Nifurtimox",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.1.3",
+      "product_count": 14,
+      "products": [
+        "Copanlisib",
+        "Damoctocog alfa pegol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Iopromide",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib"
+      ]
+    },
+    {
+      "code": "S.2",
+      "product_count": 2,
+      "products": [
+        "Asundexian",
+        "Riociguat"
+      ]
+    },
+    {
+      "code": "S.2.1",
+      "product_count": 21,
+      "products": [
+        "Acetylsalicylic acid",
+        "Aflibercept",
+        "Asundexian",
+        "Cyproterone",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Estradiol",
+        "Ethinylestradiol + Gestodene",
+        "Finerenone",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Molidustat",
+        "Nifedipine",
+        "Octocog alfa",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "S.2.2",
+      "product_count": 21,
+      "products": [
+        "Acoramidis",
+        "Aflibercept",
+        "Asundexian",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Finerenone",
+        "Gadoquatrane",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Molidustat",
+        "Nifedipine",
+        "Norethisterone",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "S.2.3",
+      "product_count": 22,
+      "products": [
+        "Acoramidis",
+        "Aflibercept",
+        "BAY 3401016",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Finerenone",
+        "Gadoquatrane",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Mesterolone",
+        "Molidustat",
+        "Norethisterone",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "S.2.4",
+      "product_count": 16,
+      "products": [
+        "Acoramidis",
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Elinzanetant",
+        "Finerenone",
+        "Gadoquatrane",
+        "Iopromide",
+        "Mesterolone",
+        "Nifedipine",
+        "Norethisterone",
+        "Octocog alfa",
+        "Riociguat",
+        "Sevabertinib",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "S.2.5",
+      "product_count": 9,
+      "products": [
+        "Aflibercept",
+        "Asundexian",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Finerenone",
+        "Gadoquatrane",
+        "Iopromide",
+        "Octocog alfa",
+        "Sevabertinib"
+      ]
+    },
+    {
+      "code": "S.2.6",
+      "product_count": 12,
+      "products": [
+        "Aflibercept",
+        "Asundexian",
+        "BAY 3401016",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Finerenone",
+        "Gadoquatrane",
+        "Iopromide",
+        "Mesterolone",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Sevabertinib"
+      ]
+    },
+    {
+      "code": "S.3.1",
+      "product_count": 13,
+      "products": [
+        "Aflibercept",
+        "Asundexian",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol",
+        "Finerenone",
+        "Gadoquatrane",
+        "Iopromide",
+        "Levonorgestrel",
+        "Octocog alfa",
+        "Regorafenib",
+        "Sevabertinib"
+      ]
+    },
+    {
+      "code": "S.3.2",
+      "product_count": 24,
+      "products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Cyproterone",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Iloprost",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Nifedipine",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "S.4.1",
+      "product_count": 41,
+      "products": [
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "Asundexian",
+        "BAY 3401016",
+        "Cyproterone",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifedipine",
+        "Nifurtimox",
+        "Norethisterone",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
       ]
     },
     {
       "code": "S.4.2",
-      "product_count": 3,
+      "product_count": 32,
       "products": [
-        "Copanlisib",
+        "Acoramidis",
+        "Aflibercept",
+        "Amidotrizoic acid",
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
         "Gadobutrol",
-        "Gadoxetic acid"
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Levonorgestrel",
+        "N/A",
+        "Nifurtimox",
+        "Norethisterone",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
+        "Vericiguat"
       ]
     },
     {
       "code": "S.4.3",
-      "product_count": 3,
+      "product_count": 23,
       "products": [
+        "Acetylsalicylic acid",
+        "Aflibercept",
+        "Cyproterone",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Estradiol",
+        "Estradiol + Norgestrel",
         "Finerenone",
-        "Gadobutrol",
-        "Gadoxetic acid"
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Levonorgestrel",
+        "Octocog alfa",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone"
       ]
     },
     {
       "code": "S.4.4",
-      "product_count": 3,
+      "product_count": 29,
       "products": [
+        "Acoramidis",
+        "Aflibercept",
+        "Asundexian",
+        "BAY 3401016",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
         "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
         "Gadobutrol",
-        "Gadoxetic acid"
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Levonorgestrel",
+        "Nifurtimox",
+        "Norethisterone",
+        "Octocog alfa",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone"
       ]
     },
     {
       "code": "S.4.5",
-      "product_count": 5,
+      "product_count": 24,
       "products": [
+        "Aflibercept",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
         "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Finerenone",
         "Gadobutrol",
-        "Gadoxetic acid",
-        "Iopamidol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Levonorgestrel",
+        "Norethisterone",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
         "Vericiguat"
+      ]
+    },
+    {
+      "code": "S.4.6",
+      "product_count": 1,
+      "products": [
+        "Levonorgestrel"
       ]
     },
     {
       "code": "S.5.01",
+      "product_count": 17,
+      "products": [
+        "Aflibercept",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Octocog alfa",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ]
+    },
+    {
+      "code": "S.5.02",
       "product_count": 1,
       "products": [
-        "Ethinylestradiol + Levonorgestrel"
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.5.03",
+      "product_count": 2,
+      "products": [
+        "Gadoquatrane",
+        "Sevabertinib"
+      ]
+    },
+    {
+      "code": "S.5.05",
+      "product_count": 1,
+      "products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "S.5.06",
+      "product_count": 2,
+      "products": [
+        "Gadoquatrane",
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "S.5.07",
+      "product_count": 1,
+      "products": [
+        "Levonorgestrel"
+      ]
+    },
+    {
+      "code": "S.6",
+      "product_count": 1,
+      "products": [
+        "Asundexian"
+      ]
+    },
+    {
+      "code": "S.6.01",
+      "product_count": 7,
+      "products": [
+        "Aflibercept",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Finerenone",
+        "Gadoquatrane",
+        "Molidustat",
+        "Sevabertinib"
+      ]
+    },
+    {
+      "code": "S.6.02",
+      "product_count": 5,
+      "products": [
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Gadoquatrane",
+        "Iloprost",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.6.03",
+      "product_count": 5,
+      "products": [
+        "Aflibercept",
+        "Drospirenone + Estradiol",
+        "Iloprost",
+        "Iopromide",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.6.05",
+      "product_count": 1,
+      "products": [
+        "Dienogest + Ethinylestradiol"
+      ]
+    },
+    {
+      "code": "S.6.30",
+      "product_count": 1,
+      "products": [
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.7",
+      "product_count": 1,
+      "products": [
+        "Sevabertinib"
       ]
     },
     {
       "code": "S.7.1",
-      "product_count": 1,
+      "product_count": 17,
       "products": [
+        "Aflibercept",
+        "Cyproterone",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Finerenone",
+        "Gadoquatrane",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Norgestrel",
+        "Octocog alfa",
+        "Rivaroxaban",
+        "Sevabertinib",
         "Vericiguat"
       ]
     },
     {
-      "code": "S.7.3",
-      "product_count": 4,
+      "code": "S.7.01",
+      "product_count": 2,
       "products": [
-        "Darolutamide",
+        "BAY 3401016",
+        "Rivaroxaban"
+      ]
+    },
+    {
+      "code": "S.7.2",
+      "product_count": 11,
+      "products": [
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
         "Finerenone",
-        "Gadoxetic acid",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Molidustat",
+        "Octocog alfa",
+        "Rivaroxaban",
+        "Sevabertinib"
+      ]
+    },
+    {
+      "code": "S.7.3",
+      "product_count": 25,
+      "products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadoquatrane",
+        "Interferon beta-1b",
+        "Iopromide",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Nifurtimox",
+        "Norethisterone",
+        "Norgestrel",
+        "Octocog alfa",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
         "Vericiguat"
+      ]
+    },
+    {
+      "code": "S.7.03",
+      "product_count": 1,
+      "products": [
+        "Darolutamide"
       ]
     }
   ],
   "code_summary": [
     {
-      "code": "A.2.01",
-      "title": "TSE Assessment",
-      "sm_count": 2,
-      "lm_count": 0,
-      "total": 2,
-      "sm_products": [
-        "Estradiol",
-        "Vericiguat"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.1.01",
-      "title": "Description and Composition of the Drug Product",
-      "sm_count": 4,
-      "lm_count": 0,
-      "total": 4,
-      "sm_products": [
-        "Dienogest + Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.1.02",
-      "title": "",
-      "sm_count": 8,
-      "lm_count": 0,
-      "total": 8,
-      "sm_products": [
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
-        "Vericiguat"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.2.1",
-      "title": "Pharmaceutical Development - Components",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
-      "sm_products": [
-        "Darolutamide"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.2.2",
-      "title": "Pharmaceutical Development - Drug Product",
-      "sm_count": 7,
-      "lm_count": 0,
-      "total": 7,
-      "sm_products": [
-        "Darolutamide",
-        "Vericiguat"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.2.3",
-      "title": "Pharmaceutical Development - Manufacturing Process",
-      "sm_count": 2,
-      "lm_count": 0,
-      "total": 2,
-      "sm_products": [
-        "Darolutamide"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.2.4",
-      "title": "Pharmaceutical Development - Container Closure System",
-      "sm_count": 5,
-      "lm_count": 1,
-      "total": 6,
-      "sm_products": [
-        "Darolutamide",
-        "Gadoxetic acid",
-        "Iopamidol",
-        "Larotrectinib"
-      ],
-      "lm_products": [
-        "Aflibercept"
-      ]
-    },
-    {
-      "code": "P.2.5",
-      "title": "Pharmaceutical Development - Microbiological Attributes",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
-      "sm_products": [
-        "Darolutamide"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.3.1",
-      "title": "Manufacturing Sites",
-      "sm_count": 3,
-      "lm_count": 0,
-      "total": 3,
-      "sm_products": [
-        "Acetylsalicylic acid",
-        "Ethinylestradiol + Levonorgestrel",
-        "Rivaroxaban"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.3.2",
-      "title": "Batch Formula",
-      "sm_count": 2,
-      "lm_count": 0,
-      "total": 2,
-      "sm_products": [
-        "Ethinylestradiol + Levonorgestrel",
-        "Iopamidol"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.3.3",
-      "title": "Manufacturing Process and Process Controls",
-      "sm_count": 11,
-      "lm_count": 1,
-      "total": 12,
-      "sm_products": [
-        "Elinzanetant",
-        "Ethinylestradiol + Levonorgestrel",
-        "Iopamidol"
-      ],
-      "lm_products": [
-        "Aflibercept"
-      ]
-    },
-    {
-      "code": "P.3.4",
-      "title": "Control of Critical Steps",
-      "sm_count": 1,
-      "lm_count": 1,
-      "total": 2,
-      "sm_products": [
-        "Gadoxetic acid"
-      ],
-      "lm_products": [
-        "Aflibercept"
-      ]
-    },
-    {
-      "code": "P.3.5",
-      "title": "Process Validation and/or Evaluation",
-      "sm_count": 5,
-      "lm_count": 0,
-      "total": 5,
-      "sm_products": [
-        "Darolutamide",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Rivaroxaban",
-        "Vericiguat"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.4.1",
-      "title": "Quality Reference",
-      "sm_count": 7,
-      "lm_count": 0,
-      "total": 7,
-      "sm_products": [
-        "Elinzanetant",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
-        "Vericiguat"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.4.01",
-      "title": "",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
-      "sm_products": [
-        "Rivaroxaban"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.4.4",
-      "title": "Excipients - Justification of Specification",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
-      "sm_products": [
-        "Dienogest + Estradiol"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.5.1",
-      "title": "Release Specification",
-      "sm_count": 33,
-      "lm_count": 1,
-      "total": 34,
-      "sm_products": [
-        "Darolutamide",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Finerenone",
-        "Gadoxetic acid",
-        "Iopamidol",
-        "Rivaroxaban",
-        "Sulprostone",
-        "Vericiguat"
-      ],
-      "lm_products": [
-        "Aflibercept"
-      ]
-    },
-    {
-      "code": "P.5.2",
-      "title": "Test Procedure",
-      "sm_count": 8,
-      "lm_count": 7,
-      "total": 15,
-      "sm_products": [
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
-        "Sulprostone",
-        "Vericiguat"
-      ],
-      "lm_products": [
-        "Octocog alfa"
-      ]
-    },
-    {
-      "code": "P.5.3",
-      "title": "Validation of Test for Assay and Impurities",
-      "sm_count": 6,
-      "lm_count": 12,
-      "total": 18,
-      "sm_products": [
-        "Finerenone",
-        "Gadoxetic acid",
-        "Vericiguat"
-      ],
-      "lm_products": [
-        "Octocog alfa"
-      ]
-    },
-    {
-      "code": "P.5.4",
-      "title": "Batch Analyses",
-      "sm_count": 12,
+      "code": "A.1.01",
+      "title": "Facilities and Equipment – Drug Substance",
+      "sm_count": 10,
       "lm_count": 4,
-      "total": 16,
+      "total": 14,
       "sm_products": [
-        "Darolutamide",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
-        "Levonorgestrel",
-        "Vericiguat"
-      ],
-      "lm_products": [
-        "Aflibercept",
-        "Damoctocog alfa pegol",
-        "Octocog alfa"
-      ]
-    },
-    {
-      "code": "P.5.5",
-      "title": "Impurities in the Drug Product",
-      "sm_count": 13,
-      "lm_count": 0,
-      "total": 13,
-      "sm_products": [
-        "Darolutamide",
-        "Estradiol",
-        "Gadoxetic acid",
-        "Iopromide",
-        "Vericiguat"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.5.6",
-      "title": "Justification of Specification",
-      "sm_count": 4,
-      "lm_count": 2,
-      "total": 6,
-      "sm_products": [
-        "Estradiol",
-        "Gadoxetic acid",
-        "Radium (Ra223) dichloride",
-        "Vericiguat"
-      ],
-      "lm_products": [
-        "Damoctocog alfa pegol"
-      ]
-    },
-    {
-      "code": "P.7.01",
-      "title": "Packaging Materials",
-      "sm_count": 6,
-      "lm_count": 0,
-      "total": 6,
-      "sm_products": [
-        "Estradiol",
-        "Gadoxetic acid",
-        "Iopamidol",
+        "Cyproterone + Ethinylestradiol",
+        "Finerenone",
+        "Gadoquatrane",
+        "Molidustat",
+        "Nifedipine",
         "Sorafenib"
       ],
-      "lm_products": []
+      "lm_products": [
+        "Aflibercept",
+        "Octocog alfa"
+      ]
     },
     {
-      "code": "P.7.02",
-      "title": "Description of Packaging Material",
-      "sm_count": 4,
-      "lm_count": 0,
-      "total": 4,
-      "sm_products": [
-        "Ethinylestradiol + Levonorgestrel",
-        "Iopamidol"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.7.03",
-      "title": "Packaging – Specification and Test Procedure",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
-      "sm_products": [
-        "Ethinylestradiol + Levonorgestrel"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.7.05",
-      "title": "Packaging - Batch Analyses",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
-      "sm_products": [
-        "Ethinylestradiol + Levonorgestrel"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.8.1",
-      "title": "Stability Summary and Conclusion",
-      "sm_count": 21,
-      "lm_count": 0,
-      "total": 21,
-      "sm_products": [
-        "Amidotrizoic acid",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
-        "Iopromide",
-        "Sorafenib",
-        "Sulprostone",
-        "Vericiguat"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.8.2",
-      "title": "Post-Approval Stability Protocol and Stability Commitment",
-      "sm_count": 3,
-      "lm_count": 0,
-      "total": 3,
-      "sm_products": [
-        "Darolutamide",
-        "Sorafenib",
-        "Vericiguat"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "P.8.3",
-      "title": "Stability Data",
-      "sm_count": 42,
-      "lm_count": 1,
-      "total": 43,
-      "sm_products": [
-        "Amidotrizoic acid",
-        "Darolutamide",
-        "Dienogest + Ethinylestradiol",
-        "Drospirenone + Ethinylestradiol",
-        "Estradiol",
-        "Ethinylestradiol + Levonorgestrel",
-        "Gadoxetic acid",
-        "Iopromide",
-        "Larotrectinib",
-        "Radium (Ra223) dichloride",
-        "Sulprostone",
-        "Vericiguat"
-      ],
+      "code": "A.1.1",
+      "title": "",
+      "sm_count": 0,
+      "lm_count": 2,
+      "total": 2,
+      "sm_products": [],
       "lm_products": [
         "Aflibercept"
       ]
     },
     {
-      "code": "R.3.3",
-      "title": "Executed Batch Record",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
+      "code": "A.1.02",
+      "title": "Facilities and Equipment – Drug Product ",
+      "sm_count": 10,
+      "lm_count": 4,
+      "total": 14,
       "sm_products": [
-        "Darolutamide"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "S.2.1",
-      "title": "Manufacturer(s)",
-      "sm_count": 6,
-      "lm_count": 0,
-      "total": 6,
-      "sm_products": [
-        "Gadoxetic acid",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Elinzanetant",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
         "Vericiguat"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "S.2.2",
-      "title": "Manufacturing Process - Flow Diagram",
-      "sm_count": 5,
-      "lm_count": 0,
-      "total": 5,
-      "sm_products": [
-        "Iopamidol"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "S.2.3",
-      "title": "Raw Materials",
-      "sm_count": 2,
-      "lm_count": 0,
-      "total": 2,
-      "sm_products": [
-        "Elinzanetant"
-      ],
-      "lm_products": []
-    },
-    {
-      "code": "S.2.4",
-      "title": "Discussion and Control of Critical Steps",
-      "sm_count": 2,
-      "lm_count": 3,
-      "total": 5,
-      "sm_products": [
-        "Iopamidol"
       ],
       "lm_products": [
         "Aflibercept",
-        "Damoctocog alfa pegol"
+        "Octocog alfa"
       ]
     },
     {
-      "code": "S.2.5",
-      "title": "Process Validation – Summary",
+      "code": "A.1.03",
+      "title": "Qualification/Validation of Facilities and Equipment",
+      "sm_count": 0,
+      "lm_count": 4,
+      "total": 4,
+      "sm_products": [],
+      "lm_products": [
+        "Aflibercept",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.1.3",
+      "title": "",
       "sm_count": 0,
       "lm_count": 1,
       "total": 1,
@@ -1261,133 +3326,2445 @@
       ]
     },
     {
-      "code": "S.3.1",
-      "title": "Structure Elucidation and other Characteristics",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
+      "code": "A.2.01",
+      "title": "TSE Assessment",
+      "sm_count": 12,
+      "lm_count": 16,
+      "total": 28,
       "sm_products": [
-        "Elinzanetant"
+        "Darolutamide",
+        "Dienogest",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Finerenone",
+        "Iloprost",
+        "Levonorgestrel",
+        "Mesterolone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.2.2",
+      "title": "",
+      "sm_count": 0,
+      "lm_count": 5,
+      "total": 5,
+      "sm_products": [],
+      "lm_products": [
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.2.02",
+      "title": "TSE Assessment - Substance",
+      "sm_count": 8,
+      "lm_count": 0,
+      "total": 8,
+      "sm_products": [
+        "Estradiol",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Levonorgestrel",
+        "N/A"
       ],
       "lm_products": []
     },
     {
-      "code": "S.3.2",
-      "title": "Impurities",
-      "sm_count": 5,
-      "lm_count": 0,
-      "total": 5,
+      "code": "A.2.03",
+      "title": "Virological Safety",
+      "sm_count": 0,
+      "lm_count": 22,
+      "total": 22,
+      "sm_products": [],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.2.3",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 2,
+      "total": 3,
       "sm_products": [
-        "Darolutamide",
+        "Inclocibart"
+      ],
+      "lm_products": [
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.2.4",
+      "title": "",
+      "sm_count": 0,
+      "lm_count": 2,
+      "total": 2,
+      "sm_products": [],
+      "lm_products": [
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.2.50",
+      "title": "Study Reports of Virus Clearance Validation",
+      "sm_count": 0,
+      "lm_count": 6,
+      "total": 6,
+      "sm_products": [],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "BAY 3547926",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "A.3.1",
+      "title": "Nomenclature",
+      "sm_count": 2,
+      "lm_count": 0,
+      "total": 2,
+      "sm_products": [
+        "Gadoxetic acid"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "A.3.2",
+      "title": "",
+      "sm_count": 2,
+      "lm_count": 0,
+      "total": 2,
+      "sm_products": [
+        "Gadoxetic acid"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "A.3.4",
+      "title": "",
+      "sm_count": 4,
+      "lm_count": 0,
+      "total": 4,
+      "sm_products": [
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Gadoxetic acid"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.1.01",
+      "title": "Description and Composition of the Drug Product",
+      "sm_count": 71,
+      "lm_count": 8,
+      "total": 79,
+      "sm_products": [
+        "Acetylsalicylic acid",
+        "Amidotrizoic acid",
+        "Dienogest",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
         "Finerenone",
         "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Nifedipine",
+        "Nimodipine",
+        "Norethisterone",
+        "Rivaroxaban",
+        "Sorafenib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016"
+      ]
+    },
+    {
+      "code": "P.1.1",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
         "Iopromide"
       ],
       "lm_products": []
     },
     {
-      "code": "S.4.1",
-      "title": "Specification",
-      "sm_count": 4,
+      "code": "P.1.02",
+      "title": "",
+      "sm_count": 34,
+      "lm_count": 4,
+      "total": 38,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Darolutamide",
+        "Dienogest",
+        "Drospirenone + Estradiol",
+        "Estradiol + Norethisterone",
+        "Ethinylestradiol + Levonorgestrel",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Levonorgestrel",
+        "Nifurtimox",
+        "Norethisterone",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban"
+      ],
+      "lm_products": [
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.2",
+      "title": "",
+      "sm_count": 1,
       "lm_count": 0,
-      "total": 4,
+      "total": 1,
+      "sm_products": [
+        "Gadoquatrane"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.2.1",
+      "title": "Pharmaceutical Development - Components",
+      "sm_count": 16,
+      "lm_count": 1,
+      "total": 17,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Gadoquatrane",
+        "Iopromide",
+        "Levonorgestrel",
+        "Riociguat",
+        "Rivaroxaban"
+      ],
+      "lm_products": [
+        "BAY 3401016"
+      ]
+    },
+    {
+      "code": "P.2.01",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Rivaroxaban"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.2.2",
+      "title": "Pharmaceutical Development - Drug Product",
+      "sm_count": 118,
+      "lm_count": 14,
+      "total": 132,
+      "sm_products": [
+        "Acetylsalicylic acid",
+        "Amidotrizoic acid",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Iloprost",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifurtimox",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.2.3",
+      "title": "Pharmaceutical Development - Manufacturing Process",
+      "sm_count": 66,
+      "lm_count": 24,
+      "total": 90,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Asundexian",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Elinzanetant",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Iloprost",
+        "Iopromide",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.2.4",
+      "title": "Pharmaceutical Development - Container Closure System",
+      "sm_count": 77,
+      "lm_count": 44,
+      "total": 121,
+      "sm_products": [
+        "Drospirenone + Estradiol",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Rivaroxaban",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.2.5",
+      "title": "Pharmaceutical Development - Microbiological Attributes",
+      "sm_count": 39,
+      "lm_count": 0,
+      "total": 39,
       "sm_products": [
         "Darolutamide",
-        "Gadobutrol",
-        "Gadoxetic acid"
+        "Drospirenone + Estradiol",
+        "Gadoquatrane",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Rivaroxaban",
+        "Testosterone"
       ],
       "lm_products": []
     },
     {
-      "code": "S.4.2",
-      "title": "Test Procedure",
+      "code": "P.2.6",
+      "title": "Pharmaceutical Development – Compatibility",
+      "sm_count": 5,
+      "lm_count": 10,
+      "total": 15,
+      "sm_products": [
+        "Asundexian",
+        "Rivaroxaban"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.3",
+      "title": "",
+      "sm_count": 7,
+      "lm_count": 0,
+      "total": 7,
+      "sm_products": [
+        "Asundexian",
+        "Finerenone",
+        "Gadoquatrane"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.3.1",
+      "title": "Manufacturing Sites",
+      "sm_count": 77,
+      "lm_count": 28,
+      "total": 105,
+      "sm_products": [
+        "Acetylsalicylic acid",
+        "Cyproterone + Ethinylestradiol",
+        "Dienogest + Estradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Nifedipine",
+        "Nifurtimox",
+        "Nimodipine",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sorafenib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.3.2",
+      "title": "Batch Formula",
+      "sm_count": 62,
+      "lm_count": 8,
+      "total": 70,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Levonorgestrel",
+        "Nifurtimox",
+        "Norethisterone",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.3.3",
+      "title": "Manufacturing Process and Process Controls",
+      "sm_count": 276,
+      "lm_count": 43,
+      "total": 319,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Levonorgestrel",
+        "N/A",
+        "Nifedipine",
+        "Radium (Ra223) dichloride",
+        "Regorafenib",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.3.4",
+      "title": "Control of Critical Steps",
+      "sm_count": 75,
+      "lm_count": 40,
+      "total": 115,
+      "sm_products": [
+        "Copanlisib",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Iopromide",
+        "Levonorgestrel",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban",
+        "Sorafenib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.3.5",
+      "title": "Process Validation and/or Evaluation",
+      "sm_count": 134,
+      "lm_count": 41,
+      "total": 175,
+      "sm_products": [
+        "Acetylsalicylic acid",
+        "Copanlisib",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Nifurtimox",
+        "Radium (Ra223) dichloride",
+        "Regorafenib",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3547926",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.4",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Finerenone"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.4.1",
+      "title": "Quality Reference",
+      "sm_count": 95,
+      "lm_count": 6,
+      "total": 101,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "N/A",
+        "Nifedipine",
+        "Nifurtimox",
+        "Norethisterone",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban",
+        "Sorafenib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Interferon beta-1b"
+      ]
+    },
+    {
+      "code": "P.4.2",
+      "title": "Excipients - Test Procedure",
+      "sm_count": 9,
+      "lm_count": 1,
+      "total": 10,
+      "sm_products": [
+        "Finerenone",
+        "Gadoteric acid",
+        "Iloprost",
+        "Levonorgestrel",
+        "Norethisterone"
+      ],
+      "lm_products": [
+        "Interferon beta-1b"
+      ]
+    },
+    {
+      "code": "P.4.3",
+      "title": "Excipients - Validation of Analytical Procedures",
+      "sm_count": 5,
+      "lm_count": 0,
+      "total": 5,
+      "sm_products": [
+        "Darolutamide",
+        "Gadoteric acid",
+        "Levonorgestrel"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.4.4",
+      "title": "Excipients - Justification of Specification",
+      "sm_count": 35,
+      "lm_count": 1,
+      "total": 36,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Cyproterone + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Levonorgestrel",
+        "Nifedipine",
+        "Rivaroxaban",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Interferon beta-1b"
+      ]
+    },
+    {
+      "code": "P.4.5",
+      "title": "Excipients of Human or Animal Origin",
+      "sm_count": 2,
+      "lm_count": 1,
+      "total": 3,
+      "sm_products": [
+        "Levonorgestrel"
+      ],
+      "lm_products": [
+        "Interferon beta-1b"
+      ]
+    },
+    {
+      "code": "P.4.6",
+      "title": "Novel Excipients - Evaluation",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Levonorgestrel"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.5",
+      "title": "",
+      "sm_count": 7,
+      "lm_count": 0,
+      "total": 7,
+      "sm_products": [
+        "Finerenone",
+        "Rivaroxaban"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.5.1",
+      "title": "Release Specification",
+      "sm_count": 362,
+      "lm_count": 77,
+      "total": 439,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Copanlisib",
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest",
+        "Dienogest + Estradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norethisterone",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Iotroxic acid",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifedipine",
+        "Nifurtimox",
+        "Norethisterone",
+        "Radium (Ra223) dichloride",
+        "Regorafenib",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.5.01",
+      "title": "",
       "sm_count": 4,
       "lm_count": 0,
       "total": 4,
       "sm_products": [
-        "Copanlisib",
+        "Finerenone",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.5.2",
+      "title": "Test Procedure",
+      "sm_count": 317,
+      "lm_count": 49,
+      "total": 366,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Asundexian",
+        "Cyproterone + Ethinylestradiol",
+        "Damoctocog alfa pegol; Octocog alfa",
+        "Darolutamide",
+        "Dienogest",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
         "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Iotroxic acid",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifurtimox",
+        "Norethisterone",
+        "Radium (Ra223) dichloride",
+        "Regorafenib",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.5.3",
+      "title": "Validation of Test for Assay and Impurities",
+      "sm_count": 384,
+      "lm_count": 54,
+      "total": 438,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Iotroxic acid",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Nifedipine",
+        "Nifurtimox",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.5.4",
+      "title": "Batch Analyses",
+      "sm_count": 182,
+      "lm_count": 27,
+      "total": 209,
+      "sm_products": [
+        "BAY 2862789",
+        "Copanlisib",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Iotroxic acid",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "N/A",
+        "Nifurtimox",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.5.5",
+      "title": "Impurities in the Drug Product",
+      "sm_count": 150,
+      "lm_count": 6,
+      "total": 156,
+      "sm_products": [
+        "Acarbose",
+        "Amidotrizoic acid",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifedipine",
+        "Nifurtimox",
+        "Nimodipine",
+        "Norethisterone",
+        "Riociguat",
+        "Rivaroxaban",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.5.6",
+      "title": "Justification of Specification",
+      "sm_count": 192,
+      "lm_count": 46,
+      "total": 238,
+      "sm_products": [
+        "Acetylsalicylic acid",
+        "Amidotrizoic acid",
+        "Copanlisib",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Iotroxic acid",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Nifurtimox",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.6.01",
+      "title": "Reference Standard",
+      "sm_count": 23,
+      "lm_count": 0,
+      "total": 23,
+      "sm_products": [
+        "Asundexian",
+        "Dienogest + Estradiol",
+        "Drospirenone + Estradiol",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Levonorgestrel",
+        "Rivaroxaban",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.6.02",
+      "title": "",
+      "sm_count": 7,
+      "lm_count": 0,
+      "total": 7,
+      "sm_products": [
+        "Rivaroxaban"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.6.05",
+      "title": "Reference Standard – Additional Information",
+      "sm_count": 7,
+      "lm_count": 0,
+      "total": 7,
+      "sm_products": [
+        "Rivaroxaban"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.7.1",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Levonorgestrel"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.7.01",
+      "title": "Packaging Materials",
+      "sm_count": 44,
+      "lm_count": 12,
+      "total": 56,
+      "sm_products": [
+        "Cyproterone",
+        "Drospirenone + Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Levonorgestrel",
+        "Nifurtimox",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sorafenib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.7.02",
+      "title": "Description of Packaging Material",
+      "sm_count": 42,
+      "lm_count": 6,
+      "total": 48,
+      "sm_products": [
+        "Cyproterone",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Gadobutrol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Nifurtimox",
+        "Norethisterone",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.7.03",
+      "title": "Packaging – Specification and Test Procedure",
+      "sm_count": 31,
+      "lm_count": 7,
+      "total": 38,
+      "sm_products": [
+        "Cyproterone",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Levonorgestrel",
+        "Nifurtimox",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.7.4",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
         "Gadoxetic acid"
       ],
       "lm_products": []
     },
     {
-      "code": "S.4.3",
-      "title": "Validation of Test for Assay and Impurities",
+      "code": "P.7.04",
+      "title": "Drawings of Packaging Materials (Primary Container / Functional Secondary Container)",
+      "sm_count": 17,
+      "lm_count": 4,
+      "total": 21,
+      "sm_products": [
+        "Darolutamide",
+        "Gadopentetic acid",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Nifurtimox",
+        "Rivaroxaban"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Interferon beta-1b"
+      ]
+    },
+    {
+      "code": "P.7.05",
+      "title": "Packaging - Batch Analyses",
+      "sm_count": 13,
+      "lm_count": 1,
+      "total": 14,
+      "sm_products": [
+        "Cyproterone",
+        "Cyproterone + Estradiol",
+        "Drospirenone + Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Gadoxetic acid",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "P.7.07",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Rivaroxaban"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.7.10",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Rivaroxaban"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.7.11",
+      "title": "Packaging – Additional Information ",
+      "sm_count": 6,
+      "lm_count": 2,
+      "total": 8,
+      "sm_products": [
+        "Dienogest + Ethinylestradiol",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "P.7.20",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Rivaroxaban"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.8",
+      "title": "",
+      "sm_count": 4,
+      "lm_count": 0,
+      "total": 4,
+      "sm_products": [
+        "Asundexian",
+        "Gadoquatrane",
+        "Rivaroxaban"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.8.0",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Vericiguat"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "P.8.1",
+      "title": "Stability Summary and Conclusion",
+      "sm_count": 122,
+      "lm_count": 48,
+      "total": 170,
+      "sm_products": [
+        "Acetylsalicylic acid",
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol + Norethisterone",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "N/A",
+        "Nifedipine",
+        "Norethisterone",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.8.01",
+      "title": "",
+      "sm_count": 2,
+      "lm_count": 1,
+      "total": 3,
+      "sm_products": [
+        "Rivaroxaban"
+      ],
+      "lm_products": [
+        "BAY 3401016"
+      ]
+    },
+    {
+      "code": "P.8.2",
+      "title": "Post-Approval Stability Protocol and Stability Commitment",
+      "sm_count": 64,
+      "lm_count": 17,
+      "total": 81,
+      "sm_products": [
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Nifedipine",
+        "Nifurtimox",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "P.8.3",
+      "title": "Stability Data",
+      "sm_count": 508,
+      "lm_count": 123,
+      "total": 631,
+      "sm_products": [
+        "Acetylsalicylic acid",
+        "Amidotrizoic acid",
+        "Asundexian",
+        "Ciprofloxacin",
+        "Copanlisib",
+        "Cyproterone",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norethisterone",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Larotrectinib",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifurtimox",
+        "Norethisterone",
+        "Radium (Ra223) dichloride",
+        "Regorafenib",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "BAY 3547926",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "R.1.01",
+      "title": "Certificate of Suitability",
+      "sm_count": 25,
+      "lm_count": 0,
+      "total": 25,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
+        "Dienogest + Estradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Ethinylestradiol + Gestodene",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Iopromide",
+        "Levonorgestrel",
+        "Norethisterone",
+        "Rivaroxaban",
+        "Testosterone"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "R.2.01",
+      "title": "Comparability Protocol",
+      "sm_count": 3,
+      "lm_count": 11,
+      "total": 14,
+      "sm_products": [
+        "Darolutamide"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Interferon beta-1b"
+      ]
+    },
+    {
+      "code": "R.2.02",
+      "title": "Comparability Exercise",
+      "sm_count": 1,
+      "lm_count": 27,
+      "total": 28,
+      "sm_products": [
+        "Inclocibart"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "BAY 3547926",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "R.2.05",
+      "title": "Established Conditions - Summary",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Gadoquatrane"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "R.3.1",
+      "title": "Batch Report – Master",
+      "sm_count": 35,
+      "lm_count": 1,
+      "total": 36,
+      "sm_products": [
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Gadoquatrane",
+        "Levonorgestrel",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "R.3.2",
+      "title": "Batch Report",
+      "sm_count": 0,
+      "lm_count": 2,
+      "total": 2,
+      "sm_products": [],
+      "lm_products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "R.3.3",
+      "title": "Executed Batch Record",
+      "sm_count": 48,
+      "lm_count": 0,
+      "total": 48,
+      "sm_products": [
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Levonorgestrel",
+        "N/A",
+        "Nifurtimox",
+        "Riociguat",
+        "Sevabertinib",
+        "Sorafenib",
+        "Vericiguat"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "R.4.05",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Gadoquatrane"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "R.5.01",
+      "title": "Labeling of the Immediate/Shipping Container for the Bulk Drug Substance",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Molidustat"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "R.5.2",
+      "title": "",
+      "sm_count": 0,
+      "lm_count": 1,
+      "total": 1,
+      "sm_products": [],
+      "lm_products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "R.5.02",
+      "title": "Description of Shipping (Transportation) Studies",
+      "sm_count": 6,
+      "lm_count": 11,
+      "total": 17,
+      "sm_products": [
+        "Darolutamide",
+        "Finerenone",
+        "Sorafenib"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "R.6.01",
+      "title": "Method Validation - Reports",
+      "sm_count": 0,
+      "lm_count": 4,
+      "total": 4,
+      "sm_products": [],
+      "lm_products": [
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "R.7.01",
+      "title": "One-time Manufacturing Variances",
+      "sm_count": 0,
+      "lm_count": 2,
+      "total": 2,
+      "sm_products": [],
+      "lm_products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "R.10.01",
+      "title": "Information on Quality Management System",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Gadoquatrane"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "S.1.1",
+      "title": "General Information - Nomenclature",
+      "sm_count": 4,
+      "lm_count": 1,
+      "total": 5,
+      "sm_products": [
+        "Drospirenone + Estradiol",
+        "Riociguat",
+        "Rivaroxaban"
+      ],
+      "lm_products": [
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.1.2",
+      "title": "General Information - Structure",
+      "sm_count": 11,
+      "lm_count": 2,
+      "total": 13,
+      "sm_products": [
+        "Dienogest",
+        "Drospirenone + Estradiol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Nifurtimox"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.1.3",
+      "title": "General Information - General Properties",
+      "sm_count": 36,
+      "lm_count": 4,
+      "total": 40,
+      "sm_products": [
+        "Copanlisib",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Iopromide",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib"
+      ],
+      "lm_products": [
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.2",
+      "title": "",
       "sm_count": 3,
       "lm_count": 0,
       "total": 3,
       "sm_products": [
-        "Finerenone",
-        "Gadobutrol",
-        "Gadoxetic acid"
+        "Asundexian",
+        "Riociguat"
       ],
       "lm_products": []
     },
     {
-      "code": "S.4.4",
-      "title": "Batch Analyses",
-      "sm_count": 4,
-      "lm_count": 2,
-      "total": 6,
+      "code": "S.2.1",
+      "title": "Manufacturer(s)",
+      "sm_count": 58,
+      "lm_count": 13,
+      "total": 71,
       "sm_products": [
-        "Gadobutrol",
-        "Gadoxetic acid"
+        "Acetylsalicylic acid",
+        "Asundexian",
+        "Cyproterone",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Estradiol",
+        "Ethinylestradiol + Gestodene",
+        "Finerenone",
+        "Iopromide",
+        "Molidustat",
+        "Nifedipine",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
+        "Vericiguat"
       ],
       "lm_products": [
-        "Damoctocog alfa pegol"
+        "Aflibercept",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.2.2",
+      "title": "Manufacturing Process - Flow Diagram",
+      "sm_count": 79,
+      "lm_count": 50,
+      "total": 129,
+      "sm_products": [
+        "Acoramidis",
+        "Asundexian",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Finerenone",
+        "Gadoquatrane",
+        "Iopromide",
+        "Molidustat",
+        "Nifedipine",
+        "Norethisterone",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.2.3",
+      "title": "Raw Materials",
+      "sm_count": 118,
+      "lm_count": 43,
+      "total": 161,
+      "sm_products": [
+        "Acoramidis",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol + Norgestrel",
+        "Finerenone",
+        "Gadoquatrane",
+        "Iopromide",
+        "Mesterolone",
+        "Molidustat",
+        "Norethisterone",
+        "Radium (Ra223) dichloride",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.2.4",
+      "title": "Discussion and Control of Critical Steps",
+      "sm_count": 87,
+      "lm_count": 60,
+      "total": 147,
+      "sm_products": [
+        "Acoramidis",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Elinzanetant",
+        "Finerenone",
+        "Gadoquatrane",
+        "Iopromide",
+        "Mesterolone",
+        "Nifedipine",
+        "Norethisterone",
+        "Riociguat",
+        "Sevabertinib",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.2.5",
+      "title": "Process Validation – Summary",
+      "sm_count": 9,
+      "lm_count": 38,
+      "total": 47,
+      "sm_products": [
+        "Asundexian",
+        "Darolutamide",
+        "Finerenone",
+        "Gadoquatrane",
+        "Iopromide",
+        "Sevabertinib"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.2.6",
+      "title": "Manufacturing Process Development",
+      "sm_count": 31,
+      "lm_count": 35,
+      "total": 66,
+      "sm_products": [
+        "Asundexian",
+        "Darolutamide",
+        "Finerenone",
+        "Gadoquatrane",
+        "Iopromide",
+        "Mesterolone",
+        "Radium (Ra223) dichloride",
+        "Sevabertinib"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.3.1",
+      "title": "Structure Elucidation and other Characteristics",
+      "sm_count": 35,
+      "lm_count": 32,
+      "total": 67,
+      "sm_products": [
+        "Asundexian",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol",
+        "Finerenone",
+        "Gadoquatrane",
+        "Iopromide",
+        "Levonorgestrel",
+        "Regorafenib",
+        "Sevabertinib"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.3.2",
+      "title": "Impurities",
+      "sm_count": 84,
+      "lm_count": 7,
+      "total": 91,
+      "sm_products": [
+        "Cyproterone",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Iloprost",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Nifedipine",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016"
+      ]
+    },
+    {
+      "code": "S.4.1",
+      "title": "Specification",
+      "sm_count": 135,
+      "lm_count": 42,
+      "total": 177,
+      "sm_products": [
+        "Amidotrizoic acid",
+        "Asundexian",
+        "Cyproterone",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Levonorgestrel",
+        "Mesterolone",
+        "N/A",
+        "Nifedipine",
+        "Nifurtimox",
+        "Norethisterone",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.4.2",
+      "title": "Test Procedure",
+      "sm_count": 96,
+      "lm_count": 46,
+      "total": 142,
+      "sm_products": [
+        "Acoramidis",
+        "Amidotrizoic acid",
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Gadobutrol",
+        "Gadobutrol; Gadoxetic acid",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Iloprost",
+        "Iopromide",
+        "Levonorgestrel",
+        "N/A",
+        "Nifurtimox",
+        "Norethisterone",
+        "Radium (Ra223) dichloride",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.4.3",
+      "title": "Validation of Test for Assay and Impurities",
+      "sm_count": 59,
+      "lm_count": 96,
+      "total": 155,
+      "sm_products": [
+        "Acetylsalicylic acid",
+        "Cyproterone",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Finerenone",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Gadoxetic acid",
+        "Iopromide",
+        "Levonorgestrel",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.4.4",
+      "title": "Batch Analyses",
+      "sm_count": 72,
+      "lm_count": 22,
+      "total": 94,
+      "sm_products": [
+        "Acoramidis",
+        "Asundexian",
+        "Cyproterone + Estradiol",
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Drospirenone + Ethinylestradiol + Levomefolic acid",
+        "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Levonorgestrel",
+        "Finerenone",
+        "Gadobutrol",
+        "Gadoquatrane",
+        "Gadoteric acid",
+        "Iopromide",
+        "Levonorgestrel",
+        "Nifurtimox",
+        "Norethisterone",
+        "Riociguat",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
       ]
     },
     {
       "code": "S.4.5",
       "title": "Justification of Specification and Skip Testing",
-      "sm_count": 6,
-      "lm_count": 0,
-      "total": 6,
+      "sm_count": 54,
+      "lm_count": 32,
+      "total": 86,
       "sm_products": [
+        "Cyproterone + Ethinylestradiol",
+        "Darolutamide",
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
         "Elinzanetant",
+        "Estradiol",
+        "Estradiol + Norgestrel",
+        "Finerenone",
         "Gadobutrol",
-        "Gadoxetic acid",
-        "Iopamidol",
+        "Gadopentetic acid",
+        "Gadoquatrane",
+        "Iopromide",
+        "Levonorgestrel",
+        "Norethisterone",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
         "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.4.6",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Levonorgestrel"
       ],
       "lm_products": []
     },
     {
       "code": "S.5.01",
       "title": "Reference Standard",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
+      "sm_count": 35,
+      "lm_count": 10,
+      "total": 45,
       "sm_products": [
-        "Ethinylestradiol + Levonorgestrel"
+        "Dienogest + Estradiol",
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Estradiol + Norgestrel",
+        "Ethinylestradiol + Gestodene",
+        "Ethinylestradiol + Levonorgestrel",
+        "Gadoquatrane",
+        "Gadoxetic acid",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Sorafenib",
+        "Testosterone",
+        "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.5.02",
+      "title": "",
+      "sm_count": 0,
+      "lm_count": 1,
+      "total": 1,
+      "sm_products": [],
+      "lm_products": [
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.5.03",
+      "title": "Reference Standards - Impurities",
+      "sm_count": 2,
+      "lm_count": 0,
+      "total": 2,
+      "sm_products": [
+        "Gadoquatrane",
+        "Sevabertinib"
       ],
       "lm_products": []
     },
     {
-      "code": "S.7.1",
-      "title": "Stability Summary and Conclusion",
+      "code": "S.5.05",
+      "title": "Reference Standard – Additional Information",
+      "sm_count": 0,
+      "lm_count": 6,
+      "total": 6,
+      "sm_products": [],
+      "lm_products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "S.5.06",
+      "title": "Specification and Testing of Reference Standard",
+      "sm_count": 2,
+      "lm_count": 0,
+      "total": 2,
+      "sm_products": [
+        "Gadoquatrane",
+        "Rivaroxaban"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "S.5.07",
+      "title": "Specification and Testing of Reference Standards - Impurities",
       "sm_count": 1,
       "lm_count": 0,
       "total": 1,
       "sm_products": [
+        "Levonorgestrel"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "S.6",
+      "title": "Packaging Materials",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Asundexian"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "S.6.01",
+      "title": "Packaging Materials",
+      "sm_count": 12,
+      "lm_count": 8,
+      "total": 20,
+      "sm_products": [
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Finerenone",
+        "Gadoquatrane",
+        "Molidustat",
+        "Sevabertinib"
+      ],
+      "lm_products": [
+        "Aflibercept"
+      ]
+    },
+    {
+      "code": "S.6.02",
+      "title": "Description of Primary Packaging Material",
+      "sm_count": 7,
+      "lm_count": 3,
+      "total": 10,
+      "sm_products": [
+        "Dienogest + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Gadoquatrane",
+        "Iloprost"
+      ],
+      "lm_products": [
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.6.03",
+      "title": "Specification and Test Procedure",
+      "sm_count": 5,
+      "lm_count": 2,
+      "total": 7,
+      "sm_products": [
+        "Drospirenone + Estradiol",
+        "Iloprost",
+        "Iopromide"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.6.05",
+      "title": "Packaging - Batch Analyses",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Dienogest + Ethinylestradiol"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "S.6.30",
+      "title": "Development Container Closure System",
+      "sm_count": 0,
+      "lm_count": 2,
+      "total": 2,
+      "sm_products": [],
+      "lm_products": [
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.7",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Sevabertinib"
+      ],
+      "lm_products": []
+    },
+    {
+      "code": "S.7.01",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 1,
+      "total": 2,
+      "sm_products": [
+        "Rivaroxaban"
+      ],
+      "lm_products": [
+        "BAY 3401016"
+      ]
+    },
+    {
+      "code": "S.7.1",
+      "title": "Stability Summary and Conclusion",
+      "sm_count": 53,
+      "lm_count": 13,
+      "total": 66,
+      "sm_products": [
+        "Cyproterone",
+        "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Finerenone",
+        "Gadoquatrane",
+        "Iopromide",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Norgestrel",
+        "Rivaroxaban",
+        "Sevabertinib",
         "Vericiguat"
+      ],
+      "lm_products": [
+        "Aflibercept",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.7.2",
+      "title": "Post-Approval Stability Protocol and Stability Commitment",
+      "sm_count": 12,
+      "lm_count": 4,
+      "total": 16,
+      "sm_products": [
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Finerenone",
+        "Iopromide",
+        "Molidustat",
+        "Rivaroxaban",
+        "Sevabertinib"
+      ],
+      "lm_products": [
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
+    },
+    {
+      "code": "S.7.03",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Darolutamide"
       ],
       "lm_products": []
     },
     {
       "code": "S.7.3",
       "title": "Stability Data",
-      "sm_count": 9,
-      "lm_count": 0,
-      "total": 9,
+      "sm_count": 78,
+      "lm_count": 33,
+      "total": 111,
       "sm_products": [
+        "Cyproterone",
+        "Cyproterone + Ethinylestradiol",
         "Darolutamide",
+        "Drospirenone + Estradiol",
+        "Elinzanetant",
+        "Estradiol",
+        "Ethinylestradiol + Levonorgestrel",
         "Finerenone",
-        "Gadoxetic acid",
+        "Gadoquatrane",
+        "Iopromide",
+        "Levonorgestrel",
+        "Mesterolone",
+        "Nifurtimox",
+        "Norethisterone",
+        "Norgestrel",
+        "Radium (Ra223) dichloride",
+        "Rivaroxaban",
+        "Sevabertinib",
+        "Testosterone",
         "Vericiguat"
       ],
-      "lm_products": []
+      "lm_products": [
+        "Aflibercept",
+        "BAY 3401016",
+        "Damoctocog alfa pegol",
+        "Interferon beta-1b",
+        "Octocog alfa"
+      ]
     }
   ]
 }

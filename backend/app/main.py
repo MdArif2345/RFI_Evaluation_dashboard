@@ -520,26 +520,34 @@ _EXTRA_ROWS: list[dict[str, Any]] | None = None
 
 
 def _load_extra_rows() -> list[dict[str, Any]]:
-    """Lazy-load the enriched 269-row file for comparison queries."""
+    """Lazy-load the unified dataset for comparison queries."""
     global _EXTRA_ROWS
     if _EXTRA_ROWS is None:
-        from .config import EXTRA_QNA_PATH
+        from .config import DEFAULT_QNA_PATH
         import re as _re
-        if EXTRA_QNA_PATH.exists():
-            with open(EXTRA_QNA_PATH, encoding="utf-8") as f:
+        if DEFAULT_QNA_PATH.exists():
+            with open(DEFAULT_QNA_PATH, encoding="utf-8") as f:
                 _EXTRA_ROWS = json.load(f)
         else:
             _EXTRA_ROWS = []
     return _EXTRA_ROWS
 
 
-def _code_matches(codes_field: str, target_code: str) -> bool:
-    """Check if a semicolon-separated codes field contains the target parent code."""
+def _code_matches(codes_field: str | list, target_code: str) -> bool:
+    """Check if codes field (string or list) contains the target parent code."""
     import re as _re
-    if not codes_field:
+    
+    # Handle list format
+    if isinstance(codes_field, list):
+        codes_to_check = codes_field
+    # Handle string format
+    elif isinstance(codes_field, str) and codes_field:
+        codes_to_check = _re.split(r"[;,]+", codes_field)
+    else:
         return False
-    for raw in _re.split(r"[;,]+", codes_field):
-        raw = raw.strip()
+    
+    for raw in codes_to_check:
+        raw = str(raw).strip()
         m = _re.match(r"^([SPARsp])\.(\d+(?:\.\d+)?)", raw)
         if m:
             section = f"{m.group(1).upper()}.{m.group(2)}"

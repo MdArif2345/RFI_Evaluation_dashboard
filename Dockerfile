@@ -10,14 +10,12 @@ COPY backend/requirements.txt /app/backend/requirements.txt
 RUN pip install --no-cache-dir -r /app/backend/requirements.txt
 
 # Dashboard static files + QnA + backend code
-COPY cmc_response_documents.jsonl /app/cmc_response_documents.jsonl
-COPY ["cmc_response_documents (3).json", "/app/cmc_response_documents (3).json"]
-COPY QnA_pairs_extracted.json /app/QnA_pairs_extracted.json
+COPY ["cmc_response_documents (4).json", "/app/cmc_response_documents (4).json"]
 COPY index.html data.js metrics.json code_catalog.json qna_insights.json corpus_stats.json /app/
 COPY backend /app/backend
 
 ENV PYTHONUNBUFFERED=1
-ENV QNA_PATH=/app/cmc_response_documents.jsonl
+ENV QNA_PATH="/app/cmc_response_documents (4).json"
 ENV CHROMA_DIR=/app/backend/chroma_data
 
 # ============================================================
