@@ -69,6 +69,71 @@ def _normalize_code(raw: str) -> str | None:
     return f"{m.group(1).upper()}.{m.group(2)}"
 
 
+_STOP_WORDS = {
+    "the", "a", "an", "and", "or", "of", "to", "in", "for", "is", "are", "be",
+    "was", "were", "with", "that", "this", "these", "those", "it", "its", "as",
+    "at", "by", "on", "from", "please", "provide", "submit", "we", "our", "you",
+    "your", "has", "have", "had", "will", "shall", "not", "no", "any", "all",
+    "can", "may", "should", "would", "section", "data", "information", "provided",
+    "also", "been", "per", "than", "into", "which", "were", "their", "there",
+    "such", "more", "most", "other", "same", "each", "between", "following",
+    "question", "response", "bayer", "applicant", "product", "drug", "regarding",
+}
+
+
+def _extract_key_themes(questions: list[str], top_n: int = 5) -> list[str]:
+    """Extract the most frequent meaningful 2-word phrases from questions."""
+    bigram_counter: dict[str, int] = collections.Counter()
+    word_counter: dict[str, int] = collections.Counter()
+
+    for q in questions:
+        words = re.findall(r"[a-z]{3,}", q.lower())
+        meaningful = [w for w in words if w not in _STOP_WORDS]
+        word_counter.update(meaningful)
+        for i in range(len(meaningful) - 1):
+            bigram_counter[f"{meaningful[i]} {meaningful[i+1]}"] += 1
+
+    top_bigrams = [bg for bg, _ in bigram_counter.most_common(top_n) if bigram_counter[bg] >= 2]
+    if len(top_bigrams) < top_n:
+        top_words = [w for w, _ in word_counter.most_common(top_n * 2) if w not in " ".join(top_bigrams)]
+        top_bigrams.extend(top_words[:top_n - len(top_bigrams)])
+
+    return top_bigrams[:top_n]
+
+
+def _build_code_summary(
+    code: str,
+    title: str,
+    sm_count: int,
+    lm_count: int,
+    sm_products: list[str],
+    lm_products: list[str],
+    questions: list[str],
+) -> str:
+    """Build a concise 2-3 line summary for a CTD code row."""
+    total = sm_count + lm_count
+    all_products = sm_products + lm_products
+
+    themes = _extract_key_themes(questions, top_n=4)
+    theme_str = ", ".join(themes[:3]) if themes else "general CMC topics"
+
+    line1 = f"Covers {total} questions"
+    if title:
+        line1 += f" on {title.strip().rstrip('.')}"
+    line1 += "."
+
+    if sm_count and lm_count:
+        line2 = f"SM ({sm_count}) and LM ({lm_count}) both represented."
+    elif sm_count:
+        line2 = f"Exclusively Small Molecule ({sm_count} Qs)."
+    else:
+        line2 = f"Exclusively Large Molecule ({lm_count} Qs)."
+
+    line3 = f"Key themes: {theme_str}."
+
+    return f"{line1} {line2} {line3}"
+
+
 def build_stats(rows: list[dict[str, Any]]) -> dict[str, Any]:
     stats: dict[str, Any] = {}
     catalog = _load_code_catalog()
@@ -212,21 +277,27 @@ def build_stats(rows: list[dict[str, Any]]) -> dict[str, Any]:
     code_lm: dict[str, int] = collections.Counter()
     code_sm_prods: dict[str, set[str]] = {}
     code_lm_prods: dict[str, set[str]] = {}
+    code_questions: dict[str, list[str]] = {}
 
     for r in rows:
         codes = _parse_individual_codes(r.get("codes", ""))
         prod = (r.get("doc_product") or "").strip()
         is_lm = _is_large(r.get("doc_product_type", ""))
+        question = (r.get("Question/Consideration") or "").strip()
+        seen_sections: set[str] = set()
         for c in codes:
             section = _normalize_code(c)
-            if not section:
+            if not section or section in seen_sections:
                 continue
+            seen_sections.add(section)
             if is_lm:
                 code_lm[section] += 1
                 code_lm_prods.setdefault(section, set()).add(prod)
             else:
                 code_sm[section] += 1
                 code_sm_prods.setdefault(section, set()).add(prod)
+            if question:
+                code_questions.setdefault(section, []).append(question)
 
     all_codes = sorted(set(code_sm) | set(code_lm), key=_code_sort_key)
     code_summary = []
@@ -234,12 +305,17 @@ def build_stats(rows: list[dict[str, Any]]) -> dict[str, Any]:
         sm = code_sm.get(code, 0)
         lm = code_lm.get(code, 0)
         title = ""
-        # Try exact match first, then parent codes with common suffixes
         for suffix in ["", ".01", ".1"]:
             cat_entry = catalog.get(code + suffix)
             if cat_entry:
                 title = cat_entry.get("title", "")
                 break
+        summary = _build_code_summary(
+            code, title, sm, lm,
+            sorted(code_sm_prods.get(code, set())),
+            sorted(code_lm_prods.get(code, set())),
+            code_questions.get(code, []),
+        )
         code_summary.append({
             "code": code,
             "title": title,
@@ -248,6 +324,7 @@ def build_stats(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "total": sm + lm,
             "sm_products": sorted(code_sm_prods.get(code, set())),
             "lm_products": sorted(code_lm_prods.get(code, set())),
+            "summary": summary,
         })
     stats["code_summary"] = code_summary
 
@@ -259,11 +336,33 @@ def main() -> None:
         print(f"ERROR: {INPUT_PATH} not found", file=sys.stderr)
         sys.exit(1)
 
+    # Load raw rows for KPIs (total count matches the file)
     with open(INPUT_PATH, encoding="utf-8") as f:
-        rows = json.load(f)
+        raw_rows = json.load(f)
 
-    print(f"Loaded {len(rows)} rows from {INPUT_PATH.name}")
-    stats = build_stats(rows)
+    # Load deduplicated pairs (same as chatbot uses) for code_summary
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from app.rag import load_qna_pairs
+    deduped_pairs = load_qna_pairs(INPUT_PATH)
+
+    # Convert deduped pairs back to raw-row format for build_stats
+    converted = []
+    for p in deduped_pairs:
+        converted.append({
+            "doc_id": p.get("doc_id", ""),
+            "doc_product": p.get("product", ""),
+            "doc_country": p.get("country", ""),
+            "doc_product_type": p.get("doc_product_type", ""),
+            "doc_approve_date": p.get("date", ""),
+            "doc_name": p.get("doc_name", ""),
+            "codes": p.get("codes", []),
+            "keywords": p.get("keywords", []),
+            "Question/Consideration": p.get("question", ""),
+            "Answer/Response": p.get("answer", ""),
+        })
+
+    print(f"Loaded {len(raw_rows)} raw rows, {len(converted)} deduplicated pairs from {INPUT_PATH.name}")
+    stats = build_stats(converted)
 
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(stats, f, ensure_ascii=False, indent=2)

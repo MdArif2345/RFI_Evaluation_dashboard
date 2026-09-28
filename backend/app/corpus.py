@@ -114,12 +114,28 @@ class Corpus:
         theme: str | None = None,
         product: str | None = None,
         country: str | None = None,
+        product_type: str | None = None,
     ) -> list[dict[str, Any]]:
         matches = self.pairs
 
         if code:
-            pattern = code_pattern(code)
-            matches = [p for p in matches if pattern.search(p["document"])]
+            bare = MODULE_PREFIX.sub("", code.strip()).strip(".")
+            def _code_match(p: dict[str, Any]) -> bool:
+                codes_field = p.get("codes", [])
+                if isinstance(codes_field, list):
+                    for c in codes_field:
+                        c_str = str(c).strip()
+                        m = re.match(r"^([SPARsp])\.(\d+(?:\.\d+)?)", c_str)
+                        if m and f"{m.group(1).upper()}.{m.group(2)}" == bare:
+                            return True
+                elif isinstance(codes_field, str) and codes_field:
+                    for c in re.split(r"[;,]+", codes_field):
+                        c_str = c.strip()
+                        m = re.match(r"^([SPARsp])\.(\d+(?:\.\d+)?)", c_str)
+                        if m and f"{m.group(1).upper()}.{m.group(2)}" == bare:
+                            return True
+                return False
+            matches = [p for p in matches if _code_match(p)]
 
         if theme:
             theme_id = self.resolve_theme(theme)
@@ -135,6 +151,13 @@ class Corpus:
             country_lower = country.strip().lower()
             matches = [p for p in matches if (p.get("country") or "").lower() == country_lower]
 
+        if product_type:
+            pt_lower = product_type.strip().lower()
+            matches = [
+                p for p in matches
+                if pt_lower in (p.get("doc_product_type") or "").lower()
+            ]
+
         return matches
 
     def summarise(
@@ -143,16 +166,17 @@ class Corpus:
         theme: str | None = None,
         product: str | None = None,
         country: str | None = None,
+        product_type: str | None = None,
         limit: int = 20,
     ) -> dict[str, Any]:
-        matches = self.find(code=code, theme=theme, product=product, country=country)
+        matches = self.find(code=code, theme=theme, product=product, country=country, product_type=product_type)
         limit = max(1, min(int(limit or 20), 50))
         ranked = sorted(matches, key=lambda p: len(p["answer"]), reverse=True)
 
         return {
             "total_matches": len(matches),
             "returned": min(limit, len(matches)),
-            "filter": {"code": code, "theme": theme, "product": product, "country": country},
+            "filter": {"code": code, "theme": theme, "product": product, "country": country, "product_type": product_type},
             "questions": [
                 {
                     "id": p["id"],
@@ -173,10 +197,11 @@ class Corpus:
         theme: str | None = None,
         product: str | None = None,
         country: str | None = None,
+        product_type: str | None = None,
         limit: int = 15,
     ) -> dict[str, Any]:
-        """Count pairs grouped by product, country, or date (year-month)."""
-        matches = self.find(code=code, theme=theme, product=product, country=country)
+        """Count pairs grouped by product, country, date, or product_type."""
+        matches = self.find(code=code, theme=theme, product=product, country=country, product_type=product_type)
         counter: collections.Counter[str] = collections.Counter()
 
         for p in matches:
@@ -187,6 +212,8 @@ class Corpus:
             elif group_by == "date":
                 raw_date = (p.get("date") or "").strip()
                 val = raw_date[:7] if len(raw_date) >= 7 else raw_date
+            elif group_by == "product_type":
+                val = (p.get("doc_product_type") or "").strip()
             else:
                 val = ""
             if val:
@@ -197,7 +224,7 @@ class Corpus:
 
         return {
             "group_by": group_by,
-            "filter": {"code": code, "theme": theme, "product": product, "country": country},
+            "filter": {"code": code, "theme": theme, "product": product, "country": country, "product_type": product_type},
             "total_matching_pairs": len(matches),
             "groups_returned": len(ranked),
             "groups": [{"value": v, "count": c} for v, c in ranked],
@@ -232,6 +259,25 @@ class Corpus:
 
     def available_themes(self) -> list[str]:
         return [self.theme_names[k] for k in sorted(self.theme_names)]
+
+    def corpus_summary(self) -> dict[str, Any]:
+        """Return key aggregate statistics about the corpus."""
+        total = len(self.pairs)
+        sm_count = sum(1 for p in self.pairs if "biotech" not in (p.get("doc_product_type") or "").lower())
+        lm_count = sum(1 for p in self.pairs if "biotech" in (p.get("doc_product_type") or "").lower())
+        products = set((p.get("product") or "").strip() for p in self.pairs if (p.get("product") or "").strip())
+        countries = set((p.get("country") or "").strip() for p in self.pairs if (p.get("country") or "").strip() and (p.get("country") or "").strip() != "N/A")
+        doc_ids = set(str(p.get("doc_id") or "") for p in self.pairs if p.get("doc_id"))
+        return {
+            "total_pairs": total,
+            "total_documents": len(doc_ids),
+            "small_molecule_count": sm_count,
+            "large_molecule_count": lm_count,
+            "unique_products": len(products),
+            "unique_countries": len(countries),
+            "top_products": collections.Counter((p.get("product") or "").strip() for p in self.pairs if (p.get("product") or "").strip()).most_common(10),
+            "top_countries": collections.Counter((p.get("country") or "").strip() for p in self.pairs if (p.get("country") or "").strip() and (p.get("country") or "").strip() != "N/A").most_common(10),
+        }
 
 
 @lru_cache

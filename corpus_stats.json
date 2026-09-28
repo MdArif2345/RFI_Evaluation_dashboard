@@ -1,9 +1,9 @@
 {
   "kpis": {
-    "total_documents": 1483,
-    "total_questions": 5516,
-    "small_molecule_questions": 4397,
-    "large_molecule_questions": 1119
+    "total_documents": 1444,
+    "total_questions": 5301,
+    "small_molecule_questions": 4224,
+    "large_molecule_questions": 1077
   },
   "questions_per_product": [
     {
@@ -12,7 +12,7 @@
     },
     {
       "product": "Acetylsalicylic acid",
-      "count": 37
+      "count": 35
     },
     {
       "product": "Acoramidis",
@@ -20,7 +20,7 @@
     },
     {
       "product": "Aflibercept",
-      "count": 655
+      "count": 640
     },
     {
       "product": "Amidotrizoic acid",
@@ -56,7 +56,7 @@
     },
     {
       "product": "Cyproterone + Estradiol",
-      "count": 22
+      "count": 21
     },
     {
       "product": "Cyproterone + Ethinylestradiol",
@@ -80,11 +80,11 @@
     },
     {
       "product": "Dienogest + Estradiol",
-      "count": 43
+      "count": 40
     },
     {
       "product": "Dienogest + Ethinylestradiol",
-      "count": 38
+      "count": 35
     },
     {
       "product": "Drospirenone + Estradiol",
@@ -92,7 +92,7 @@
     },
     {
       "product": "Drospirenone + Ethinylestradiol",
-      "count": 20
+      "count": 12
     },
     {
       "product": "Drospirenone + Ethinylestradiol + Levomefolic acid",
@@ -100,7 +100,7 @@
     },
     {
       "product": "Elinzanetant",
-      "count": 71
+      "count": 68
     },
     {
       "product": "Estradiol",
@@ -132,11 +132,11 @@
     },
     {
       "product": "Finerenone",
-      "count": 278
+      "count": 268
     },
     {
       "product": "Gadobutrol",
-      "count": 122
+      "count": 118
     },
     {
       "product": "Gadobutrol; Gadoxetic acid",
@@ -148,19 +148,19 @@
     },
     {
       "product": "Gadoquatrane",
-      "count": 269
+      "count": 246
     },
     {
       "product": "Gadoteric acid",
-      "count": 63
+      "count": 61
     },
     {
       "product": "Gadoxetic acid",
-      "count": 128
+      "count": 122
     },
     {
       "product": "Iloprost",
-      "count": 116
+      "count": 85
     },
     {
       "product": "Inclocibart",
@@ -172,7 +172,7 @@
     },
     {
       "product": "Iopromide",
-      "count": 319
+      "count": 286
     },
     {
       "product": "Iotroxic acid",
@@ -184,7 +184,7 @@
     },
     {
       "product": "Levonorgestrel",
-      "count": 305
+      "count": 297
     },
     {
       "product": "Levonorgestrel; Ethinylestradiol + Levonorgestrel",
@@ -204,7 +204,7 @@
     },
     {
       "product": "N/A",
-      "count": 45
+      "count": 40
     },
     {
       "product": "Nifedipine",
@@ -228,15 +228,15 @@
     },
     {
       "product": "Nurandociguat",
-      "count": 8
+      "count": 5
     },
     {
       "product": "Octocog alfa",
-      "count": 298
+      "count": 271
     },
     {
       "product": "Radium (Ra223) dichloride",
-      "count": 42
+      "count": 40
     },
     {
       "product": "Regorafenib",
@@ -248,19 +248,19 @@
     },
     {
       "product": "Rivaroxaban",
-      "count": 719
+      "count": 709
     },
     {
       "product": "Sevabertinib",
-      "count": 198
+      "count": 194
     },
     {
       "product": "Sorafenib",
-      "count": 151
+      "count": 145
     },
     {
       "product": "Testosterone",
-      "count": 112
+      "count": 111
     },
     {
       "product": "Vardenafil",
@@ -268,101 +268,93 @@
     },
     {
       "product": "Vericiguat",
-      "count": 73
+      "count": 68
     }
   ],
   "questions_per_country": [
     {
       "country": "Russian Federation (the)",
-      "count": 304
+      "count": 286
     },
     {
       "country": "China",
-      "count": 272
-    },
-    {
-      "country": "Japan",
-      "count": 250
+      "count": 265
     },
     {
       "country": "Indonesia",
-      "count": 242
+      "count": 239
     },
     {
-      "country": "Thailand",
-      "count": 235
+      "country": "Japan",
+      "count": 238
     },
     {
       "country": "Korea (the Republic of)",
-      "count": 230
+      "count": 220
     },
     {
       "country": "Turkey",
-      "count": 205
+      "count": 200
     },
     {
       "country": "Hong Kong",
-      "count": 199
+      "count": 194
     },
     {
       "country": "Egypt",
       "count": 191
     },
     {
-      "country": "India",
-      "count": 181
+      "country": "Thailand",
+      "count": 187
     },
     {
-      "country": "Peru",
-      "count": 173
+      "country": "India",
+      "count": 180
     },
     {
       "country": "Colombia",
-      "count": 171
+      "count": 168
+    },
+    {
+      "country": "Peru",
+      "count": 164
     },
     {
       "country": "Costa Rica",
-      "count": 161
+      "count": 152
     },
     {
       "country": "Taiwan",
-      "count": 150
+      "count": 143
     },
     {
       "country": "Australia",
-      "count": 116
+      "count": 114
     },
     {
       "country": "Viet Nam",
-      "count": 102
+      "count": 100
     },
     {
       "country": "Israel",
-      "count": 92
-    },
-    {
-      "country": "Switzerland",
-      "count": 84
-    },
-    {
-      "country": "Singapore",
-      "count": 84
+      "count": 91
     },
     {
       "country": "United Kingdom",
       "count": 81
     },
     {
-      "country": "Malaysia",
+      "country": "Switzerland",
       "count": 80
+    },
+    {
+      "country": "Malaysia",
+      "count": 79
     },
     {
       "country": "Serbia",
       "count": 78
-    },
-    {
-      "country": "Belarus",
-      "count": 77
     },
     {
       "country": "United States",
@@ -373,8 +365,16 @@
       "count": 73
     },
     {
-      "country": "Saudi Arabia",
+      "country": "Belarus",
+      "count": 69
+    },
+    {
+      "country": "Singapore",
       "count": 68
+    },
+    {
+      "country": "Saudi Arabia",
+      "count": 67
     },
     {
       "country": "Brazil",
@@ -382,15 +382,11 @@
     },
     {
       "country": "Uruguay",
-      "count": 58
+      "count": 57
     },
     {
       "country": "New Zealand",
       "count": 56
-    },
-    {
-      "country": "Ecuador",
-      "count": 55
     },
     {
       "country": "Ukraine",
@@ -398,27 +394,27 @@
     },
     {
       "country": "Nigeria",
-      "count": 49
+      "count": 47
+    },
+    {
+      "country": "Ecuador",
+      "count": 47
     },
     {
       "country": "Canada",
-      "count": 49
+      "count": 46
     },
     {
       "country": "Italy",
       "count": 43
     },
     {
-      "country": "Kuwait",
-      "count": 38
-    },
-    {
-      "country": "Philippines (the)",
-      "count": 38
-    },
-    {
       "country": "Tunisia",
       "count": 38
+    },
+    {
+      "country": "Kuwait",
+      "count": 37
     },
     {
       "country": "European Union",
@@ -429,7 +425,7 @@
       "count": 36
     },
     {
-      "country": "Panama",
+      "country": "Philippines (the)",
       "count": 35
     },
     {
@@ -437,11 +433,15 @@
       "count": 33
     },
     {
-      "country": "Kenya",
-      "count": 32
+      "country": "Panama",
+      "count": 33
     },
     {
       "country": "Ethiopia",
+      "count": 30
+    },
+    {
+      "country": "Kenya",
       "count": 30
     },
     {
@@ -453,12 +453,12 @@
       "count": 29
     },
     {
-      "country": "Kazakhstan",
+      "country": "Chile",
       "count": 28
     },
     {
-      "country": "Chile",
-      "count": 28
+      "country": "Kazakhstan",
+      "count": 27
     },
     {
       "country": "Bolivia (Plurinational State of)",
@@ -473,20 +473,16 @@
       "count": 24
     },
     {
-      "country": "Uganda",
-      "count": 24
-    },
-    {
       "country": "Canada; Australia; Singapore; Switzerland",
       "count": 24
     },
     {
-      "country": "Bosnia and Herzegovina",
-      "count": 22
+      "country": "Uganda",
+      "count": 21
     },
     {
-      "country": "Guatemala",
-      "count": 19
+      "country": "Bosnia and Herzegovina",
+      "count": 20
     },
     {
       "country": "Slovenia",
@@ -495,6 +491,10 @@
     {
       "country": "Belgium",
       "count": 17
+    },
+    {
+      "country": "Guatemala",
+      "count": 16
     },
     {
       "country": "France",
@@ -533,15 +533,7 @@
       "count": 11
     },
     {
-      "country": "Honduras",
-      "count": 11
-    },
-    {
       "country": "Venezuela (Bolivarian Republic of)",
-      "count": 10
-    },
-    {
-      "country": "Spain",
       "count": 10
     },
     {
@@ -565,12 +557,16 @@
       "count": 9
     },
     {
-      "country": "Ireland",
+      "country": "Spain",
       "count": 9
     },
     {
-      "country": "Côte d'Ivoire",
-      "count": 8
+      "country": "Honduras",
+      "count": 9
+    },
+    {
+      "country": "Ireland",
+      "count": 9
     },
     {
       "country": "El Salvador",
@@ -578,6 +574,10 @@
     },
     {
       "country": "Brunei Darussalam",
+      "count": 7
+    },
+    {
+      "country": "Côte d'Ivoire",
       "count": 7
     },
     {
@@ -649,10 +649,6 @@
       "count": 3
     },
     {
-      "country": "Austria",
-      "count": 3
-    },
-    {
       "country": "Palestine, State of",
       "count": 3
     },
@@ -673,10 +669,6 @@
       "count": 3
     },
     {
-      "country": "Sweden",
-      "count": 3
-    },
-    {
       "country": "Rwanda",
       "count": 3
     },
@@ -693,6 +685,10 @@
       "count": 2
     },
     {
+      "country": "Austria",
+      "count": 2
+    },
+    {
       "country": "Estonia",
       "count": 2
     },
@@ -706,6 +702,10 @@
     },
     {
       "country": "Croatia",
+      "count": 2
+    },
+    {
+      "country": "Sweden",
       "count": 2
     },
     {
@@ -760,11 +760,11 @@
     },
     {
       "code": "S.2.1",
-      "count": 71
+      "count": 70
     },
     {
       "code": "S.2.2",
-      "count": 129
+      "count": 127
     },
     {
       "code": "S.2.3",
@@ -792,23 +792,23 @@
     },
     {
       "code": "S.4.1",
-      "count": 177
+      "count": 174
     },
     {
       "code": "S.4.2",
-      "count": 142
+      "count": 140
     },
     {
       "code": "S.4.3",
-      "count": 155
+      "count": 152
     },
     {
       "code": "S.4.4",
-      "count": 94
+      "count": 93
     },
     {
       "code": "S.4.5",
-      "count": 86
+      "count": 83
     },
     {
       "code": "S.4.6",
@@ -880,7 +880,7 @@
     },
     {
       "code": "S.7.3",
-      "count": 111
+      "count": 110
     },
     {
       "code": "S.7.03",
@@ -890,7 +890,7 @@
   "ctd_p_sections": [
     {
       "code": "P.1.01",
-      "count": 79
+      "count": 77
     },
     {
       "code": "P.1.1",
@@ -898,7 +898,7 @@
     },
     {
       "code": "P.1.02",
-      "count": 38
+      "count": 37
     },
     {
       "code": "P.2",
@@ -914,19 +914,19 @@
     },
     {
       "code": "P.2.2",
-      "count": 132
+      "count": 128
     },
     {
       "code": "P.2.3",
-      "count": 90
+      "count": 88
     },
     {
       "code": "P.2.4",
-      "count": 121
+      "count": 118
     },
     {
       "code": "P.2.5",
-      "count": 39
+      "count": 38
     },
     {
       "code": "P.2.6",
@@ -938,23 +938,23 @@
     },
     {
       "code": "P.3.1",
-      "count": 105
+      "count": 101
     },
     {
       "code": "P.3.2",
-      "count": 70
+      "count": 68
     },
     {
       "code": "P.3.3",
-      "count": 319
+      "count": 311
     },
     {
       "code": "P.3.4",
-      "count": 115
+      "count": 112
     },
     {
       "code": "P.3.5",
-      "count": 175
+      "count": 174
     },
     {
       "code": "P.4",
@@ -962,7 +962,7 @@
     },
     {
       "code": "P.4.1",
-      "count": 101
+      "count": 98
     },
     {
       "code": "P.4.2",
@@ -974,7 +974,7 @@
     },
     {
       "code": "P.4.4",
-      "count": 36
+      "count": 34
     },
     {
       "code": "P.4.5",
@@ -990,7 +990,7 @@
     },
     {
       "code": "P.5.1",
-      "count": 439
+      "count": 428
     },
     {
       "code": "P.5.01",
@@ -998,23 +998,23 @@
     },
     {
       "code": "P.5.2",
-      "count": 366
+      "count": 363
     },
     {
       "code": "P.5.3",
-      "count": 438
+      "count": 431
     },
     {
       "code": "P.5.4",
-      "count": 209
+      "count": 201
     },
     {
       "code": "P.5.5",
-      "count": 156
+      "count": 153
     },
     {
       "code": "P.5.6",
-      "count": 238
+      "count": 230
     },
     {
       "code": "P.6.01",
@@ -1090,11 +1090,11 @@
     },
     {
       "code": "P.8.2",
-      "count": 81
+      "count": 80
     },
     {
       "code": "P.8.3",
-      "count": 631
+      "count": 624
     }
   ],
   "ctd_ar_sections": [
@@ -1184,7 +1184,7 @@
     },
     {
       "code": "R.3.3",
-      "count": 48
+      "count": 47
     },
     {
       "code": "R.4.05",
@@ -1196,7 +1196,7 @@
     },
     {
       "code": "R.5.02",
-      "count": 17
+      "count": 16
     },
     {
       "code": "R.5.2",
@@ -1218,27 +1218,27 @@
   "questions_per_year": [
     {
       "year": "2023",
-      "total": 308,
-      "small": 234,
-      "large": 74
+      "total": 296,
+      "small": 224,
+      "large": 72
     },
     {
       "year": "2024",
-      "total": 1752,
-      "small": 1272,
-      "large": 480
+      "total": 1717,
+      "small": 1258,
+      "large": 459
     },
     {
       "year": "2025",
-      "total": 2153,
-      "small": 1703,
-      "large": 450
+      "total": 2102,
+      "small": 1662,
+      "large": 440
     },
     {
       "year": "2026",
-      "total": 1303,
-      "small": 1188,
-      "large": 115
+      "total": 1186,
+      "small": 1080,
+      "large": 106
     }
   ],
   "documents_per_year": [
@@ -1250,21 +1250,21 @@
     },
     {
       "year": "2024",
-      "total": 504,
-      "small": 413,
-      "large": 91
+      "total": 500,
+      "small": 410,
+      "large": 90
     },
     {
       "year": "2025",
-      "total": 559,
-      "small": 459,
-      "large": 100
+      "total": 544,
+      "small": 447,
+      "large": 97
     },
     {
       "year": "2026",
-      "total": 341,
-      "small": 308,
-      "large": 33
+      "total": 321,
+      "small": 290,
+      "large": 31
     }
   ],
   "ctd_characteristics": [
@@ -1894,7 +1894,7 @@
     },
     {
       "code": "P.5.1",
-      "product_count": 43,
+      "product_count": 42,
       "products": [
         "Aflibercept",
         "Amidotrizoic acid",
@@ -1905,7 +1905,6 @@
         "Damoctocog alfa pegol",
         "Darolutamide",
         "Dienogest",
-        "Dienogest + Estradiol",
         "Drospirenone + Estradiol",
         "Drospirenone + Ethinylestradiol + Levomefolic acid",
         "Elinzanetant",
@@ -3269,7 +3268,8 @@
       "lm_products": [
         "Aflibercept",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 14 questions on Facilities and Equipment – Drug Substance. SM (10) and LM (4) both represented. Key themes: production process, cover letter, ereg approved."
     },
     {
       "code": "A.1.1",
@@ -3280,7 +3280,8 @@
       "sm_products": [],
       "lm_products": [
         "Aflibercept"
-      ]
+      ],
+      "summary": "Covers 2 questions. Exclusively Large Molecule (2 Qs). Key themes: item, quality, present."
     },
     {
       "code": "A.1.02",
@@ -3300,7 +3301,20 @@
       "lm_products": [
         "Aflibercept",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 14 questions on Facilities and Equipment – Drug Product. SM (10) and LM (4) both represented. Key themes: sub batches, manufacturing process, hold time."
+    },
+    {
+      "code": "A.1.3",
+      "title": "",
+      "sm_count": 0,
+      "lm_count": 1,
+      "total": 1,
+      "sm_products": [],
+      "lm_products": [
+        "Aflibercept"
+      ],
+      "summary": "Covers 1 questions. Exclusively Large Molecule (1 Qs). Key themes: documents, appendices, including."
     },
     {
       "code": "A.1.03",
@@ -3312,25 +3326,15 @@
       "lm_products": [
         "Aflibercept",
         "Octocog alfa"
-      ]
-    },
-    {
-      "code": "A.1.3",
-      "title": "",
-      "sm_count": 0,
-      "lm_count": 1,
-      "total": 1,
-      "sm_products": [],
-      "lm_products": [
-        "Aflibercept"
-      ]
+      ],
+      "summary": "Covers 4 questions on Qualification/Validation of Facilities and Equipment. Exclusively Large Molecule (4 Qs). Key themes: validation, process, manufacturing."
     },
     {
       "code": "A.2.01",
       "title": "TSE Assessment",
       "sm_count": 12,
-      "lm_count": 16,
-      "total": 28,
+      "lm_count": 15,
+      "total": 27,
       "sm_products": [
         "Darolutamide",
         "Dienogest",
@@ -3346,7 +3350,8 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 27 questions on TSE Assessment. SM (12) and LM (15) both represented. Key themes: adventitious agents, animal origin, human animal."
     },
     {
       "code": "A.2.2",
@@ -3358,7 +3363,8 @@
       "lm_products": [
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 5 questions. Exclusively Large Molecule (5 Qs). Key themes: test absence, cell bank, bank viability."
     },
     {
       "code": "A.2.02",
@@ -3374,20 +3380,22 @@
         "Levonorgestrel",
         "N/A"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 8 questions on TSE Assessment - Substance. Exclusively Small Molecule (8 Qs). Key themes: according requirements, requirements standard, standard ctd."
     },
     {
       "code": "A.2.03",
       "title": "Virological Safety",
       "sm_count": 0,
-      "lm_count": 22,
-      "total": 22,
+      "lm_count": 21,
+      "total": 21,
       "sm_products": [],
       "lm_products": [
         "Aflibercept",
         "BAY 3401016",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 21 questions on Virological Safety. Exclusively Large Molecule (21 Qs). Key themes: adventitious agents, viral clearance, safety evaluation."
     },
     {
       "code": "A.2.3",
@@ -3400,7 +3408,8 @@
       ],
       "lm_products": [
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 3 questions. SM (1) and LM (2) both represented. Key themes: test absence, cell bank, bank viability."
     },
     {
       "code": "A.2.4",
@@ -3411,7 +3420,8 @@
       "sm_products": [],
       "lm_products": [
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 2 questions. Exclusively Large Molecule (2 Qs). Key themes: test absence, cell bank, bank viability."
     },
     {
       "code": "A.2.50",
@@ -3425,7 +3435,8 @@
         "BAY 3401016",
         "BAY 3547926",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 6 questions on Study Reports of Virus Clearance Validation. Exclusively Large Molecule (6 Qs). Key themes: test absence, viral clearance, down process."
     },
     {
       "code": "A.3.1",
@@ -3436,7 +3447,8 @@
       "sm_products": [
         "Gadoxetic acid"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 2 questions on Nomenclature. Exclusively Small Molecule (2 Qs). Key themes: requirement, complete, eob."
     },
     {
       "code": "A.3.2",
@@ -3447,7 +3459,8 @@
       "sm_products": [
         "Gadoxetic acid"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 2 questions. Exclusively Small Molecule (2 Qs). Key themes: bpom regulation, regulation year, pharmacopoeia bpom."
     },
     {
       "code": "A.3.4",
@@ -3460,14 +3473,27 @@
         "Gadoquatrane",
         "Gadoxetic acid"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 4 questions. Exclusively Small Molecule (4 Qs). Key themes: bpom regulation, regulation year, pharmacopoeia bpom."
+    },
+    {
+      "code": "P.1.1",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Iopromide"
+      ],
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: registration, ctd, release."
     },
     {
       "code": "P.1.01",
       "title": "Description and Composition of the Drug Product",
-      "sm_count": 71,
+      "sm_count": 69,
       "lm_count": 8,
-      "total": 79,
+      "total": 77,
       "sm_products": [
         "Acetylsalicylic acid",
         "Amidotrizoic acid",
@@ -3498,25 +3524,15 @@
       "lm_products": [
         "Aflibercept",
         "BAY 3401016"
-      ]
-    },
-    {
-      "code": "P.1.1",
-      "title": "",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
-      "sm_products": [
-        "Iopromide"
       ],
-      "lm_products": []
+      "summary": "Covers 77 questions on Description and Composition of the Drug Product. SM (69) and LM (8) both represented. Key themes: stability study, description composition, stability studies."
     },
     {
       "code": "P.1.02",
       "title": "",
-      "sm_count": 34,
+      "sm_count": 33,
       "lm_count": 4,
-      "total": 38,
+      "total": 37,
       "sm_products": [
         "Amidotrizoic acid",
         "Darolutamide",
@@ -3538,7 +3554,8 @@
       "lm_products": [
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 37 questions. SM (33) and LM (4) both represented. Key themes: stability study, qualitative quantitative, quantitative formula."
     },
     {
       "code": "P.2",
@@ -3549,7 +3566,20 @@
       "sm_products": [
         "Gadoquatrane"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: microbial challenge, time hours, support use."
+    },
+    {
+      "code": "P.2.01",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Rivaroxaban"
+      ],
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: quality control, control medicinal, registration dossier."
     },
     {
       "code": "P.2.1",
@@ -3569,25 +3599,15 @@
       ],
       "lm_products": [
         "BAY 3401016"
-      ]
-    },
-    {
-      "code": "P.2.01",
-      "title": "",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
-      "sm_products": [
-        "Rivaroxaban"
       ],
-      "lm_products": []
+      "summary": "Covers 17 questions on Pharmaceutical Development - Components. SM (16) and LM (1) both represented. Key themes: bxa bxa, manufacturing process, dissolution profiles."
     },
     {
       "code": "P.2.2",
       "title": "Pharmaceutical Development - Drug Product",
-      "sm_count": 118,
-      "lm_count": 14,
-      "total": 132,
+      "sm_count": 93,
+      "lm_count": 13,
+      "total": 106,
       "sm_products": [
         "Acetylsalicylic acid",
         "Amidotrizoic acid",
@@ -3619,14 +3639,15 @@
         "Aflibercept",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 106 questions on Pharmaceutical Development - Drug Product. SM (93) and LM (13) both represented. Key themes: comparative dissolution, dissolution medium, coefficient variation."
     },
     {
       "code": "P.2.3",
       "title": "Pharmaceutical Development - Manufacturing Process",
-      "sm_count": 66,
-      "lm_count": 24,
-      "total": 90,
+      "sm_count": 64,
+      "lm_count": 22,
+      "total": 86,
       "sm_products": [
         "Amidotrizoic acid",
         "Asundexian",
@@ -3651,14 +3672,15 @@
         "Aflibercept",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 86 questions on Pharmaceutical Development - Manufacturing Process. SM (64) and LM (22) both represented. Key themes: manufacturing process, process parameters, pharmaceutical development."
     },
     {
       "code": "P.2.4",
       "title": "Pharmaceutical Development - Container Closure System",
-      "sm_count": 77,
-      "lm_count": 44,
-      "total": 121,
+      "sm_count": 38,
+      "lm_count": 33,
+      "total": 71,
       "sm_products": [
         "Drospirenone + Estradiol",
         "Gadobutrol",
@@ -3675,14 +3697,15 @@
         "Aflibercept",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 71 questions on Pharmaceutical Development - Container Closure System. SM (38) and LM (33) both represented. Key themes: container closure, closure system, leachables study."
     },
     {
       "code": "P.2.5",
       "title": "Pharmaceutical Development - Microbiological Attributes",
-      "sm_count": 39,
+      "sm_count": 33,
       "lm_count": 0,
-      "total": 39,
+      "total": 33,
       "sm_products": [
         "Darolutamide",
         "Drospirenone + Estradiol",
@@ -3693,7 +3716,8 @@
         "Rivaroxaban",
         "Testosterone"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 33 questions on Pharmaceutical Development - Microbiological Attributes. Exclusively Small Molecule (33 Qs). Key themes: after opening, bxa bxa, use period."
     },
     {
       "code": "P.2.6",
@@ -3710,7 +3734,8 @@
         "BAY 3401016",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 15 questions on Pharmaceutical Development – Compatibility. SM (5) and LM (10) both represented. Key themes: bxa bxa, dissolution profiles, use stability."
     },
     {
       "code": "P.3",
@@ -3723,14 +3748,15 @@
         "Finerenone",
         "Gadoquatrane"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 7 questions. Exclusively Small Molecule (7 Qs). Key themes: routine production, validation load, comparison validation."
     },
     {
       "code": "P.3.1",
       "title": "Manufacturing Sites",
-      "sm_count": 77,
+      "sm_count": 71,
       "lm_count": 28,
-      "total": 105,
+      "total": 99,
       "sm_products": [
         "Acetylsalicylic acid",
         "Cyproterone + Ethinylestradiol",
@@ -3759,14 +3785,15 @@
         "Aflibercept",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 99 questions on Manufacturing Sites. SM (71) and LM (28) both represented. Key themes: parametric release, manufacturing process, gmp certificate."
     },
     {
       "code": "P.3.2",
       "title": "Batch Formula",
-      "sm_count": 62,
+      "sm_count": 59,
       "lm_count": 8,
-      "total": 70,
+      "total": 67,
       "sm_products": [
         "Amidotrizoic acid",
         "Darolutamide",
@@ -3796,14 +3823,15 @@
         "Aflibercept",
         "BAY 3401016",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 67 questions on Batch Formula. SM (59) and LM (8) both represented. Key themes: batch size, batch formula, manufacturing process."
     },
     {
       "code": "P.3.3",
       "title": "Manufacturing Process and Process Controls",
-      "sm_count": 276,
-      "lm_count": 43,
-      "total": 319,
+      "sm_count": 195,
+      "lm_count": 35,
+      "total": 230,
       "sm_products": [
         "Amidotrizoic acid",
         "Cyproterone + Estradiol",
@@ -3837,14 +3865,15 @@
         "Aflibercept",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 230 questions on Manufacturing Process and Process Controls. SM (195) and LM (35) both represented. Key themes: manufacturing process, process control, process parameters."
     },
     {
       "code": "P.3.4",
       "title": "Control of Critical Steps",
-      "sm_count": 75,
-      "lm_count": 40,
-      "total": 115,
+      "sm_count": 49,
+      "lm_count": 24,
+      "total": 73,
       "sm_products": [
         "Copanlisib",
         "Darolutamide",
@@ -3868,14 +3897,15 @@
       "lm_products": [
         "Aflibercept",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 73 questions on Control of Critical Steps. SM (49) and LM (24) both represented. Key themes: manufacturing process, critical steps, control critical."
     },
     {
       "code": "P.3.5",
       "title": "Process Validation and/or Evaluation",
-      "sm_count": 134,
-      "lm_count": 41,
-      "total": 175,
+      "sm_count": 130,
+      "lm_count": 36,
+      "total": 166,
       "sm_products": [
         "Acetylsalicylic acid",
         "Copanlisib",
@@ -3911,7 +3941,8 @@
         "BAY 3547926",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 166 questions on Process Validation and/or Evaluation. SM (130) and LM (36) both represented. Key themes: process validation, manufacturing process, validation report."
     },
     {
       "code": "P.4",
@@ -3922,14 +3953,15 @@
       "sm_products": [
         "Finerenone"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: technical, grade, microcrystalline."
     },
     {
       "code": "P.4.1",
       "title": "Quality Reference",
-      "sm_count": 95,
-      "lm_count": 6,
-      "total": 101,
+      "sm_count": 85,
+      "lm_count": 5,
+      "total": 90,
       "sm_products": [
         "Amidotrizoic acid",
         "Cyproterone + Estradiol",
@@ -3964,7 +3996,8 @@
         "Aflibercept",
         "BAY 3401016",
         "Interferon beta-1b"
-      ]
+      ],
+      "summary": "Covers 90 questions on Quality Reference. SM (85) and LM (5) both represented. Key themes: test parameters, pharmacopoeia bpom, bpom regulation."
     },
     {
       "code": "P.4.2",
@@ -3981,27 +4014,29 @@
       ],
       "lm_products": [
         "Interferon beta-1b"
-      ]
+      ],
+      "summary": "Covers 10 questions on Excipients - Test Procedure. SM (9) and LM (1) both represented. Key themes: analytical procedures, according requirements, requirements standard."
     },
     {
       "code": "P.4.3",
       "title": "Excipients - Validation of Analytical Procedures",
-      "sm_count": 5,
+      "sm_count": 4,
       "lm_count": 0,
-      "total": 5,
+      "total": 4,
       "sm_products": [
         "Darolutamide",
         "Gadoteric acid",
         "Levonorgestrel"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 4 questions on Excipients - Validation of Analytical Procedures. Exclusively Small Molecule (4 Qs). Key themes: according requirements, requirements standard, standard ctd."
     },
     {
       "code": "P.4.4",
       "title": "Excipients - Justification of Specification",
-      "sm_count": 35,
+      "sm_count": 32,
       "lm_count": 1,
-      "total": 36,
+      "total": 33,
       "sm_products": [
         "Amidotrizoic acid",
         "Cyproterone + Ethinylestradiol",
@@ -4018,7 +4053,8 @@
       ],
       "lm_products": [
         "Interferon beta-1b"
-      ]
+      ],
+      "summary": "Covers 33 questions on Excipients - Justification of Specification. SM (32) and LM (1) both represented. Key themes: ethylene glycol, diethylene glycol, test parameters."
     },
     {
       "code": "P.4.5",
@@ -4031,7 +4067,8 @@
       ],
       "lm_products": [
         "Interferon beta-1b"
-      ]
+      ],
+      "summary": "Covers 3 questions on Excipients of Human or Animal Origin. SM (2) and LM (1) both represented. Key themes: according requirements, requirements standard, standard ctd."
     },
     {
       "code": "P.4.6",
@@ -4042,7 +4079,8 @@
       "sm_products": [
         "Levonorgestrel"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions on Novel Excipients - Evaluation. Exclusively Small Molecule (1 Qs). Key themes: sections, missing."
     },
     {
       "code": "P.5",
@@ -4054,14 +4092,15 @@
         "Finerenone",
         "Rivaroxaban"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 7 questions. Exclusively Small Molecule (7 Qs). Key themes: analytical methodology, analytical procedure, certificates analysis."
     },
     {
       "code": "P.5.1",
       "title": "Release Specification",
-      "sm_count": 362,
-      "lm_count": 77,
-      "total": 439,
+      "sm_count": 246,
+      "lm_count": 58,
+      "total": 304,
       "sm_products": [
         "Amidotrizoic acid",
         "Copanlisib",
@@ -4069,7 +4108,6 @@
         "Cyproterone + Ethinylestradiol",
         "Darolutamide",
         "Dienogest",
-        "Dienogest + Estradiol",
         "Drospirenone + Estradiol",
         "Drospirenone + Ethinylestradiol + Levomefolic acid",
         "Elinzanetant",
@@ -4108,7 +4146,8 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 304 questions on Release Specification. SM (246) and LM (58) both represented. Key themes: shelf life, test parameters, acceptance criteria."
     },
     {
       "code": "P.5.01",
@@ -4121,14 +4160,15 @@
         "Radium (Ra223) dichloride",
         "Rivaroxaban"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 4 questions. Exclusively Small Molecule (4 Qs). Key themes: quality control, subparagraph article, article requirements."
     },
     {
       "code": "P.5.2",
       "title": "Test Procedure",
-      "sm_count": 317,
-      "lm_count": 49,
-      "total": 366,
+      "sm_count": 217,
+      "lm_count": 27,
+      "total": 244,
       "sm_products": [
         "Amidotrizoic acid",
         "Asundexian",
@@ -4173,14 +4213,15 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 244 questions on Test Procedure. SM (217) and LM (27) both represented. Key themes: test parameters, pharmacopoeia bpom, bpom regulation."
     },
     {
       "code": "P.5.3",
       "title": "Validation of Test for Assay and Impurities",
-      "sm_count": 384,
-      "lm_count": 54,
-      "total": 438,
+      "sm_count": 173,
+      "lm_count": 25,
+      "total": 198,
       "sm_products": [
         "Amidotrizoic acid",
         "Cyproterone + Estradiol",
@@ -4220,14 +4261,15 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 198 questions on Validation of Test for Assay and Impurities. SM (173) and LM (25) both represented. Key themes: related substances, container closure, method validation."
     },
     {
       "code": "P.5.4",
       "title": "Batch Analyses",
-      "sm_count": 182,
+      "sm_count": 132,
       "lm_count": 27,
-      "total": 209,
+      "total": 159,
       "sm_products": [
         "BAY 2862789",
         "Copanlisib",
@@ -4262,14 +4304,15 @@
         "Aflibercept",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 159 questions on Batch Analyses. SM (132) and LM (27) both represented. Key themes: batch analysis, dissolution medium, coefficient variation."
     },
     {
       "code": "P.5.5",
       "title": "Impurities in the Drug Product",
-      "sm_count": 150,
+      "sm_count": 103,
       "lm_count": 6,
-      "total": 156,
+      "total": 109,
       "sm_products": [
         "Acarbose",
         "Amidotrizoic acid",
@@ -4303,14 +4346,15 @@
         "Aflibercept",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 109 questions on Impurities in the Drug Product. SM (103) and LM (6) both represented. Key themes: risk assessment, elemental impurities, testing parameters."
     },
     {
       "code": "P.5.6",
       "title": "Justification of Specification",
-      "sm_count": 192,
-      "lm_count": 46,
-      "total": 238,
+      "sm_count": 164,
+      "lm_count": 43,
+      "total": 207,
       "sm_products": [
         "Acetylsalicylic acid",
         "Amidotrizoic acid",
@@ -4344,7 +4388,8 @@
         "Aflibercept",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 207 questions on Justification of Specification. SM (164) and LM (43) both represented. Key themes: shelf life, parametric release, acceptance criteria."
     },
     {
       "code": "P.6.01",
@@ -4363,7 +4408,8 @@
         "Testosterone",
         "Vericiguat"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 23 questions on Reference Standard. Exclusively Small Molecule (23 Qs). Key themes: bxa bxa, reference standards, dissolution profiles."
     },
     {
       "code": "P.6.02",
@@ -4374,7 +4420,8 @@
       "sm_products": [
         "Rivaroxaban"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 7 questions. Exclusively Small Molecule (7 Qs). Key themes: bxa bxa, dissolution profiles, comparative dissolution."
     },
     {
       "code": "P.6.05",
@@ -4385,18 +4432,8 @@
       "sm_products": [
         "Rivaroxaban"
       ],
-      "lm_products": []
-    },
-    {
-      "code": "P.7.1",
-      "title": "",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
-      "sm_products": [
-        "Levonorgestrel"
-      ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 7 questions on Reference Standard – Additional Information. Exclusively Small Molecule (7 Qs). Key themes: bxa bxa, dissolution profiles, comparative dissolution."
     },
     {
       "code": "P.7.01",
@@ -4426,7 +4463,20 @@
         "Aflibercept",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 56 questions on Packaging Materials. SM (44) and LM (12) both represented. Key themes: container closure, closure system, stability study."
+    },
+    {
+      "code": "P.7.1",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Levonorgestrel"
+      ],
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: kindly amend, description, implants."
     },
     {
       "code": "P.7.02",
@@ -4456,7 +4506,8 @@
         "Aflibercept",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 48 questions on Description of Packaging Material. SM (42) and LM (6) both represented. Key themes: container closure, closure system, description packaging."
     },
     {
       "code": "P.7.03",
@@ -4489,18 +4540,8 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
-    },
-    {
-      "code": "P.7.4",
-      "title": "",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
-      "sm_products": [
-        "Gadoxetic acid"
       ],
-      "lm_products": []
+      "summary": "Covers 38 questions on Packaging – Specification and Test Procedure. SM (31) and LM (7) both represented. Key themes: container closure, closure system, rubber stopper."
     },
     {
       "code": "P.7.04",
@@ -4519,7 +4560,20 @@
       "lm_products": [
         "Aflibercept",
         "Interferon beta-1b"
-      ]
+      ],
+      "summary": "Covers 21 questions on Drawings of Packaging Materials (Primary Container / Functional Secondary Container). SM (17) and LM (4) both represented. Key themes: process validation, primary packaging, container closure."
+    },
+    {
+      "code": "P.7.4",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Gadoxetic acid"
+      ],
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: packaging, materials, coa."
     },
     {
       "code": "P.7.05",
@@ -4540,7 +4594,8 @@
       ],
       "lm_products": [
         "Aflibercept"
-      ]
+      ],
+      "summary": "Covers 14 questions on Packaging - Batch Analyses. SM (13) and LM (1) both represented. Key themes: container closure, closure system, sugar coated."
     },
     {
       "code": "P.7.07",
@@ -4551,7 +4606,8 @@
       "sm_products": [
         "Rivaroxaban"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: attach, specifications, certificates."
     },
     {
       "code": "P.7.10",
@@ -4562,7 +4618,8 @@
       "sm_products": [
         "Rivaroxaban"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: attach, specifications, certificates."
     },
     {
       "code": "P.7.11",
@@ -4578,7 +4635,8 @@
       ],
       "lm_products": [
         "Aflibercept"
-      ]
+      ],
+      "summary": "Covers 8 questions on Packaging – Additional Information. SM (6) and LM (2) both represented. Key themes: packaging materials, primary packaging, container closure."
     },
     {
       "code": "P.7.20",
@@ -4589,7 +4647,8 @@
       "sm_products": [
         "Rivaroxaban"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: attach, specifications, certificates."
     },
     {
       "code": "P.8",
@@ -4602,7 +4661,8 @@
         "Gadoquatrane",
         "Rivaroxaban"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 4 questions. Exclusively Small Molecule (4 Qs). Key themes: microbial challenge, time hours, second revision."
     },
     {
       "code": "P.8.0",
@@ -4613,14 +4673,29 @@
       "sm_products": [
         "Vericiguat"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: subsequent, stability, according."
+    },
+    {
+      "code": "P.8.01",
+      "title": "",
+      "sm_count": 2,
+      "lm_count": 1,
+      "total": 3,
+      "sm_products": [
+        "Rivaroxaban"
+      ],
+      "lm_products": [
+        "BAY 3401016"
+      ],
+      "summary": "Covers 3 questions. SM (2) and LM (1) both represented. Key themes: storage conditions, stability study, stability test."
     },
     {
       "code": "P.8.1",
       "title": "Stability Summary and Conclusion",
-      "sm_count": 122,
-      "lm_count": 48,
-      "total": 170,
+      "sm_count": 100,
+      "lm_count": 41,
+      "total": 141,
       "sm_products": [
         "Acetylsalicylic acid",
         "Cyproterone",
@@ -4651,27 +4726,15 @@
         "Aflibercept",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
-    },
-    {
-      "code": "P.8.01",
-      "title": "",
-      "sm_count": 2,
-      "lm_count": 1,
-      "total": 3,
-      "sm_products": [
-        "Rivaroxaban"
       ],
-      "lm_products": [
-        "BAY 3401016"
-      ]
+      "summary": "Covers 141 questions on Stability Summary and Conclusion. SM (100) and LM (41) both represented. Key themes: shelf life, stability study, long term."
     },
     {
       "code": "P.8.2",
       "title": "Post-Approval Stability Protocol and Stability Commitment",
-      "sm_count": 64,
+      "sm_count": 63,
       "lm_count": 17,
-      "total": 81,
+      "total": 80,
       "sm_products": [
         "Darolutamide",
         "Drospirenone + Estradiol",
@@ -4696,14 +4759,15 @@
       "lm_products": [
         "Aflibercept",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 80 questions on Post-Approval Stability Protocol and Stability Commitment. SM (63) and LM (17) both represented. Key themes: stability protocol, long term, post approval."
     },
     {
       "code": "P.8.3",
       "title": "Stability Data",
-      "sm_count": 508,
-      "lm_count": 123,
-      "total": 631,
+      "sm_count": 369,
+      "lm_count": 97,
+      "total": 466,
       "sm_products": [
         "Acetylsalicylic acid",
         "Amidotrizoic acid",
@@ -4754,7 +4818,8 @@
         "BAY 3547926",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 466 questions on Stability Data. SM (369) and LM (97) both represented. Key themes: shelf life, stability study, long term."
     },
     {
       "code": "R.1.01",
@@ -4779,21 +4844,23 @@
         "Rivaroxaban",
         "Testosterone"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 25 questions on Certificate of Suitability. Exclusively Small Molecule (25 Qs). Key themes: active substance, estradiol valerate, place micronization."
     },
     {
       "code": "R.2.01",
       "title": "Comparability Protocol",
       "sm_count": 3,
-      "lm_count": 11,
-      "total": 14,
+      "lm_count": 9,
+      "total": 12,
       "sm_products": [
         "Darolutamide"
       ],
       "lm_products": [
         "Aflibercept",
         "Interferon beta-1b"
-      ]
+      ],
+      "summary": "Covers 12 questions on Comparability Protocol. SM (3) and LM (9) both represented. Key themes: manufacturing site, batch size, page table."
     },
     {
       "code": "R.2.02",
@@ -4810,7 +4877,8 @@
         "BAY 3547926",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 28 questions on Comparability Exercise. SM (1) and LM (27) both represented. Key themes: peg mal, batches manufactured, three batches."
     },
     {
       "code": "R.2.05",
@@ -4821,7 +4889,8 @@
       "sm_products": [
         "Gadoquatrane"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions on Established Conditions - Summary. Exclusively Small Molecule (1 Qs). Key themes: commercial production, process, time."
     },
     {
       "code": "R.3.1",
@@ -4843,7 +4912,8 @@
       ],
       "lm_products": [
         "Aflibercept"
-      ]
+      ],
+      "summary": "Covers 36 questions on Batch Report – Master. SM (35) and LM (1) both represented. Key themes: batch batch, executed bmr, comparative dissolution."
     },
     {
       "code": "R.3.2",
@@ -4854,14 +4924,15 @@
       "sm_products": [],
       "lm_products": [
         "Aflibercept"
-      ]
+      ],
+      "summary": "Covers 2 questions on Batch Report. Exclusively Large Molecule (2 Qs). Key themes: testing, stability, test."
     },
     {
       "code": "R.3.3",
       "title": "Executed Batch Record",
-      "sm_count": 48,
+      "sm_count": 44,
       "lm_count": 0,
-      "total": 48,
+      "total": 44,
       "sm_products": [
         "Darolutamide",
         "Drospirenone + Estradiol",
@@ -4879,7 +4950,8 @@
         "Sorafenib",
         "Vericiguat"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 44 questions on Executed Batch Record. Exclusively Small Molecule (44 Qs). Key themes: executed bmr, comparative dissolution, blank bmr."
     },
     {
       "code": "R.4.05",
@@ -4890,7 +4962,8 @@
       "sm_products": [
         "Gadoquatrane"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: container closure, evidence, safety."
     },
     {
       "code": "R.5.01",
@@ -4901,7 +4974,8 @@
       "sm_products": [
         "Molidustat"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions on Labeling of the Immediate/Shipping Container for the Bulk Drug Substance. Exclusively Small Molecule (1 Qs). Key themes: representative, label, api."
     },
     {
       "code": "R.5.2",
@@ -4912,14 +4986,15 @@
       "sm_products": [],
       "lm_products": [
         "Aflibercept"
-      ]
+      ],
+      "summary": "Covers 1 questions. Exclusively Large Molecule (1 Qs). Key themes: dot blot, blot assay, figure."
     },
     {
       "code": "R.5.02",
       "title": "Description of Shipping (Transportation) Studies",
-      "sm_count": 6,
-      "lm_count": 11,
-      "total": 17,
+      "sm_count": 5,
+      "lm_count": 9,
+      "total": 14,
       "sm_products": [
         "Darolutamide",
         "Finerenone",
@@ -4929,7 +5004,8 @@
         "Aflibercept",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 14 questions on Description of Shipping (Transportation) Studies. SM (5) and LM (9) both represented. Key themes: holding time, process validation, cold chain."
     },
     {
       "code": "R.6.01",
@@ -4941,7 +5017,8 @@
       "lm_products": [
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 4 questions on Method Validation - Reports. Exclusively Large Molecule (4 Qs). Key themes: complete, validation, potency."
     },
     {
       "code": "R.7.01",
@@ -4952,7 +5029,8 @@
       "sm_products": [],
       "lm_products": [
         "Aflibercept"
-      ]
+      ],
+      "summary": "Covers 2 questions on One-time Manufacturing Variances. Exclusively Large Molecule (2 Qs). Key themes: batch, module, api."
     },
     {
       "code": "R.10.01",
@@ -4963,7 +5041,8 @@
       "sm_products": [
         "Gadoquatrane"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions on Information on Quality Management System. Exclusively Small Molecule (1 Qs). Key themes: demonstrate compliance, cfr part, combination products."
     },
     {
       "code": "S.1.1",
@@ -4978,7 +5057,8 @@
       ],
       "lm_products": [
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 5 questions on General Information - Nomenclature. SM (4) and LM (1) both represented. Key themes: riociguat intermediate, test items, required open."
     },
     {
       "code": "S.1.2",
@@ -4997,7 +5077,8 @@
       "lm_products": [
         "Aflibercept",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 13 questions on General Information - Structure. SM (11) and LM (2) both represented. Key themes: molecular weight, one accredited, pdf refers."
     },
     {
       "code": "S.1.3",
@@ -5022,7 +5103,8 @@
       "lm_products": [
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 40 questions on General Information - General Properties. SM (36) and LM (4) both represented. Key themes: degradation products, batch batch, manufacturing process."
     },
     {
       "code": "S.2",
@@ -5034,14 +5116,15 @@
         "Asundexian",
         "Riociguat"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 3 questions. Exclusively Small Molecule (3 Qs). Key themes: proposed analytical, presentation, details."
     },
     {
       "code": "S.2.1",
       "title": "Manufacturer(s)",
-      "sm_count": 58,
+      "sm_count": 56,
       "lm_count": 13,
-      "total": 71,
+      "total": 69,
       "sm_products": [
         "Acetylsalicylic acid",
         "Asundexian",
@@ -5066,14 +5149,15 @@
         "Aflibercept",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 69 questions on Manufacturer(s). SM (56) and LM (13) both represented. Key themes: active substance, manufacturing site, active ingredient."
     },
     {
       "code": "S.2.2",
       "title": "Manufacturing Process - Flow Diagram",
-      "sm_count": 79,
-      "lm_count": 50,
-      "total": 129,
+      "sm_count": 63,
+      "lm_count": 33,
+      "total": 96,
       "sm_products": [
         "Acoramidis",
         "Asundexian",
@@ -5098,14 +5182,15 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 96 questions on Manufacturing Process - Flow Diagram. SM (63) and LM (33) both represented. Key themes: manufacturing process, batch size, description manufacturing."
     },
     {
       "code": "S.2.3",
       "title": "Raw Materials",
-      "sm_count": 118,
-      "lm_count": 43,
-      "total": 161,
+      "sm_count": 66,
+      "lm_count": 29,
+      "total": 95,
       "sm_products": [
         "Acoramidis",
         "Darolutamide",
@@ -5131,14 +5216,15 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 95 questions on Raw Materials. SM (66) and LM (29) both represented. Key themes: starting material, cell bank, starting materials."
     },
     {
       "code": "S.2.4",
       "title": "Discussion and Control of Critical Steps",
-      "sm_count": 87,
-      "lm_count": 60,
-      "total": 147,
+      "sm_count": 70,
+      "lm_count": 49,
+      "total": 119,
       "sm_products": [
         "Acoramidis",
         "Darolutamide",
@@ -5158,14 +5244,15 @@
         "Aflibercept",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 119 questions on Discussion and Control of Critical Steps. SM (70) and LM (49) both represented. Key themes: manufacturing process, batch analysis, process control."
     },
     {
       "code": "S.2.5",
       "title": "Process Validation – Summary",
       "sm_count": 9,
-      "lm_count": 38,
-      "total": 47,
+      "lm_count": 30,
+      "total": 39,
       "sm_products": [
         "Asundexian",
         "Darolutamide",
@@ -5178,14 +5265,15 @@
         "Aflibercept",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 39 questions on Process Validation – Summary. SM (9) and LM (30) both represented. Key themes: manufacturing process, process validation, article paragraph."
     },
     {
       "code": "S.2.6",
       "title": "Manufacturing Process Development",
-      "sm_count": 31,
-      "lm_count": 35,
-      "total": 66,
+      "sm_count": 30,
+      "lm_count": 29,
+      "total": 59,
       "sm_products": [
         "Asundexian",
         "Darolutamide",
@@ -5201,14 +5289,15 @@
         "BAY 3401016",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 59 questions on Manufacturing Process Development. SM (30) and LM (29) both represented. Key themes: manufacturing process, process development, active substance."
     },
     {
       "code": "S.3.1",
       "title": "Structure Elucidation and other Characteristics",
-      "sm_count": 35,
-      "lm_count": 32,
-      "total": 67,
+      "sm_count": 31,
+      "lm_count": 16,
+      "total": 47,
       "sm_products": [
         "Asundexian",
         "Darolutamide",
@@ -5225,14 +5314,15 @@
         "Aflibercept",
         "Damoctocog alfa pegol",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 47 questions on Structure Elucidation and other Characteristics. SM (31) and LM (16) both represented. Key themes: regulation article, manufacturing process, article paragraph."
     },
     {
       "code": "S.3.2",
       "title": "Impurities",
-      "sm_count": 84,
-      "lm_count": 7,
-      "total": 91,
+      "sm_count": 68,
+      "lm_count": 6,
+      "total": 74,
       "sm_products": [
         "Cyproterone",
         "Darolutamide",
@@ -5260,14 +5350,15 @@
       "lm_products": [
         "Aflibercept",
         "BAY 3401016"
-      ]
+      ],
+      "summary": "Covers 74 questions on Impurities. SM (68) and LM (6) both represented. Key themes: risk assessment, elemental impurities, scale batches."
     },
     {
       "code": "S.4.1",
       "title": "Specification",
-      "sm_count": 135,
+      "sm_count": 131,
       "lm_count": 42,
-      "total": 177,
+      "total": 173,
       "sm_products": [
         "Amidotrizoic acid",
         "Asundexian",
@@ -5312,14 +5403,15 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 173 questions on Specification. SM (131) and LM (42) both represented. Key themes: test parameters, pharmacopoeia bpom, active substance."
     },
     {
       "code": "S.4.2",
       "title": "Test Procedure",
-      "sm_count": 96,
-      "lm_count": 46,
-      "total": 142,
+      "sm_count": 94,
+      "lm_count": 22,
+      "total": 116,
       "sm_products": [
         "Acoramidis",
         "Amidotrizoic acid",
@@ -5355,14 +5447,15 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 116 questions on Test Procedure. SM (94) and LM (22) both represented. Key themes: test parameters, pharmacopoeia bpom, bpom regulation."
     },
     {
       "code": "S.4.3",
       "title": "Validation of Test for Assay and Impurities",
-      "sm_count": 59,
-      "lm_count": 96,
-      "total": 155,
+      "sm_count": 42,
+      "lm_count": 31,
+      "total": 73,
       "sm_products": [
         "Acetylsalicylic acid",
         "Cyproterone",
@@ -5389,14 +5482,15 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 73 questions on Validation of Test for Assay and Impurities. SM (42) and LM (31) both represented. Key themes: active substance, test methods, analytical methods."
     },
     {
       "code": "S.4.4",
       "title": "Batch Analyses",
-      "sm_count": 72,
+      "sm_count": 68,
       "lm_count": 22,
-      "total": 94,
+      "total": 90,
       "sm_products": [
         "Acoramidis",
         "Asundexian",
@@ -5429,14 +5523,15 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 90 questions on Batch Analyses. SM (68) and LM (22) both represented. Key themes: active ingredient, batch analysis, batch analyses."
     },
     {
       "code": "S.4.5",
       "title": "Justification of Specification and Skip Testing",
-      "sm_count": 54,
-      "lm_count": 32,
-      "total": 86,
+      "sm_count": 53,
+      "lm_count": 29,
+      "total": 82,
       "sm_products": [
         "Cyproterone + Ethinylestradiol",
         "Darolutamide",
@@ -5464,7 +5559,8 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 82 questions on Justification of Specification and Skip Testing. SM (53) and LM (29) both represented. Key themes: active ingredient, active substance, active pharmaceutical."
     },
     {
       "code": "S.4.6",
@@ -5475,7 +5571,8 @@
       "sm_products": [
         "Levonorgestrel"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: analytical methodology, active, ingredient."
     },
     {
       "code": "S.5.01",
@@ -5503,7 +5600,8 @@
       "lm_products": [
         "Aflibercept",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 45 questions on Reference Standard. SM (35) and LM (10) both represented. Key themes: reference standard, reference standards, standard samples."
     },
     {
       "code": "S.5.02",
@@ -5514,7 +5612,8 @@
       "sm_products": [],
       "lm_products": [
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 1 questions. Exclusively Large Molecule (1 Qs). Key themes: related, reference, standards."
     },
     {
       "code": "S.5.03",
@@ -5526,7 +5625,8 @@
         "Gadoquatrane",
         "Sevabertinib"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 2 questions on Reference Standards - Impurities. Exclusively Small Molecule (2 Qs). Key themes: reference standards, gadoquatrane isomer, isomer methyl."
     },
     {
       "code": "S.5.05",
@@ -5537,7 +5637,8 @@
       "sm_products": [],
       "lm_products": [
         "Aflibercept"
-      ]
+      ],
+      "summary": "Covers 6 questions on Reference Standard – Additional Information. Exclusively Large Molecule (6 Qs). Key themes: reference standard, aflibercept standard, standard rsvitv."
     },
     {
       "code": "S.5.06",
@@ -5549,7 +5650,8 @@
         "Gadoquatrane",
         "Rivaroxaban"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 2 questions on Specification and Testing of Reference Standard. Exclusively Small Molecule (2 Qs). Key themes: reference standard, reference material, house specifications."
     },
     {
       "code": "S.5.07",
@@ -5560,7 +5662,8 @@
       "sm_products": [
         "Levonorgestrel"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions on Specification and Testing of Reference Standards - Impurities. Exclusively Small Molecule (1 Qs). Key themes: reference standards, impurity, materials."
     },
     {
       "code": "S.6",
@@ -5571,7 +5674,8 @@
       "sm_products": [
         "Asundexian"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions on Packaging Materials. Exclusively Small Molecule (1 Qs). Key themes: what, differences, manufacturing."
     },
     {
       "code": "S.6.01",
@@ -5589,7 +5693,8 @@
       ],
       "lm_products": [
         "Aflibercept"
-      ]
+      ],
+      "summary": "Covers 20 questions on Packaging Materials. SM (12) and LM (8) both represented. Key themes: closure system, container closure, active substance."
     },
     {
       "code": "S.6.02",
@@ -5605,7 +5710,8 @@
       ],
       "lm_products": [
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 10 questions on Description of Primary Packaging Material. SM (7) and LM (3) both represented. Key themes: container closure, closure system, technical specifications."
     },
     {
       "code": "S.6.03",
@@ -5621,7 +5727,8 @@
       "lm_products": [
         "Aflibercept",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 7 questions on Specification and Test Procedure. SM (5) and LM (2) both represented. Key themes: packaging closure, closure system, specifications packaging."
     },
     {
       "code": "S.6.05",
@@ -5632,7 +5739,8 @@
       "sm_products": [
         "Dienogest + Ethinylestradiol"
       ],
-      "lm_products": []
+      "lm_products": [],
+      "summary": "Covers 1 questions on Packaging - Batch Analyses. Exclusively Small Molecule (1 Qs). Key themes: updated, part, asmf."
     },
     {
       "code": "S.6.30",
@@ -5643,7 +5751,8 @@
       "sm_products": [],
       "lm_products": [
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 2 questions on Development Container Closure System. Exclusively Large Molecule (2 Qs). Key themes: does, specifications, bags."
     },
     {
       "code": "S.7",
@@ -5654,27 +5763,15 @@
       "sm_products": [
         "Sevabertinib"
       ],
-      "lm_products": []
-    },
-    {
-      "code": "S.7.01",
-      "title": "",
-      "sm_count": 1,
-      "lm_count": 1,
-      "total": 2,
-      "sm_products": [
-        "Rivaroxaban"
-      ],
-      "lm_products": [
-        "BAY 3401016"
-      ]
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: identity, indicate, hplc."
     },
     {
       "code": "S.7.1",
       "title": "Stability Summary and Conclusion",
-      "sm_count": 53,
+      "sm_count": 38,
       "lm_count": 13,
-      "total": 66,
+      "total": 51,
       "sm_products": [
         "Cyproterone",
         "Darolutamide",
@@ -5695,14 +5792,29 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 51 questions on Stability Summary and Conclusion. SM (38) and LM (13) both represented. Key themes: storage conditions, stability studies, active substance."
+    },
+    {
+      "code": "S.7.01",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 1,
+      "total": 2,
+      "sm_products": [
+        "Rivaroxaban"
+      ],
+      "lm_products": [
+        "BAY 3401016"
+      ],
+      "summary": "Covers 2 questions. SM (1) and LM (1) both represented. Key themes: storage conditions, stability test, supplementary request."
     },
     {
       "code": "S.7.2",
       "title": "Post-Approval Stability Protocol and Stability Commitment",
-      "sm_count": 12,
+      "sm_count": 11,
       "lm_count": 4,
-      "total": 16,
+      "total": 15,
       "sm_products": [
         "Cyproterone",
         "Cyproterone + Ethinylestradiol",
@@ -5717,25 +5829,15 @@
       "lm_products": [
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
-    },
-    {
-      "code": "S.7.03",
-      "title": "",
-      "sm_count": 1,
-      "lm_count": 0,
-      "total": 1,
-      "sm_products": [
-        "Darolutamide"
       ],
-      "lm_products": []
+      "summary": "Covers 15 questions on Post-Approval Stability Protocol and Stability Commitment. SM (11) and LM (4) both represented. Key themes: active ingredient, stability protocol, long term."
     },
     {
       "code": "S.7.3",
       "title": "Stability Data",
-      "sm_count": 78,
-      "lm_count": 33,
-      "total": 111,
+      "sm_count": 58,
+      "lm_count": 31,
+      "total": 89,
       "sm_products": [
         "Cyproterone",
         "Cyproterone + Ethinylestradiol",
@@ -5764,7 +5866,20 @@
         "Damoctocog alfa pegol",
         "Interferon beta-1b",
         "Octocog alfa"
-      ]
+      ],
+      "summary": "Covers 89 questions on Stability Data. SM (58) and LM (31) both represented. Key themes: stability studies, long term, active substance."
+    },
+    {
+      "code": "S.7.03",
+      "title": "",
+      "sm_count": 1,
+      "lm_count": 0,
+      "total": 1,
+      "sm_products": [
+        "Darolutamide"
+      ],
+      "lm_products": [],
+      "summary": "Covers 1 questions. Exclusively Small Molecule (1 Qs). Key themes: active substance, substance batches, stability."
     }
   ]
 }

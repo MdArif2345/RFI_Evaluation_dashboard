@@ -84,6 +84,10 @@ def tool_schemas() -> list[dict[str, Any]]:
                             "type": "string",
                             "description": "Filter by submission country (e.g. India, Germany, USA).",
                         },
+                        "product_type": {
+                            "type": "string",
+                            "description": "Filter by molecule type. Use 'Small Molecule' or 'Biotech' (for large molecule/biologics).",
+                        },
                         "limit": {
                             "type": "integer",
                             "description": f"Sample questions to return (1-{MAX_LIST_LIMIT}). Default 20.",
@@ -107,7 +111,7 @@ def tool_schemas() -> list[dict[str, Any]]:
                     "properties": {
                         "group_by": {
                             "type": "string",
-                            "enum": ["product", "country", "date"],
+                            "enum": ["product", "country", "date", "product_type"],
                             "description": "Dimension to group and count by.",
                         },
                         "code": {
@@ -125,6 +129,10 @@ def tool_schemas() -> list[dict[str, Any]]:
                         "country": {
                             "type": "string",
                             "description": "Optional country filter before aggregation.",
+                        },
+                        "product_type": {
+                            "type": "string",
+                            "description": "Optional molecule type filter: 'Small Molecule' or 'Biotech' (large molecule).",
                         },
                         "limit": {
                             "type": "integer",
@@ -214,8 +222,9 @@ def _list_questions(args: dict[str, Any], _settings: Settings) -> tuple[dict[str
     theme = (args.get("theme") or "").strip() or None
     product = (args.get("product") or "").strip() or None
     country = (args.get("country") or "").strip() or None
-    if not code and not theme and not product and not country:
-        return {"error": "provide at least one filter: code, theme, product, or country"}, []
+    product_type = (args.get("product_type") or "").strip() or None
+    if not code and not theme and not product and not country and not product_type:
+        return {"error": "provide at least one filter: code, theme, product, country, or product_type"}, []
 
     corpus = get_corpus()
     if theme and corpus.resolve_theme(theme) is None:
@@ -225,20 +234,21 @@ def _list_questions(args: dict[str, Any], _settings: Settings) -> tuple[dict[str
         }, []
 
     limit = int(args.get("limit") or 20)
-    summary = corpus.summarise(code=code, theme=theme, product=product, country=country, limit=limit)
+    summary = corpus.summarise(code=code, theme=theme, product=product, country=country, product_type=product_type, limit=limit)
 
     return summary, []
 
 
 def _query_metadata(args: dict[str, Any], _settings: Settings) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     group_by = (args.get("group_by") or "").strip().lower()
-    if group_by not in ("product", "country", "date"):
-        return {"error": "group_by must be one of: product, country, date"}, []
+    if group_by not in ("product", "country", "date", "product_type"):
+        return {"error": "group_by must be one of: product, country, date, product_type"}, []
 
     code = (args.get("code") or "").strip() or None
     theme = (args.get("theme") or "").strip() or None
     product = (args.get("product") or "").strip() or None
     country = (args.get("country") or "").strip() or None
+    product_type = (args.get("product_type") or "").strip() or None
     limit = int(args.get("limit") or 15)
 
     corpus = get_corpus()
@@ -248,6 +258,7 @@ def _query_metadata(args: dict[str, Any], _settings: Settings) -> tuple[dict[str
         theme=theme,
         product=product,
         country=country,
+        product_type=product_type,
         limit=limit,
     )
     return result, []

@@ -316,7 +316,8 @@
     tr:hover td { background: rgba(94, 234, 212, 0.04); }
     #codeSummaryTable td:nth-child(2),
     #codeSummaryTable td:nth-child(6),
-    #codeSummaryTable td:nth-child(7) { white-space: normal; min-width: 120px; font-size: 12px; }
+    #codeSummaryTable td:nth-child(7),
+    #codeSummaryTable td:nth-child(8) { white-space: normal; min-width: 120px; font-size: 12px; }
     #codeSummaryTable th[data-sort]:hover { color: #5eead4; cursor: pointer; }
 
     .findings {
@@ -1170,6 +1171,7 @@
                     <th style="cursor:pointer;text-align:right" data-sort="total">Total</th>
                     <th>SM Products</th>
                     <th>LM Products</th>
+                    <th style="min-width:220px">Summary</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -2117,7 +2119,8 @@
               '<td style="text-align:right">' + row.lm_count + "</td>" +
               '<td style="text-align:right"><strong>' + row.total + "</strong></td>" +
               "<td>" + (row.sm_products.length ? row.sm_products.join(", ") : "—") + "</td>" +
-              "<td>" + (row.lm_products.length ? row.lm_products.join(", ") : "—") + "</td>";
+              "<td>" + (row.lm_products.length ? row.lm_products.join(", ") : "—") + "</td>" +
+              '<td style="font-size:11.5px;line-height:1.4;color:#94afcd;white-space:normal;min-width:220px">' + (row.summary || "—") + "</td>";
             tbody.appendChild(tr);
           });
         }

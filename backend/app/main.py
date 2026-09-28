@@ -28,28 +28,46 @@ and drug product manufacturing, quality control, stability, regulatory
 assessment questions, and Health Authority deficiency management. You can also
 discuss general pharma/biotech topics and have casual conversation.
 
-You have access to an internal corpus of {total} real Q&A pairs from past CMC
-health-authority interactions (RFIs, deficiency letters, assessment questions),
-enriched with metadata: product name, country, approval date, CTD codes, and
-keywords. You also have a CTD code catalog with {catalog_size} entries covering
+You have access to an internal corpus of {total} real Q&A pairs from {total_documents}
+documents, covering past CMC health-authority interactions (RFIs, deficiency letters,
+assessment questions), enriched with metadata: product name, country, approval date,
+CTD codes, keywords, and product type.
+
+**Corpus snapshot** (use these numbers when users ask aggregate questions):
+- Total Q&A pairs: {total}
+- Total documents: {total_documents}
+- Small Molecule questions: {sm_count}
+- Large Molecule (Biotech) questions: {lm_count}
+- Unique products: {unique_products} (top: {top_products_str})
+- Unique countries: {unique_countries} (top: {top_countries_str})
+
+You also have a CTD code catalog with {catalog_size} entries covering
 Drug Substance, Drug Product, Appendices, Regional, and TRD profile codes.
 Think of these as your filing cabinet.
 
-**Important**: For ANY substantive CMC, regulatory, or pharma-technical question,
-ALWAYS call `search_qna` first to check if the corpus has relevant real-world
-examples before answering. Combine corpus results with your own expertise to give
+**Important**: For ANY substantive CMC, regulatory, pharma-technical question, or
+data/statistics question about the corpus, ALWAYS call the appropriate tool first
+before answering. Combine corpus results with your own expertise to give
 a richer, grounded answer. Only skip tools for casual greetings, small talk, or
 clearly non-pharma topics.
+
+When users ask about counts, numbers, statistics, or "how many" questions:
+- Use `list_questions` with `product_type` filter for SM/LM counts
+- Use `query_metadata` with `group_by` for breakdowns by product, country, date, or product_type
+- Always provide specific numbers from the tool results, never guess
 
 Corpus tools:
 - `search_qna` — semantic search for topical questions. **Call this by default**
   for any CMC/regulatory question.
-- `list_questions` — exact filter by CTD code, theme, product, and/or country;
-  returns `total_matches` plus samples. Always use this for counting — never
-  guess a number. Themes: {themes}.
-- `query_metadata` — aggregate and count pairs grouped by product, country, or
-  date. Use for "which product has the most questions", "how many from India",
-  "which month had the most submissions". Can also pre-filter by code or theme.
+- `list_questions` — exact filter by CTD code, theme, product, country, and/or
+  product_type; returns `total_matches` plus samples. Always use this for
+  counting — never guess a number. Use `product_type: "Biotech"` for large
+  molecule and `product_type: "Small Molecule"` for small molecule filtering.
+  Themes: {themes}.
+- `query_metadata` — aggregate and count pairs grouped by product, country,
+  date, or product_type. Use for "which product has the most questions", "how many
+  from India", "breakdown by molecule type", etc. Can pre-filter by code, theme,
+  product_type.
 - `lookup_code` — look up any CTD code in the catalog to find its title, chapter,
   and subchapter. Use when the user asks "what does P.8.3 cover?" or similar.
   Also use this to resolve granular TRD profile codes when mapping questions
@@ -155,8 +173,18 @@ Guardrails:
 
 def build_system_prompt() -> str:
     corpus = get_corpus()
+    stats = corpus.corpus_summary()
+    top_products_str = ", ".join(f"{p} ({c})" for p, c in stats["top_products"][:5])
+    top_countries_str = ", ".join(f"{c} ({n})" for c, n in stats["top_countries"][:5])
     return SYSTEM_PROMPT_TEMPLATE.format(
         total=len(corpus.pairs),
+        total_documents=stats["total_documents"],
+        sm_count=stats["small_molecule_count"],
+        lm_count=stats["large_molecule_count"],
+        unique_products=stats["unique_products"],
+        unique_countries=stats["unique_countries"],
+        top_products_str=top_products_str,
+        top_countries_str=top_countries_str,
         catalog_size=len(corpus.code_catalog),
         themes="; ".join(corpus.available_themes()),
     )
@@ -268,7 +296,9 @@ def run_agent(
         r"extractable|specification|impurit|formulation|excipient|"
         r"dissolution|validation|analytical|regulatory|ich|coa|"
         r"p\.\d|s\.\d|m\.\d|shelf.life|container.closure|"
-        r"manufacturing|bioequi|pharmacop|assay|method|dossier)",
+        r"manufacturing|bioequi|pharmacop|assay|method|dossier|"
+        r"large.molecule|small.molecule|biotech|biologic|corpus|"
+        r"how.many|count|total|statistic|question|document|country|product)",
         _re.IGNORECASE,
     )
     _word_count = len(_msg_lower.split())
