@@ -76,6 +76,6 @@ server_*.log
 uvicorn*.log
 
 # ----- Documentation/Reference files (not part of app) -----
-*.docx
-*.pdf
+# *.docx  # Commented out - keeping Step 3 Prompt DG.docx
+# *.pdf   # Commented out - keeping guideline PDF
 *-report.html
