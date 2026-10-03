@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/diff@5/dist/diff.min.js"></script>
   <script src="./data.js"></script>
   <style>
     :root {
@@ -268,6 +267,59 @@
       font-size: 15px;
       font-weight: 600;
     }
+    .card h3.chart-title-lg {
+      margin: 0 0 16px;
+      font-size: 17px;
+    }
+    .view-switch {
+      display: grid;
+      gap: 8px;
+      margin: 14px 0 16px;
+    }
+    .view-switch button {
+      text-align: left;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(148,175,205,0.22);
+      background: rgba(0,16,36,0.35);
+      color: #c9d7ea;
+      font-size: 12px;
+      font-family: "IBM Plex Sans", sans-serif;
+      cursor: pointer;
+    }
+    .view-switch button.active {
+      border-color: rgba(94,234,212,0.45);
+      background: rgba(94,234,212,0.12);
+      color: #e8eef7;
+    }
+    .year-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin: 8px 0 22px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(18, 43, 74, 0.88);
+    }
+    .year-bar label {
+      font-size: 12px;
+      color: var(--soft);
+      font-family: "IBM Plex Mono", monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .year-bar select {
+      padding: 7px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(148,175,205,0.25);
+      background: rgba(0,16,36,0.5);
+      color: #c9d7ea;
+      font-size: 14px;
+      font-family: inherit;
+      min-width: 120px;
+    }
     .card .hint {
       margin: 0 0 14px;
       color: var(--muted);
@@ -283,6 +335,26 @@
     .chart-wrap.tall { height: 420px; }
     .chart-wrap.short { height: 280px; }
     .chart-wrap canvas { width: 100% !important; height: 100% !important; }
+    .chart-scroll {
+      max-height: 520px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(0, 16, 36, 0.25);
+    }
+    .chart-scroll .chart-wrap {
+      height: auto;
+      min-height: 420px;
+    }
+    .chart-scroll-x {
+      max-height: none;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    .chart-scroll-x .chart-wrap {
+      height: 420px;
+      min-height: 420px;
+    }
 
     .table-wrap {
       overflow: auto;
@@ -360,13 +432,35 @@
       overflow: auto;
       border: 1px solid var(--line);
       border-radius: 12px;
+      max-height: 70vh;
     }
-    .heat table { min-width: 760px; }
+    .heat table { min-width: 760px; border-collapse: separate; border-spacing: 0; }
+    .heat th:first-child,
+    .heat td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: #0b1c33;
+      white-space: nowrap;
+    }
+    .heat thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #0b1c33;
+      font-size: 11px;
+      max-width: 88px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .heat thead th:first-child { z-index: 3; }
     .heat td.cell {
       text-align: center;
       font-family: "IBM Plex Mono", monospace;
-      font-size: 12px;
-      min-width: 64px;
+      font-size: 11px;
+      min-width: 48px;
+      padding: 4px 6px;
     }
 
     .recs {
@@ -389,8 +483,50 @@
       font-weight: 600;
       padding-top: 2px;
     }
-    .rec h4 { margin: 0 0 6px; font-size: 15px; }
+    .rec h4 { margin: 0 0 8px; font-size: 15px; }
     .rec p { margin: 0; color: var(--soft); font-size: 14px; line-height: 1.55; }
+    .rec-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 10px;
+    }
+    .rec-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: "IBM Plex Mono", monospace;
+      border: 1px solid var(--line);
+      color: var(--soft);
+      background: rgba(8, 22, 40, 0.45);
+    }
+    .rec-chip strong {
+      color: #dbeafe;
+      font-weight: 600;
+    }
+    .rec-chip.priority-critical,
+    .rec-chip.priority-high { border-color: rgba(251, 113, 133, 0.45); color: #fecdd3; }
+    .rec-chip.priority-critical strong,
+    .rec-chip.priority-high strong { color: #fda4af; }
+    .rec-chip.priority-medium { border-color: rgba(251, 191, 36, 0.4); color: #fde68a; }
+    .rec-chip.priority-medium strong { color: #fcd34d; }
+    .rec-chip.priority-low,
+    .rec-chip.priority-monitor { border-color: rgba(94, 234, 212, 0.35); color: #99f6e4; }
+    .rec-chip.priority-low strong,
+    .rec-chip.priority-monitor strong { color: #5eead4; }
+    .rec-fields {
+      display: grid;
+      gap: 4px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--soft);
+      line-height: 1.45;
+    }
+    .rec-fields span { color: #9eb2cb; }
+    .rec-fields b { color: #dbeafe; font-weight: 500; }
 
     .bars {
       display: grid;
@@ -827,40 +963,6 @@
       cursor: not-allowed;
     }
 
-    /* ===== CTD Comparison section ===== */
-    .compare-controls {
-      display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;
-    }
-    .compare-field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 160px; }
-    .compare-field label { font-size: 11px; color: var(--soft); text-transform: uppercase; letter-spacing: 0.04em; font-family: "IBM Plex Mono", monospace; }
-    .compare-field select {
-      padding: 7px 10px; border-radius: 6px;
-      border: 1px solid rgba(148,175,205,0.25);
-      background: rgba(0,16,36,0.5); color: #c9d7ea;
-      font-size: 13px; font-family: inherit;
-    }
-    .compare-field select:disabled { opacity: 0.5; }
-    .cmp-btn {
-      padding: 8px 20px; border-radius: 6px; border: none;
-      background: linear-gradient(135deg, #5eead4, #38bdf8);
-      color: #0a1929; font-weight: 600; font-family: "IBM Plex Mono", monospace;
-      font-size: 13px; cursor: pointer; white-space: nowrap; align-self: flex-end;
-    }
-    .cmp-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    .cmp-btn:hover:not(:disabled) { filter: brightness(1.1); }
-    .cmp-legend { display: flex; gap: 18px; margin-bottom: 10px; font-size: 12px; color: var(--soft); }
-    .cmp-legend-item { display: flex; align-items: center; gap: 5px; }
-    .cmp-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; }
-    .cmp-swatch.cmp-added { background: rgba(52, 211, 153, 0.35); border: 1px solid #34d399; }
-    .cmp-swatch.cmp-removed { background: rgba(251, 113, 133, 0.35); border: 1px solid #fb7185; }
-    .cmp-swatch.cmp-common { background: rgba(148,175,205,0.12); border: 1px solid rgba(148,175,205,0.3); }
-    .cmp-qa-block { margin-bottom: 18px; padding: 12px; border-radius: 8px; background: rgba(0,16,36,0.4); border: 1px solid var(--line); }
-    .cmp-qa-block h4 { font-size: 12px; color: var(--soft); margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.04em; }
-    .cmp-qa-block .cmp-text { font-size: 13px; line-height: 1.6; color: #c9d7ea; white-space: pre-wrap; }
-    .cmp-diff-add { background: rgba(52, 211, 153, 0.25); border-radius: 2px; padding: 0 2px; }
-    .cmp-diff-del { background: rgba(251, 113, 133, 0.25); border-radius: 2px; padding: 0 2px; text-decoration: line-through; }
-    .cmp-empty { padding: 30px; text-align: center; color: var(--soft); font-size: 13px; }
-
     @media (max-width: 1100px) {
       .shell { grid-template-columns: 1fr; }
       .toc {
@@ -880,12 +982,16 @@
   <div class="shell">
     <aside class="toc" id="toc">
       <div class="toc-brand">CMC Intelligence</div>
+      <div class="view-switch">
+        <button type="button" id="btnViewPortfolio" class="active">Portfolio Report</button>
+        <button type="button" id="btnViewYearly">Yearly Overview</button>
+      </div>
       <div class="meta" id="metaBox"></div>
       <nav class="toc-nav" id="tocNav"></nav>
       <div class="toc-foot" id="tocFoot"></div>
     </aside>
 
-    <main class="main">
+    <main class="main" id="viewPortfolio">
       <div class="hero">
         <div>
           <h1>CMC Response Portfolio Report</h1>
@@ -908,22 +1014,19 @@
         <div class="section-head">
           <div>
             <div class="idx">01</div>
-            <h2>HA / Country Split</h2>
-            <p>Where questions concentrate across health authorities / markets.</p>
+            <h2>Health Authority View</h2>
+            <p>Health-authority intensity: volume, deficiency letters, and avg questions/doc.</p>
           </div>
         </div>
-        <div class="grid-2">
-          <div class="card">
-            <h3>Questions by country (Top 15)</h3>
-            <p class="hint">Horizontal bars — easier to compare long market names</p>
-            <div class="chart-wrap tall"><canvas id="chartCountry"></canvas></div>
+        <div class="card">
+          <h3 class="chart-title-lg">Questions by country</h3>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="chartCountryWrap"><canvas id="chartCountry"></canvas></div>
           </div>
-          <div class="card">
-            <h3>Share of total questions</h3>
-            <p class="hint">Top markets only (remainder grouped)</p>
-            <div class="chart-wrap"><canvas id="chartCountryPie"></canvas></div>
-            <div class="note" id="countryNote"></div>
-          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">Most active health authorities</h3>
+          <div class="table-wrap" id="haTable"></div>
         </div>
       </section>
 
@@ -931,21 +1034,56 @@
         <div class="section-head">
           <div>
             <div class="idx">02</div>
-            <h2>Top Findings</h2>
-            <p>Headline signals from the current extraction corpus.</p>
+            <h2>Chapter View</h2>
+            <p>Most cited dossier section codes and CTD chapter breakdown across the corpus.</p>
           </div>
         </div>
-        <div class="findings" id="findings"></div>
-        <div class="grid-2 equal" style="margin-top:14px">
-          <div class="card">
-            <h3>Top deficiency themes</h3>
-            <p class="hint">Keyword frequency across answered questions</p>
-            <div class="chart-wrap"><canvas id="chartKeywords"></canvas></div>
+        <div class="card">
+          <h3>Top CTD / code references</h3>
+          <p class="hint">Most cited dossier section codes</p>
+          <div class="chart-wrap"><canvas id="chartCodes"></canvas></div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">Number of Questions per CTD Section — Drug Substance</h3>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="insChartCtdSWrap"><canvas id="insChartCtdS"></canvas></div>
           </div>
-          <div class="card">
-            <h3>Top CTD / code references</h3>
-            <p class="hint">Most cited dossier section codes</p>
-            <div class="chart-wrap"><canvas id="chartCodes"></canvas></div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">Number of Questions per CTD Section — Drug Product</h3>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="insChartCtdPWrap"><canvas id="insChartCtdP"></canvas></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">CTD Sections — Appendices &amp; Regional</h3>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="insChartCtdArWrap"><canvas id="insChartCtdAr"></canvas></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3>Summary of Q&amp;A per CTD Code (SM vs LM)</h3>
+          <p class="hint">Questions split by Small Molecule and Large Molecule products for each CTD code</p>
+          <div style="margin-bottom:10px">
+            <input type="text" id="codeSummaryFilter" placeholder="Filter by code or title…"
+              style="width:100%;max-width:360px;padding:6px 10px;border-radius:6px;border:1px solid rgba(148,175,205,0.25);background:rgba(0,16,36,0.5);color:#c9d7ea;font-size:13px;" />
+          </div>
+          <div class="table-wrap" style="max-height:520px;overflow-y:auto;">
+            <table id="codeSummaryTable">
+              <thead>
+                <tr>
+                  <th style="cursor:pointer" data-sort="code">CTD Code &#9650;</th>
+                  <th>Title</th>
+                  <th style="cursor:pointer;text-align:right" data-sort="sm">SM Qs</th>
+                  <th style="cursor:pointer;text-align:right" data-sort="lm">LM Qs</th>
+                  <th style="cursor:pointer;text-align:right" data-sort="total">Total</th>
+                  <th>SM Products</th>
+                  <th>LM Products</th>
+                  <th style="min-width:220px">Summary</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -954,21 +1092,19 @@
         <div class="section-head">
           <div>
             <div class="idx">03</div>
-            <h2>Quarterly Analysis</h2>
-            <p>Approve-date volume by calendar quarter.</p>
+            <h2>Product Analysis</h2>
+            <p>Which molecules attract the most CMC questioning.</p>
           </div>
         </div>
-        <div class="grid-2">
-          <div class="card">
-            <h3>Questions per quarter</h3>
-            <p class="hint">Jan 2025 – Jul 2026 window</p>
-            <div class="chart-wrap"><canvas id="chartQuarterly"></canvas></div>
+        <div class="card">
+          <h3 class="chart-title-lg">Products by questions</h3>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="chartProductsWrap"><canvas id="chartProducts"></canvas></div>
           </div>
-          <div class="card">
-            <h3>Quarterly composition (Top HAs)</h3>
-            <p class="hint">Stacked view of leading markets each quarter</p>
-            <div class="chart-wrap"><canvas id="chartQuarterStack"></canvas></div>
-          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">Product table</h3>
+          <div class="table-wrap" id="productTable"></div>
         </div>
       </section>
 
@@ -976,21 +1112,14 @@
         <div class="section-head">
           <div>
             <div class="idx">04</div>
-            <h2>Trend Breakdown</h2>
-            <p>Month-level demand and month-over-month change.</p>
+            <h2>Additional Insights</h2>
+            <p>Country × product concentration across the full corpus.</p>
           </div>
         </div>
-        <div class="grid-2 equal">
-          <div class="card">
-            <h3>Monthly question volume</h3>
-            <p class="hint">Approve date month</p>
-            <div class="chart-wrap"><canvas id="chartMonthly"></canvas></div>
-          </div>
-          <div class="card">
-            <h3>Month-over-month % change</h3>
-            <p class="hint">Green = up vs prior month · Rose = down</p>
-            <div class="chart-wrap"><canvas id="chartMom"></canvas></div>
-          </div>
+        <div class="card">
+          <h3>Country × product heat (all countries × all products)</h3>
+          <p class="hint">Darker cells = more questions · scroll to explore the full matrix</p>
+          <div class="heat" id="heatmap"></div>
         </div>
       </section>
 
@@ -998,120 +1127,23 @@
         <div class="section-head">
           <div>
             <div class="idx">05</div>
-            <h2>Trend Analysis</h2>
-            <p>Processing status and response completeness over the corpus.</p>
+            <h2>Recommendations</h2>
+            <p>TRD / RFI decision support — priority, decision, CTD mapping, root cause, and owner.</p>
           </div>
         </div>
-        <div class="grid-3">
-          <div class="card">
-            <h3>Extraction / analysis status</h3>
-            <p class="hint">Row-level last_action</p>
-            <div class="chart-wrap short"><canvas id="chartStatus"></canvas></div>
-          </div>
-          <div class="card">
-            <h3>Answer completeness</h3>
-            <p class="hint">Substantive vs brief vs empty</p>
-            <div class="chart-wrap short"><canvas id="chartAnswers"></canvas></div>
-          </div>
-          <div class="card">
-            <h3>Document language mix</h3>
-            <p class="hint">Unique documents</p>
-            <div class="chart-wrap short"><canvas id="chartLang"></canvas></div>
-          </div>
-        </div>
+        <div class="recs" id="recs"></div>
       </section>
 
       <section class="block" id="sec-06">
         <div class="section-head">
           <div>
             <div class="idx">06</div>
-            <h2>Product Analysis</h2>
-            <p>Which molecules attract the most CMC questioning.</p>
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="card">
-            <h3>Top products by questions</h3>
-            <p class="hint">Top 12</p>
-            <div class="chart-wrap tall"><canvas id="chartProducts"></canvas></div>
-          </div>
-          <div class="card">
-            <h3>Product table</h3>
-            <p class="hint">Questions, documents, intensity</p>
-            <div class="table-wrap" id="productTable"></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="block" id="sec-07">
-        <div class="section-head">
-          <div>
-            <div class="idx">07</div>
-            <h2>HA Analysis</h2>
-            <p>Health-authority intensity: volume, documents, and avg questions/doc.</p>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Most active health authorities</h3>
-          <p class="hint">Sorted by question volume · scroll for full list</p>
-          <div class="table-wrap" id="haTable"></div>
-        </div>
-      </section>
-
-      <section class="block" id="sec-08">
-        <div class="section-head">
-          <div>
-            <div class="idx">08</div>
-            <h2>Additional Insights</h2>
-            <p>Country × product concentration and recent document activity.</p>
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="card">
-            <h3>Country × product heat (Top 12 × Top 10)</h3>
-            <p class="hint">Darker cells = more questions</p>
-            <div class="heat" id="heatmap"></div>
-          </div>
-          <div class="card">
-            <h3>Top country–product pairs</h3>
-            <p class="hint">Highest concentration combinations</p>
-            <div class="bars" id="pairBars"></div>
-          </div>
-        </div>
-        <div class="card" style="margin-top:14px">
-          <h3>Recently approved documents</h3>
-          <p class="hint">Latest approve dates in the extract</p>
-          <div class="table-wrap" id="recentTable"></div>
-        </div>
-        <div class="card" style="margin-top:14px">
-          <h3>Theme chips</h3>
-          <p class="hint">Quick scan of recurring deficiency language</p>
-          <div class="chip-row" id="themeChips"></div>
-        </div>
-      </section>
-
-      <section class="block" id="sec-09">
-        <div class="section-head">
-          <div>
-            <div class="idx">09</div>
-            <h2>Recommendations</h2>
-            <p>Actionable priorities derived from the numbers above.</p>
-          </div>
-        </div>
-        <div class="recs" id="recs"></div>
-      </section>
-
-      <section class="block" id="sec-10">
-        <div class="section-head">
-          <div>
-            <div class="idx">10</div>
             <h2>Corpus Insights</h2>
-            <p>Deficiency letter statistics and CTD section analysis across the enriched CMC response corpus.</p>
+            <p>Deficiency letter statistics across products, countries, and years.</p>
           </div>
         </div>
         <div id="insightsBody">
-          <div class="kpi-grid" id="insKpis"></div>
-          <div class="card" style="margin-top:14px">
+          <div class="card">
             <h3>Number of Deficiency Letters per Product Family</h3>
             <p class="hint">Questions grouped by product, sorted alphabetically</p>
             <div class="chart-wrap tall"><canvas id="insChartProduct"></canvas></div>
@@ -1121,21 +1153,6 @@
             <p class="hint">Geographic distribution of deficiency questions</p>
             <div class="chart-wrap"><canvas id="insChartCountry"></canvas></div>
           </div>
-          <div class="card" style="margin-top:14px">
-            <h3>Number of Questions per CTD Section — Drug Substance</h3>
-            <p class="hint">S-part sections (includes older T-Codes replaced by S-codes)</p>
-            <div class="chart-wrap tall"><canvas id="insChartCtdS"></canvas></div>
-          </div>
-          <div class="card" style="margin-top:14px">
-            <h3>Number of Questions per CTD Section — Drug Product</h3>
-            <p class="hint">P-part sections (includes older T-Codes replaced by P-codes)</p>
-            <div class="chart-wrap tall"><canvas id="insChartCtdP"></canvas></div>
-          </div>
-          <div class="card" style="margin-top:14px">
-            <h3>CTD Sections — Appendices &amp; Regional</h3>
-            <p class="hint">A-part and R-part sections</p>
-            <div class="table-wrap" id="insArTable"></div>
-          </div>
           <div class="grid-2" style="margin-top:14px">
             <div class="card">
               <h3>Number of Deficiency Letters per Year</h3>
@@ -1143,39 +1160,19 @@
               <div class="chart-wrap tall"><canvas id="insChartYearQ"></canvas></div>
             </div>
             <div class="card">
-              <h3>Number of Documents per Year</h3>
-              <p class="hint">Unique documents by year, split by molecule type</p>
-              <div class="chart-wrap tall"><canvas id="insChartYearD"></canvas></div>
+              <h3 class="chart-title-lg">Number of Questions per Year (for SM and LM)</h3>
+              <div class="chart-wrap tall"><canvas id="insChartYearQuestions"></canvas></div>
             </div>
           </div>
           <div class="card" style="margin-top:14px">
-            <h3>CTD Characteristics Matching</h3>
-            <p class="hint">Number of products affected per CTD section — bubble size shows breadth of impact</p>
-            <div class="chart-wrap tall"><canvas id="insChartBubble"></canvas></div>
-          </div>
-          <div class="card" style="margin-top:14px">
-            <h3>Summary of Q&amp;A per CTD Code (SM vs LM)</h3>
-            <p class="hint">Questions split by Small Molecule and Large Molecule products for each CTD code</p>
-            <div style="margin-bottom:10px">
-              <input type="text" id="codeSummaryFilter" placeholder="Filter by code or title…"
-                style="width:100%;max-width:360px;padding:6px 10px;border-radius:6px;border:1px solid rgba(148,175,205,0.25);background:rgba(0,16,36,0.5);color:#c9d7ea;font-size:13px;" />
+            <h3>CTD Chapter Heatmap</h3>
+            <h4 style="margin:12px 0 8px;font-size:14px;color:#c9d7ea;">Drug Substance (S)</h4>
+            <div class="chart-scroll chart-scroll-x">
+              <div class="chart-wrap" id="insChartBubbleSWrap" style="height:420px"><canvas id="insChartBubbleS"></canvas></div>
             </div>
-            <div class="table-wrap" style="max-height:520px;overflow-y:auto;">
-              <table id="codeSummaryTable">
-                <thead>
-                  <tr>
-                    <th style="cursor:pointer" data-sort="code">CTD Code &#9650;</th>
-                    <th>Title</th>
-                    <th style="cursor:pointer;text-align:right" data-sort="sm">SM Qs</th>
-                    <th style="cursor:pointer;text-align:right" data-sort="lm">LM Qs</th>
-                    <th style="cursor:pointer;text-align:right" data-sort="total">Total</th>
-                    <th>SM Products</th>
-                    <th>LM Products</th>
-                    <th style="min-width:220px">Summary</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+            <h4 style="margin:18px 0 8px;font-size:14px;color:#c9d7ea;">Drug Product (P)</h4>
+            <div class="chart-scroll chart-scroll-x">
+              <div class="chart-wrap" id="insChartBubblePWrap" style="height:420px"><canvas id="insChartBubbleP"></canvas></div>
             </div>
           </div>
         </div>
@@ -1187,10 +1184,10 @@
         </div>
       </section>
 
-      <section class="block" id="sec-11">
+      <section class="block" id="sec-07">
         <div class="section-head">
           <div>
-            <div class="idx">11</div>
+            <div class="idx">07</div>
             <h2>CMC Q&amp;A Assistant</h2>
             <p>Reasoning assistant over extracted CMC question/answer pairs. It searches, counts, and filters the corpus on-device, and shows the pairs it used.</p>
           </div>
@@ -1210,48 +1207,153 @@
           </form>
         </div>
       </section>
+    </main>
 
-      <section class="block" id="sec-12">
+    <main class="main" id="viewYearly" style="display:none">
+      <div class="hero">
+        <div>
+          <h1>Yearly Overview</h1>
+          <p>Year-filtered snapshot of corpus statistics by approve date — same core views as the portfolio report.</p>
+        </div>
+      </div>
+      <div class="year-bar">
+        <label for="yearSelect">Select year</label>
+        <select id="yearSelect"></select>
+        <span class="hint" id="yearMeta" style="margin:0"></span>
+      </div>
+
+      <section class="block" id="y-sec-00">
         <div class="section-head">
           <div>
-            <div class="idx">12</div>
-            <h2>CTD Code Comparison</h2>
-            <p>Select a CTD code and two products to compare Q&amp;A answers side-by-side with red-line differences highlighted.</p>
+            <div class="idx">00</div>
+            <h2>Overview</h2>
+            <p>Portfolio snapshot for the selected year.</p>
+          </div>
+        </div>
+        <div class="kpi-grid" id="yKpiGrid"></div>
+      </section>
+
+      <section class="block" id="y-sec-01">
+        <div class="section-head">
+          <div>
+            <div class="idx">01</div>
+            <h2>Health Authority View</h2>
+            <p>Health-authority intensity for the selected year.</p>
           </div>
         </div>
         <div class="card">
-          <div class="compare-controls">
-            <div class="compare-field">
-              <label for="cmpCode">CTD Code</label>
-              <select id="cmpCode"><option value="">— Select a code —</option></select>
-            </div>
-            <div class="compare-field">
-              <label for="cmpProdA">Product A</label>
-              <select id="cmpProdA" disabled><option value="">— Select Product A —</option></select>
-            </div>
-            <div class="compare-field">
-              <label for="cmpProdB">Product B</label>
-              <select id="cmpProdB" disabled><option value="">— Select Product B —</option></select>
-            </div>
-            <button type="button" id="cmpBtn" class="cmp-btn" disabled>Compare</button>
+          <h3 class="chart-title-lg">Questions by country</h3>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="yChartCountryWrap"><canvas id="yChartCountry"></canvas></div>
           </div>
-          <div id="cmpStatus" class="hint" style="margin-top:10px;display:none;"></div>
         </div>
-        <div id="cmpResults" style="margin-top:14px;display:none;">
-          <div class="cmp-legend">
-            <span class="cmp-legend-item"><span class="cmp-swatch cmp-added"></span> Only in Product A</span>
-            <span class="cmp-legend-item"><span class="cmp-swatch cmp-removed"></span> Only in Product B</span>
-            <span class="cmp-legend-item"><span class="cmp-swatch cmp-common"></span> Shared text</span>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">Most active health authorities</h3>
+          <div class="table-wrap" id="yHaTable"></div>
+        </div>
+      </section>
+
+      <section class="block" id="y-sec-02">
+        <div class="section-head">
+          <div>
+            <div class="idx">02</div>
+            <h2>Chapter View</h2>
+            <p>CTD subsection breakdown for the selected year.</p>
           </div>
-          <div class="grid-2" id="cmpGrid">
-            <div class="card" id="cmpColA">
-              <h3 id="cmpHeaderA">Product A</h3>
-              <div id="cmpBodyA"></div>
-            </div>
-            <div class="card" id="cmpColB">
-              <h3 id="cmpHeaderB">Product B</h3>
-              <div id="cmpBodyB"></div>
-            </div>
+        </div>
+        <div class="card">
+          <h3 class="chart-title-lg">Top CTD / code references</h3>
+          <div class="chart-wrap"><canvas id="yChartCodes"></canvas></div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">Number of Questions per CTD Section — Drug Substance</h3>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="yChartCtdSWrap"><canvas id="yChartCtdS"></canvas></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">Number of Questions per CTD Section — Drug Product</h3>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="yChartCtdPWrap"><canvas id="yChartCtdP"></canvas></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">CTD Sections — Appendices &amp; Regional</h3>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="yChartCtdArWrap"><canvas id="yChartCtdAr"></canvas></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">Summary of Q&amp;A per CTD Code (SM vs LM)</h3>
+          <div style="margin-bottom:10px">
+            <input type="text" id="yCodeSummaryFilter" placeholder="Filter by code or title…"
+              style="width:100%;max-width:360px;padding:6px 10px;border-radius:6px;border:1px solid rgba(148,175,205,0.25);background:rgba(0,16,36,0.5);color:#c9d7ea;font-size:13px;" />
+          </div>
+          <div class="table-wrap" style="max-height:520px;overflow-y:auto;">
+            <table id="yCodeSummaryTable">
+              <thead>
+                <tr>
+                  <th style="cursor:pointer" data-sort="code">CTD Code</th>
+                  <th>Title</th>
+                  <th style="cursor:pointer;text-align:right" data-sort="sm">SM Qs</th>
+                  <th style="cursor:pointer;text-align:right" data-sort="lm">LM Qs</th>
+                  <th style="cursor:pointer;text-align:right" data-sort="total">Total</th>
+                  <th>SM Products</th>
+                  <th>LM Products</th>
+                  <th style="min-width:220px">Summary</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="block" id="y-sec-03">
+        <div class="section-head">
+          <div>
+            <div class="idx">03</div>
+            <h2>Product Analysis</h2>
+            <p>Molecules attracting CMC questioning in the selected year.</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="chart-title-lg">Products by questions</h3>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="yChartProductsWrap"><canvas id="yChartProducts"></canvas></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">Product table</h3>
+          <div class="table-wrap" id="yProductTable"></div>
+        </div>
+      </section>
+
+      <section class="block" id="y-sec-04">
+        <div class="section-head">
+          <div>
+            <div class="idx">04</div>
+            <h2>Corpus Insights</h2>
+            <p>Year-scoped deficiency letter and CTD section analysis.</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="chart-title-lg">Number of Deficiency Letters per Product Family</h3>
+          <div class="chart-wrap tall"><canvas id="yInsChartProduct"></canvas></div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">Number of Questions per Country</h3>
+          <div class="chart-wrap"><canvas id="yInsChartCountry"></canvas></div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3 class="chart-title-lg">CTD Chapter Heatmap</h3>
+          <h4 style="margin:12px 0 8px;font-size:14px;color:#c9d7ea;">Drug Substance (S)</h4>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="yBubbleSWrap" style="height:420px"><canvas id="yBubbleS"></canvas></div>
+          </div>
+          <h4 style="margin:18px 0 8px;font-size:14px;color:#c9d7ea;">Drug Product (P)</h4>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="yBubblePWrap" style="height:420px"><canvas id="yBubbleP"></canvas></div>
           </div>
         </div>
       </section>
@@ -1285,7 +1387,7 @@
 
     let CORPUS_STATS = null;
     try {
-      const res2 = await fetch("./corpus_stats.json");
+      const res2 = await fetch("./corpus_stats.json", { cache: "no-store" });
       if (res2.ok) CORPUS_STATS = await res2.json();
     } catch (_) { /* fallback */ }
 
@@ -1349,33 +1451,23 @@
       return out;
     }
 
-    function enrichFindingValue(finding) {
-      const value = String(finding.value || "");
-      const codeMatch = value.match(/^([A-Z]\.\d+(?:\.\d+)*|\d+\.\d+\.[A-Z]\.\d+(?:\.\d+)*|STED\.[\d.]+|M3\.[\d.]+|MD\.[\d.]+)\s*(\(.+\))?$/);
-      if (codeMatch) {
-        return formatCodeRich(codeMatch[1], codeMatch[2] || "");
-      }
-      if (finding.label === "Top CTD code") {
-        const m = value.match(/^(\S+)\s*(\(.+\))$/);
-        if (m) return formatCodeRich(m[1], m[2]);
-      }
-      return escapeHtml(value);
-    }
-
     const TOC = [
       ["00", "Overview", "sec-00"],
-      ["01", "HA / Country Split", "sec-01"],
-      ["02", "Top Findings", "sec-02"],
-      ["03", "Quarterly Analysis", "sec-03"],
-      ["04", "Trend Breakdown", "sec-04"],
-      ["05", "Trend Analysis", "sec-05"],
-      ["06", "Product Analysis", "sec-06"],
-      ["07", "HA Analysis", "sec-07"],
-      ["08", "Additional Insights", "sec-08"],
-      ["09", "Recommendations", "sec-09"],
-      ["10", "Corpus Insights", "sec-10"],
-      ["11", "CMC Q&A Assistant", "sec-11"],
-      ["12", "CTD Comparison", "sec-12"],
+      ["01", "Health Authority View", "sec-01"],
+      ["02", "Chapter View", "sec-02"],
+      ["03", "Product Analysis", "sec-03"],
+      ["04", "Additional Insights", "sec-04"],
+      ["05", "Recommendations", "sec-05"],
+      ["06", "Corpus Insights", "sec-06"],
+      ["07", "CMC Q&A Assistant", "sec-07"],
+    ];
+
+    const YEARLY_TOC = [
+      ["00", "Overview", "y-sec-00"],
+      ["01", "Health Authority View", "y-sec-01"],
+      ["02", "Chapter View", "y-sec-02"],
+      ["03", "Product Analysis", "y-sec-03"],
+      ["04", "Corpus Insights", "y-sec-04"],
     ];
 
     const PALETTE = [
@@ -1408,64 +1500,65 @@
 
     /* TOC */
     const nav = document.getElementById("tocNav");
-    TOC.forEach(([num, label, id], i) => {
-      const a = document.createElement("a");
-      a.className = "toc-link" + (i === 0 ? " active" : "");
-      a.href = "#" + id;
-      a.dataset.target = id;
-      a.innerHTML = `<span class="num">${num}</span><span>${label}</span>`;
-      nav.appendChild(a);
-    });
+    let tocObserver = null;
+    function buildToc(entries) {
+      nav.innerHTML = "";
+      if (tocObserver) tocObserver.disconnect();
+      entries.forEach(([num, label, id], i) => {
+        const a = document.createElement("a");
+        a.className = "toc-link" + (i === 0 ? " active" : "");
+        a.href = "#" + id;
+        a.dataset.target = id;
+        a.innerHTML = `<span class="num">${num}</span><span>${label}</span>`;
+        nav.appendChild(a);
+      });
+      const links = [...document.querySelectorAll(".toc-link")];
+      tocObserver = new IntersectionObserver((entriesObs) => {
+        entriesObs.forEach((e) => {
+          if (!e.isIntersecting) return;
+          links.forEach((l) => l.classList.toggle("active", l.dataset.target === e.target.id));
+        });
+      }, { rootMargin: "-35% 0px -55% 0px", threshold: 0.01 });
+      entries.forEach(([, , id]) => {
+        const el = document.getElementById(id);
+        if (el) tocObserver.observe(el);
+      });
+    }
+    buildToc(TOC);
 
     const k = D.kpis;
-    document.getElementById("metaBox").innerHTML = `
-      <div class="meta-row"><span>Doc. Type</span><span>Portfolio Report</span></div>
-      <div class="meta-row"><span>Records</span><span>${fmt(k.total_rows)}</span></div>
-      <div class="meta-row"><span>Questions</span><span>${fmt(k.total_questions)}</span></div>
-      <div class="meta-row"><span>Period</span><span>${shortPeriod(k.date_range.min, k.date_range.max)}</span></div>
-      <div class="meta-row"><span>Status</span><span>Analyzed</span></div>
-    `;
-    document.getElementById("tocFoot").textContent =
-      `Docs ${fmt(k.unique_documents)} · Markets ${fmt(k.unique_countries)} · Products ${fmt(k.unique_products)}`;
-
-    /* Active TOC on scroll */
-    const links = [...document.querySelectorAll(".toc-link")];
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        links.forEach((l) => l.classList.toggle("active", l.dataset.target === e.target.id));
-      });
-    }, { rootMargin: "-35% 0px -55% 0px", threshold: 0.01 });
-    TOC.forEach(([, , id]) => observer.observe(document.getElementById(id)));
+    function setPortfolioMeta() {
+      document.getElementById("metaBox").innerHTML = `
+        <div class="meta-row"><span>Doc. Type</span><span>Portfolio Report</span></div>
+        <div class="meta-row"><span>Records</span><span>${fmt(k.total_rows)}</span></div>
+        <div class="meta-row"><span>Questions</span><span>${fmt(k.total_questions)}</span></div>
+        <div class="meta-row"><span>Period</span><span>${shortPeriod(k.date_range.min, k.date_range.max)}</span></div>
+        <div class="meta-row"><span>Status</span><span>Analyzed</span></div>
+      `;
+      document.getElementById("tocFoot").textContent =
+        `Docs ${fmt(k.unique_documents)} · Markets ${fmt(k.unique_countries)} · Products ${fmt(k.unique_products)}`;
+    }
+    setPortfolioMeta();
 
     /* KPIs */
-    const statusAnalyzed = k.status.analyzed || 0;
-    document.getElementById("kpiGrid").innerHTML = [
+    const overviewKpis = [
       ["Total questions", fmt(k.total_questions), "Real Q&A rows"],
-      ["Documents", fmt(k.unique_documents), "Unique doc versions"],
+      ["Deficiency Letters", fmt(k.unique_documents), "Unique doc versions"],
       ["Health authorities", fmt(k.unique_countries), "Markets / countries"],
       ["Products", fmt(k.unique_products), "Molecules in scope"],
       ["Avg Q / document", k.avg_questions_per_doc, "Intensity signal"],
-      ["Avg pages / doc", k.avg_pages, "Document size"],
-      ["Analyzed rows", fmt(statusAnalyzed), `${Math.round(100 * statusAnalyzed / k.total_rows)}% of records`],
-      ["Substantive answers", fmt(k.answer_quality.substantive || 0), `${Math.round(100 * (k.answer_quality.substantive || 0) / k.total_questions)}% of questions`],
-    ].map(([label, value, sub]) => `
+    ];
+    if (CORPUS_STATS?.kpis) {
+      overviewKpis.push(
+        ["Small Molecule", fmt(CORPUS_STATS.kpis.small_molecule_questions), "Questions for SM products"],
+        ["Large Molecule", fmt(CORPUS_STATS.kpis.large_molecule_questions), "Questions for Biotech products"],
+      );
+    }
+    document.getElementById("kpiGrid").innerHTML = overviewKpis.map(([label, value, sub]) => `
       <div class="kpi">
         <div class="label">${label}</div>
         <div class="value">${value}</div>
         <div class="sub">${sub}</div>
-      </div>
-    `).join("");
-
-    /* Findings */
-    const findingColors = PALETTE;
-    document.getElementById("findings").innerHTML = D.findings.map((f, i) => `
-      <div class="finding">
-        <div class="dot" style="background:${findingColors[i % findingColors.length]}"></div>
-        <div>
-          <div class="label">${escapeHtml(f.label)}</div>
-          <div class="value">${enrichFindingValue(f)}</div>
-        </div>
       </div>
     `).join("");
 
@@ -1478,27 +1571,18 @@
 
     document.getElementById("productTable").innerHTML = table(
       ["Product", "Questions", "Docs", "Avg Q/Doc", "Share %"],
-      D.product_analysis.slice(0, 20).map((p) => [
+      D.product_analysis.map((p) => [
         p.product, fmt(p.questions), fmt(p.documents), p.avg_q_per_doc, p.share_pct
       ]),
       [1, 2, 3, 4]
     );
 
     document.getElementById("haTable").innerHTML = table(
-      ["Health Authority", "Questions", "Documents", "Avg Q/Doc", "Share %"],
+      ["Health Authority", "Questions", "Deficiency Letters", "Avg Q/Doc", "Share %"],
       D.ha_analysis.map((h) => [
         h.ha, fmt(h.questions), fmt(h.documents), h.avg_q_per_doc, h.share_pct
       ]),
       [1, 2, 3, 4]
-    );
-
-    document.getElementById("recentTable").innerHTML = table(
-      ["Document", "Country", "Product", "Date", "Pages", "Questions", "Status"],
-      D.recent_documents.map((d) => [
-        (d.name || "").slice(0, 48) + ((d.name || "").length > 48 ? "…" : ""),
-        d.country, d.product, d.date, d.pages, d.questions, d.status
-      ]),
-      [4, 5]
     );
 
     /* Heatmap */
@@ -1509,7 +1593,7 @@
       const a = 0.08 + t * 0.75;
       return `rgba(56, 189, 248, ${a.toFixed(3)})`;
     }
-    let heatHtml = `<table><thead><tr><th>Country \\ Product</th>${hm.products.map((p) => `<th>${p}</th>`).join("")}</tr></thead><tbody>`;
+    let heatHtml = `<table><thead><tr><th>Country \\ Product</th>${hm.products.map((p) => `<th title="${p}">${p}</th>`).join("")}</tr></thead><tbody>`;
     hm.countries.forEach((c, i) => {
       heatHtml += `<tr><th>${c}</th>`;
       hm.matrix[i].forEach((v) => {
@@ -1520,30 +1604,31 @@
     heatHtml += `</tbody></table>`;
     document.getElementById("heatmap").innerHTML = heatHtml;
 
-    /* Pair bars */
-    const maxPair = D.top_country_product_pairs[0]?.questions || 1;
-    document.getElementById("pairBars").innerHTML = D.top_country_product_pairs.slice(0, 10).map((p) => `
-      <div class="bar-row">
-        <div class="name" title="${p.country} × ${p.product}">${p.country} · ${p.product}</div>
-        <div class="track"><div class="fill" style="width:${(100 * p.questions / maxPair).toFixed(1)}%"></div></div>
-        <div class="count">${p.questions}</div>
-      </div>
-    `).join("");
-
-    document.getElementById("themeChips").innerHTML = D.top_keywords.slice(0, 14).map((k, i) => {
-      const cls = i % 3 === 0 ? "teal" : i % 3 === 1 ? "" : "violet";
-      return `<span class="chip ${cls}">${k.keyword} · ${k.count}</span>`;
-    }).join("");
-
-    document.getElementById("recs").innerHTML = D.recommendations.map((r, i) => `
+    document.getElementById("recs").innerHTML = (D.recommendations || []).map((r, i) => {
+      const priority = r.priority || "Monitor";
+      const pClass = `priority-${String(priority).toLowerCase().replace(/\s+/g, "-")}`;
+      const fields = [
+        r.ctd_section ? `<div><span>CTD section</span> · <b>${escapeHtml(r.ctd_section)}</b></div>` : "",
+        r.trd_code && r.trd_code !== "—" ? `<div><span>TRD / code</span> · <b>${enrichCodeText(r.trd_code)}</b></div>` : "",
+        r.root_cause ? `<div><span>Root cause</span> · <b>${escapeHtml(r.root_cause)}</b></div>` : "",
+        r.owner ? `<div><span>Owner</span> · <b>${escapeHtml(r.owner)}</b></div>` : "",
+        r.action_type ? `<div><span>Action</span> · <b>${escapeHtml(r.action_type)}</b></div>` : "",
+      ].filter(Boolean).join("");
+      return `
       <div class="rec">
         <div class="n">${String(i + 1).padStart(2, "0")}</div>
         <div>
           <h4>${escapeHtml(r.title)}</h4>
-          <p>${enrichCodeText(r.detail)}</p>
+          <div class="rec-meta">
+            <span class="rec-chip ${pClass}"><strong>${escapeHtml(priority)}</strong></span>
+            ${r.decision ? `<span class="rec-chip"><strong>Decision</strong> ${escapeHtml(r.decision)}</span>` : ""}
+            ${r.recurring ? `<span class="rec-chip"><strong>${escapeHtml(r.recurring)}</strong></span>` : ""}
+          </div>
+          <p>${enrichCodeText(r.detail || "")}</p>
+          ${fields ? `<div class="rec-fields">${fields}</div>` : ""}
         </div>
-      </div>
-    `).join("");
+      </div>`;
+    }).join("");
 
     /* Charts */
     function barOpts(horizontal = false) {
@@ -1567,8 +1652,11 @@
       };
     }
 
-    // Country horizontal bars
-    const countries = D.chart_country_top15;
+    // Country vertical bars — all markets, horizontally scrollable
+    const countries = D.ha_analysis.map((h) => ({ country: h.ha, questions: h.questions }));
+    const countryWrap = document.getElementById("chartCountryWrap");
+    countryWrap.style.width = Math.max(countryWrap.parentElement.clientWidth || 640, countries.length * 28) + "px";
+    countryWrap.style.height = "420px";
     new Chart(document.getElementById("chartCountry"), {
       type: "bar",
       data: {
@@ -1582,7 +1670,8 @@
         }]
       },
       options: {
-        ...barOpts(true),
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
           tooltip: {
@@ -1590,56 +1679,25 @@
               label: (ctx) => ` ${fmt(ctx.raw)} questions`
             }
           }
-        }
-      }
-    });
-
-    // Country pie with Other
-    const pieTop = countries.slice(0, 8);
-    const pieRest = countries.slice(8).reduce((s, c) => s + c.questions, 0)
-      + Math.max(0, k.total_questions - countries.reduce((s, c) => s + c.questions, 0));
-    const pieLabels = pieTop.map((c) => c.country).concat(pieRest ? ["Other"] : []);
-    const pieData = pieTop.map((c) => c.questions).concat(pieRest ? [pieRest] : []);
-    new Chart(document.getElementById("chartCountryPie"), {
-      type: "doughnut",
-      data: {
-        labels: pieLabels,
-        datasets: [{
-          data: pieData,
-          backgroundColor: PALETTE.slice(0, pieLabels.length),
-          borderWidth: 2,
-          borderColor: "#0b1c33",
-          hoverOffset: 6
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: "58%",
-        plugins: {
-          legend: {
-            position: "right",
-            labels: { color: "#c9d7ea", font: { size: 11 }, padding: 10 }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: {
+              color: "#c9d7ea",
+              font: { size: 10 },
+              maxRotation: 70,
+              minRotation: 50,
+              autoSkip: false
+            }
+          },
+          y: {
+            beginAtZero: true,
+            grid: { color: "rgba(148,175,205,0.08)" },
+            ticks: { color: "#9eb2cb" }
           }
         }
       }
-    });
-    document.getElementById("countryNote").textContent =
-      `Top market: ${countries[0].country} (${countries[0].questions} Q, ${((100 * countries[0].questions) / k.total_questions).toFixed(1)}%)`;
-
-    // Keywords
-    new Chart(document.getElementById("chartKeywords"), {
-      type: "bar",
-      data: {
-        labels: D.top_keywords.slice(0, 12).map((x) => x.keyword),
-        datasets: [{
-          data: D.top_keywords.slice(0, 12).map((x) => x.count),
-          backgroundColor: "#5eead4cc",
-          borderRadius: 6,
-          maxBarThickness: 20
-        }]
-      },
-      options: barOpts(true)
     });
 
     // Codes
@@ -1680,114 +1738,21 @@
       }
     });
 
-    // Quarterly
-    new Chart(document.getElementById("chartQuarterly"), {
+    // Products — all products, vertical bars, horizontally scrollable
+    const products = D.product_analysis.map((p) => ({ product: p.product, questions: p.questions }));
+    const productsWrap = document.getElementById("chartProductsWrap");
+    productsWrap.style.width = Math.max(productsWrap.parentElement.clientWidth || 640, products.length * 36) + "px";
+    productsWrap.style.height = "420px";
+    new Chart(document.getElementById("chartProducts"), {
       type: "bar",
       data: {
-        labels: D.quarterly.map((q) => q.quarter),
+        labels: products.map((p) => p.product),
         datasets: [{
-          label: "Questions",
-          data: D.quarterly.map((q) => q.questions),
-          backgroundColor: "#38bdf8cc",
-          borderRadius: 8,
-          maxBarThickness: 42
-        }]
-      },
-      options: {
-        ...barOpts(false),
-        plugins: { legend: { display: false } }
-      }
-    });
-
-    // Quarterly stacked top HAs
-    const qLabels = D.quarterly.map((q) => q.quarter);
-    const topHAsForStack = D.ha_analysis.slice(0, 6).map((h) => h.ha);
-    const stackDatasets = topHAsForStack.map((ha, i) => ({
-      label: ha,
-      data: qLabels.map((q) => {
-        const row = (D.quarterly_top_countries[q] || []).find((x) => x.country === ha);
-        return row ? row.questions : 0;
-      }),
-      backgroundColor: PALETTE[i % PALETTE.length],
-      stack: "ha",
-      borderWidth: 0
-    }));
-    new Chart(document.getElementById("chartQuarterStack"), {
-      type: "bar",
-      data: { labels: qLabels, datasets: stackDatasets },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "bottom",
-            labels: { color: "#c9d7ea", font: { size: 10 }, boxWidth: 10, padding: 12 }
-          }
-        },
-        scales: {
-          x: { stacked: true, grid: { display: false }, ticks: { color: "#9eb2cb" } },
-          y: { stacked: true, grid: { color: "rgba(148,175,205,0.08)" }, ticks: { color: "#9eb2cb" } }
-        }
-      }
-    });
-
-    // Monthly
-    new Chart(document.getElementById("chartMonthly"), {
-      type: "line",
-      data: {
-        labels: D.monthly.map((m) => m.month),
-        datasets: [{
-          label: "Questions",
-          data: D.monthly.map((m) => m.questions),
-          borderColor: "#5eead4",
-          backgroundColor: "rgba(94,234,212,0.18)",
-          fill: true,
-          tension: 0.35,
-          pointRadius: 3,
-          pointHoverRadius: 5,
-          pointBackgroundColor: "#5eead4",
-          borderWidth: 2.5
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: {
-            ticks: {
-              color: "#9eb2cb",
-              maxRotation: 45,
-              minRotation: 45,
-              autoSkip: true,
-              maxTicksLimit: 12
-            },
-            grid: { display: false }
-          },
-          y: {
-            beginAtZero: true,
-            ticks: { color: "#9eb2cb" },
-            grid: { color: "rgba(148,175,205,0.08)" }
-          }
-        }
-      }
-    });
-
-    // MoM
-    const momColors = D.monthly.map((m) => {
-      if (m.mom_pct == null) return "rgba(148,175,205,0.35)";
-      return m.mom_pct >= 0 ? "#34d399cc" : "#fb7185cc";
-    });
-    new Chart(document.getElementById("chartMom"), {
-      type: "bar",
-      data: {
-        labels: D.monthly.map((m) => m.month),
-        datasets: [{
-          label: "MoM %",
-          data: D.monthly.map((m) => m.mom_pct == null ? 0 : m.mom_pct),
-          backgroundColor: momColors,
-          borderRadius: 5,
-          maxBarThickness: 18
+          data: products.map((p) => p.questions),
+          backgroundColor: products.map((_, i) => PALETTE[i % PALETTE.length] + "cc"),
+          borderRadius: 6,
+          borderSkipped: false,
+          maxBarThickness: 28
         }]
       },
       options: {
@@ -1797,102 +1762,28 @@
           legend: { display: false },
           tooltip: {
             callbacks: {
-              label: (ctx) => {
-                const m = D.monthly[ctx.dataIndex];
-                return m.mom_pct == null ? " n/a (first month)" : ` ${m.mom_pct}%`;
-              }
+              label: (ctx) => ` ${fmt(ctx.raw)} questions`
             }
           }
         },
         scales: {
           x: {
-            ticks: { color: "#9eb2cb", maxRotation: 45, minRotation: 45, maxTicksLimit: 12 },
-            grid: { display: false }
+            grid: { display: false },
+            ticks: {
+              color: "#c9d7ea",
+              font: { size: 10 },
+              maxRotation: 70,
+              minRotation: 50,
+              autoSkip: false
+            }
           },
           y: {
-            ticks: {
-              color: "#9eb2cb",
-              callback: (v) => v + "%"
-            },
-            grid: { color: "rgba(148,175,205,0.08)" }
+            beginAtZero: true,
+            grid: { color: "rgba(148,175,205,0.08)" },
+            ticks: { color: "#9eb2cb" }
           }
         }
       }
-    });
-
-    // Status / answers / language
-    const statusEntries = Object.entries(k.status);
-    new Chart(document.getElementById("chartStatus"), {
-      type: "doughnut",
-      data: {
-        labels: statusEntries.map(([s]) => s),
-        datasets: [{
-          data: statusEntries.map(([, n]) => n),
-          backgroundColor: ["#34d399", "#fbbf24", "#fb7185", "#38bdf8"],
-          borderColor: "#0b1c33",
-          borderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: "55%",
-        plugins: { legend: { position: "bottom", labels: { font: { size: 11 }, padding: 10 } } }
-      }
-    });
-
-    const aq = Object.entries(k.answer_quality);
-    new Chart(document.getElementById("chartAnswers"), {
-      type: "doughnut",
-      data: {
-        labels: aq.map(([s]) => s),
-        datasets: [{
-          data: aq.map(([, n]) => n),
-          backgroundColor: ["#5eead4", "#fbbf24", "#fb7185"],
-          borderColor: "#0b1c33",
-          borderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: "55%",
-        plugins: { legend: { position: "bottom", labels: { font: { size: 11 }, padding: 10 } } }
-      }
-    });
-
-    new Chart(document.getElementById("chartLang"), {
-      type: "doughnut",
-      data: {
-        labels: D.languages.map((l) => l.language),
-        datasets: [{
-          data: D.languages.map((l) => l.documents),
-          backgroundColor: PALETTE,
-          borderColor: "#0b1c33",
-          borderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: "55%",
-        plugins: { legend: { position: "bottom", labels: { font: { size: 11 }, padding: 10 } } }
-      }
-    });
-
-    // Products
-    new Chart(document.getElementById("chartProducts"), {
-      type: "bar",
-      data: {
-        labels: D.chart_product_top12.map((p) => p.product),
-        datasets: [{
-          data: D.chart_product_top12.map((p) => p.questions),
-          backgroundColor: D.chart_product_top12.map((_, i) => PALETTE[i % PALETTE.length] + "cc"),
-          borderRadius: 6,
-          maxBarThickness: 22
-        }]
-      },
-      options: barOpts(true)
     });
 
     // ----- Q&A corpus insights -----
@@ -1907,7 +1798,6 @@
 
     function _renderInsightsInner() {
       const S = CORPUS_STATS;
-      const K = S.kpis;
 
       const vertBarOpts = {
         responsive: true, maintainAspectRatio: false,
@@ -1917,16 +1807,6 @@
           y: { beginAtZero: true, ticks: { color: "#9eb2cb" }, grid: { color: "rgba(148,175,205,0.08)" } },
         },
       };
-
-      // --- KPIs ---
-      document.getElementById("insKpis").innerHTML = [
-        ["DL Documents", fmt(K.total_documents), "Unique deficiency letters"],
-        ["Total Questions", fmt(K.total_questions), "Across all products"],
-        ["Small Molecule", fmt(K.small_molecule_questions), "Questions for SM products"],
-        ["Large Molecule", fmt(K.large_molecule_questions), "Questions for Biotech products"],
-      ].map(function(arr) {
-        return '<div class="kpi"><div class="label">' + arr[0] + '</div><div class="value">' + arr[1] + '</div><div class="sub">' + arr[2] + '</div></div>';
-      }).join("");
 
       // --- Product Family bar chart (vertical) ---
       new Chart(document.getElementById("insChartProduct"), {
@@ -1962,49 +1842,120 @@
         document.getElementById("insChartCountry").closest(".card").querySelector(".hint").textContent = "No country data available (all marked N/A)";
       }
 
-      // --- CTD S-sections bar chart (Drug Substance) ---
-      new Chart(document.getElementById("insChartCtdS"), {
-        type: "bar",
-        data: {
-          labels: S.ctd_s_sections.map(function(x) { return x.code; }),
-          datasets: [{
-            label: "Questions",
-            data: S.ctd_s_sections.map(function(x) { return x.count; }),
-            backgroundColor: "#f59e0bcc",
-            borderRadius: 4,
-          }],
-        },
-        options: vertBarOpts,
-      });
-
-      // --- CTD P-sections bar chart (Drug Product) ---
-      new Chart(document.getElementById("insChartCtdP"), {
-        type: "bar",
-        data: {
-          labels: S.ctd_p_sections.map(function(x) { return x.code; }),
-          datasets: [{
-            label: "Questions",
-            data: S.ctd_p_sections.map(function(x) { return x.count; }),
-            backgroundColor: "#34d399cc",
-            borderRadius: 4,
-          }],
-        },
-        options: vertBarOpts,
-      });
-
-      // --- A & R sections table ---
-      if (S.ctd_ar_sections.length) {
-        var arHtml = '<table><thead><tr><th>Section</th><th>Questions</th></tr></thead><tbody>';
-        S.ctd_ar_sections.forEach(function(x) {
-          arHtml += '<tr><td>' + x.code + '</td><td>' + x.count + '</td></tr>';
+      // --- CTD S-sections bar chart (Drug Substance, canonical subsections) ---
+      (function() {
+        var rows = S.ctd_s_sections || [];
+        var wrap = document.getElementById("insChartCtdSWrap");
+        wrap.style.width = Math.max(wrap.parentElement.clientWidth || 640, rows.length * 48) + "px";
+        wrap.style.height = "420px";
+        new Chart(document.getElementById("insChartCtdS"), {
+          type: "bar",
+          data: {
+            labels: rows.map(function(x) { return x.code; }),
+            datasets: [{
+              label: "Questions",
+              data: rows.map(function(x) { return x.count; }),
+              backgroundColor: "#f59e0bcc",
+              borderRadius: 4,
+              maxBarThickness: 36,
+            }],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { color: "#c9d7ea", font: { size: 11 }, maxRotation: 50, minRotation: 40, autoSkip: false },
+              },
+              y: {
+                beginAtZero: true,
+                ticks: { color: "#9eb2cb" },
+                grid: { color: "rgba(148,175,205,0.08)" },
+              },
+            },
+          },
         });
-        arHtml += '</tbody></table>';
-        document.getElementById("insArTable").innerHTML = arHtml;
-      } else {
-        document.getElementById("insArTable").innerHTML = '<p class="hint">No A/R sections found</p>';
-      }
+      })();
 
-      // --- Questions per year stacked bar ---
+      // --- CTD P-sections bar chart (Drug Product, canonical subsections) ---
+      (function() {
+        var rows = S.ctd_p_sections || [];
+        var wrap = document.getElementById("insChartCtdPWrap");
+        wrap.style.width = Math.max(wrap.parentElement.clientWidth || 640, rows.length * 44) + "px";
+        wrap.style.height = "420px";
+        new Chart(document.getElementById("insChartCtdP"), {
+          type: "bar",
+          data: {
+            labels: rows.map(function(x) { return x.code; }),
+            datasets: [{
+              label: "Questions",
+              data: rows.map(function(x) { return x.count; }),
+              backgroundColor: "#34d399cc",
+              borderRadius: 4,
+              maxBarThickness: 36,
+            }],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { color: "#c9d7ea", font: { size: 11 }, maxRotation: 50, minRotation: 40, autoSkip: false },
+              },
+              y: {
+                beginAtZero: true,
+                ticks: { color: "#9eb2cb" },
+                grid: { color: "rgba(148,175,205,0.08)" },
+              },
+            },
+          },
+        });
+      })();
+
+      // --- A & R sections bar chart (Appendices + Regional, canonical subsections) ---
+      (function() {
+        var rows = S.ctd_ar_sections || [];
+        var wrap = document.getElementById("insChartCtdArWrap");
+        wrap.style.width = Math.max(wrap.parentElement.clientWidth || 640, rows.length * 48) + "px";
+        wrap.style.height = "420px";
+        new Chart(document.getElementById("insChartCtdAr"), {
+          type: "bar",
+          data: {
+            labels: rows.map(function(x) { return x.code; }),
+            datasets: [{
+              label: "Questions",
+              data: rows.map(function(x) { return x.count; }),
+              backgroundColor: rows.map(function(x) {
+                return x.code.charAt(0) === "A" ? "#38bdf8cc" : "#a78bfacc";
+              }),
+              borderRadius: 4,
+              maxBarThickness: 36,
+            }],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { color: "#c9d7ea", font: { size: 11 }, maxRotation: 50, minRotation: 40, autoSkip: false },
+              },
+              y: {
+                beginAtZero: true,
+                ticks: { color: "#9eb2cb" },
+                grid: { color: "rgba(148,175,205,0.08)" },
+              },
+            },
+          },
+        });
+      })();
+
+      // --- Questions / deficiency letters per year stacked bar (SM / LM) ---
       new Chart(document.getElementById("insChartYearQ"), {
         type: "bar",
         data: {
@@ -2024,14 +1975,14 @@
         },
       });
 
-      // --- Documents per year stacked bar ---
-      new Chart(document.getElementById("insChartYearD"), {
+      // --- Number of Questions per Year (for SM and LM) ---
+      new Chart(document.getElementById("insChartYearQuestions"), {
         type: "bar",
         data: {
-          labels: S.documents_per_year.map(function(x) { return x.year; }),
+          labels: S.questions_per_year.map(function(x) { return x.year; }),
           datasets: [
-            { label: "Small Molecule", data: S.documents_per_year.map(function(x) { return x.small; }), backgroundColor: "#f59e0bcc", borderRadius: 4 },
-            { label: "Large Molecule", data: S.documents_per_year.map(function(x) { return x.large; }), backgroundColor: "#34d399cc", borderRadius: 4 },
+            { label: "Small Molecule", data: S.questions_per_year.map(function(x) { return x.small; }), backgroundColor: "#f59e0bcc", borderRadius: 4 },
+            { label: "Large Molecule", data: S.questions_per_year.map(function(x) { return x.large; }), backgroundColor: "#34d399cc", borderRadius: 4 },
           ],
         },
         options: {
@@ -2044,62 +1995,90 @@
         },
       });
 
-      // --- CTD Characteristics bubble chart ---
-      var bubbleData = S.ctd_characteristics
-        .filter(function(c) { return c.product_count > 0; })
-        .map(function(c, i) {
-          return { x: i, y: c.product_count, r: Math.max(4, Math.min(c.product_count * 2.5, 30)), code: c.code, products: c.products };
+      // --- CTD Chapter bubble charts (S and P, canonical subsections only) ---
+      function renderCtdBubbleChart(canvasId, wrapId, rows) {
+        var wrap = document.getElementById(wrapId);
+        var canvas = document.getElementById(canvasId);
+        if (!wrap || !canvas) return;
+        rows = rows || [];
+        wrap.style.width = Math.max(wrap.parentElement.clientWidth || 640, Math.max(rows.length, 1) * 52) + "px";
+        wrap.style.height = "420px";
+
+        var bubbleData = rows.map(function(c, i) {
+          return {
+            x: i,
+            y: c.product_count || 0,
+            r: Math.max(4, Math.min((c.product_count || 0) * 2.5, 30)),
+            code: c.code,
+            product_count: c.product_count || 0,
+            products: c.products || [],
+          };
         });
-      new Chart(document.getElementById("insChartBubble"), {
-        type: "bubble",
-        data: {
-          datasets: [{
-            label: "CTD Sections",
-            data: bubbleData,
-            backgroundColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length] + "99"; }),
-            borderColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length]; }),
-            borderWidth: 1,
-          }],
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                title: function(items) {
-                  var d = bubbleData[items[0].dataIndex];
-                  var entry = getCodeEntry(d.code);
-                  return d.code + (entry ? " — " + entry.title : "");
-                },
-                label: function(ctx) {
-                  var d = bubbleData[ctx.dataIndex];
-                  var lines = [" " + d.product_count + " products"];
-                  d.products.slice(0, 6).forEach(function(p) { lines.push("  · " + p); });
-                  return lines;
+
+        new Chart(canvas, {
+          type: "bubble",
+          data: {
+            datasets: [{
+              label: "CTD Sections",
+              data: bubbleData,
+              backgroundColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length] + "99"; }),
+              borderColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length]; }),
+              borderWidth: 1,
+            }],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  title: function(items) {
+                    var d = bubbleData[items[0].dataIndex];
+                    var entry = getCodeEntry(d.code);
+                    return d.code + (entry ? " — " + entry.title : "");
+                  },
+                  label: function(ctx) {
+                    var d = bubbleData[ctx.dataIndex];
+                    var lines = [" " + d.product_count + " products"];
+                    d.products.slice(0, 6).forEach(function(p) { lines.push("  · " + p); });
+                    if (d.products.length > 6) lines.push("  · +" + (d.products.length - 6) + " more");
+                    return lines;
+                  },
                 },
               },
             },
-          },
-          scales: {
-            x: {
-              type: "linear",
-              ticks: {
-                color: "#9eb2cb",
-                callback: function(val) { var d = bubbleData[Math.round(val)]; return d ? d.code : ""; },
-                maxRotation: 60, minRotation: 40,
+            scales: {
+              x: {
+                type: "linear",
+                min: -0.5,
+                max: Math.max(rows.length - 0.5, 0.5),
+                ticks: {
+                  color: "#9eb2cb",
+                  stepSize: 1,
+                  autoSkip: false,
+                  maxRotation: 60,
+                  minRotation: 40,
+                  callback: function(val) {
+                    var d = bubbleData[Math.round(val)];
+                    return d ? d.code : "";
+                  },
+                },
+                grid: { display: false },
               },
-              grid: { display: false },
-            },
-            y: {
-              beginAtZero: true,
-              title: { display: true, text: "Products affected", color: "#9eb2cb" },
-              ticks: { color: "#9eb2cb" },
-              grid: { color: "rgba(148,175,205,0.08)" },
+              y: {
+                beginAtZero: true,
+                title: { display: true, text: "Products affected", color: "#9eb2cb" },
+                ticks: { color: "#9eb2cb" },
+                grid: { color: "rgba(148,175,205,0.08)" },
+              },
             },
           },
-        },
-      });
+        });
+      }
+
+      renderCtdBubbleChart("insChartBubbleS", "insChartBubbleSWrap", S.ctd_characteristics_s);
+      renderCtdBubbleChart("insChartBubbleP", "insChartBubblePWrap", S.ctd_characteristics_p);
 
       // --- Code Summary Table (SM vs LM) ---
       if (S.code_summary && S.code_summary.length) {
@@ -2160,6 +2139,413 @@
     }
 
     renderInsights();
+
+    // ----- Yearly Overview page -----
+    let YEARLY_DATA = null;
+    const yearlyCharts = {};
+    function destroyYearlyCharts() {
+      Object.keys(yearlyCharts).forEach(function(key) {
+        try { yearlyCharts[key].destroy(); } catch (_) {}
+        delete yearlyCharts[key];
+      });
+    }
+    function makeVertBar(canvasId, wrapId, labels, values, color, barWidth) {
+      var wrap = document.getElementById(wrapId);
+      var canvas = document.getElementById(canvasId);
+      if (!wrap || !canvas) return;
+      wrap.style.width = Math.max(wrap.parentElement.clientWidth || 640, Math.max(labels.length, 1) * (barWidth || 36)) + "px";
+      wrap.style.height = wrap.style.height || "420px";
+      yearlyCharts[canvasId] = new Chart(canvas, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: color,
+            borderRadius: 4,
+            maxBarThickness: 36,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: "#c9d7ea", font: { size: 10 }, maxRotation: 60, minRotation: 40, autoSkip: false },
+            },
+            y: {
+              beginAtZero: true,
+              ticks: { color: "#9eb2cb" },
+              grid: { color: "rgba(148,175,205,0.08)" },
+            },
+          },
+        },
+      });
+    }
+    function makeHorizBar(canvasId, labels, values) {
+      var canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      yearlyCharts[canvasId] = new Chart(canvas, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: labels.map(function(_, i) { return PALETTE[i % PALETTE.length] + "cc"; }),
+            borderRadius: 6,
+            maxBarThickness: 20,
+          }],
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { beginAtZero: true, grid: { color: "rgba(148,175,205,0.08)" }, ticks: { color: "#9eb2cb" } },
+            y: { grid: { color: "rgba(148,175,205,0.06)" }, ticks: { color: "#c9d7ea", font: { size: 11 }, autoSkip: false } },
+          },
+        },
+      });
+    }
+    function makeBubble(canvasId, wrapId, rows) {
+      var wrap = document.getElementById(wrapId);
+      var canvas = document.getElementById(canvasId);
+      if (!wrap || !canvas) return;
+      rows = rows || [];
+      wrap.style.width = Math.max(wrap.parentElement.clientWidth || 640, Math.max(rows.length, 1) * 52) + "px";
+      wrap.style.height = "420px";
+      var bubbleData = rows.map(function(c, i) {
+        return {
+          x: i,
+          y: c.product_count || 0,
+          r: Math.max(4, Math.min((c.product_count || 0) * 2.5, 30)),
+          code: c.code,
+          product_count: c.product_count || 0,
+          products: c.products || [],
+        };
+      });
+      yearlyCharts[canvasId] = new Chart(canvas, {
+        type: "bubble",
+        data: {
+          datasets: [{
+            data: bubbleData,
+            backgroundColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length] + "99"; }),
+            borderColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length]; }),
+            borderWidth: 1,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                title: function(items) {
+                  var d = bubbleData[items[0].dataIndex];
+                  return d.code;
+                },
+                label: function(ctx) {
+                  var d = bubbleData[ctx.dataIndex];
+                  return [" " + d.product_count + " products"];
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              type: "linear",
+              min: -0.5,
+              max: Math.max(rows.length - 0.5, 0.5),
+              ticks: {
+                color: "#9eb2cb",
+                stepSize: 1,
+                autoSkip: false,
+                maxRotation: 60,
+                minRotation: 40,
+                callback: function(val) {
+                  var d = bubbleData[Math.round(val)];
+                  return d ? d.code : "";
+                },
+              },
+              grid: { display: false },
+            },
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: "Products affected", color: "#9eb2cb" },
+              ticks: { color: "#9eb2cb" },
+              grid: { color: "rgba(148,175,205,0.08)" },
+            },
+          },
+        },
+      });
+    }
+
+    function renderYearlySummaryTable(rows) {
+      var tbody = document.querySelector("#yCodeSummaryTable tbody");
+      if (!tbody) return;
+      var data = (rows || []).slice();
+      var filterEl = document.getElementById("yCodeSummaryFilter");
+      function paint(list) {
+        tbody.innerHTML = "";
+        list.forEach(function(row) {
+          var tr = document.createElement("tr");
+          tr.innerHTML =
+            "<td><code>" + row.code + "</code></td>" +
+            "<td>" + (row.title || "<em>—</em>") + "</td>" +
+            '<td style="text-align:right">' + row.sm_count + "</td>" +
+            '<td style="text-align:right">' + row.lm_count + "</td>" +
+            '<td style="text-align:right"><strong>' + row.total + "</strong></td>" +
+            "<td>" + ((row.sm_products || []).join(", ") || "—") + "</td>" +
+            "<td>" + ((row.lm_products || []).join(", ") || "—") + "</td>" +
+            '<td style="font-size:11.5px;line-height:1.4;color:#94afcd;white-space:normal;min-width:220px">' + (row.summary || "—") + "</td>";
+          tbody.appendChild(tr);
+        });
+      }
+      paint(data);
+      if (filterEl && !filterEl._bound) {
+        filterEl._bound = true;
+        filterEl.addEventListener("input", function() {
+          var q = filterEl.value.trim().toLowerCase();
+          if (!q) { paint(data); return; }
+          paint(data.filter(function(row) {
+            return (row.code || "").toLowerCase().indexOf(q) !== -1 ||
+              (row.title || "").toLowerCase().indexOf(q) !== -1;
+          }));
+        });
+      }
+    }
+
+    function renderYearlyOverview(year) {
+      if (!YEARLY_DATA || !YEARLY_DATA.by_year[year]) return;
+      var pack = YEARLY_DATA.by_year[year];
+      var dash = pack.dashboard || {};
+      var corp = pack.corpus || {};
+      var dk = dash.kpis || {};
+      var ck = corp.kpis || {};
+
+      document.getElementById("yearMeta").textContent =
+        fmt(dk.total_questions || 0) + " questions · " +
+        fmt(dk.unique_documents || 0) + " deficiency letters · " +
+        fmt(dk.unique_countries || 0) + " markets";
+
+      document.getElementById("metaBox").innerHTML = `
+        <div class="meta-row"><span>Doc. Type</span><span>Yearly Overview</span></div>
+        <div class="meta-row"><span>Year</span><span>${year}</span></div>
+        <div class="meta-row"><span>Questions</span><span>${fmt(dk.total_questions || 0)}</span></div>
+        <div class="meta-row"><span>Documents</span><span>${fmt(dk.unique_documents || 0)}</span></div>
+        <div class="meta-row"><span>Status</span><span>Analyzed</span></div>
+      `;
+      document.getElementById("tocFoot").textContent =
+        `Year ${year} · Docs ${fmt(dk.unique_documents || 0)} · Markets ${fmt(dk.unique_countries || 0)} · Products ${fmt(dk.unique_products || 0)}`;
+
+      var kpiRows = [
+        ["Total questions", fmt(dk.total_questions || 0), "Real Q&A rows"],
+        ["Deficiency Letters", fmt(dk.unique_documents || 0), "Unique doc versions"],
+        ["Health authorities", fmt(dk.unique_countries || 0), "Markets / countries"],
+        ["Products", fmt(dk.unique_products || 0), "Molecules in scope"],
+        ["Avg Q / document", dk.avg_questions_per_doc ?? "—", "Intensity signal"],
+        ["Small Molecule", fmt(ck.small_molecule_questions || 0), "Questions for SM products"],
+        ["Large Molecule", fmt(ck.large_molecule_questions || 0), "Questions for Biotech products"],
+      ];
+      document.getElementById("yKpiGrid").innerHTML = kpiRows.map(function(arr) {
+        return '<div class="kpi"><div class="label">' + arr[0] + '</div><div class="value">' + arr[1] + '</div><div class="sub">' + arr[2] + '</div></div>';
+      }).join("");
+
+      destroyYearlyCharts();
+
+      var countries = dash.ha_analysis || [];
+      var cWrap = document.getElementById("yChartCountryWrap");
+      cWrap.style.width = Math.max(cWrap.parentElement.clientWidth || 640, countries.length * 28) + "px";
+      cWrap.style.height = "420px";
+      yearlyCharts.yChartCountry = new Chart(document.getElementById("yChartCountry"), {
+        type: "bar",
+        data: {
+          labels: countries.map(function(c) { return c.ha; }),
+          datasets: [{
+            data: countries.map(function(c) { return c.questions; }),
+            backgroundColor: countries.map(function(_, i) { return PALETTE[i % PALETTE.length] + "cc"; }),
+            borderRadius: 6,
+            maxBarThickness: 22,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: "#c9d7ea", font: { size: 10 }, maxRotation: 70, minRotation: 50, autoSkip: false } },
+            y: { beginAtZero: true, grid: { color: "rgba(148,175,205,0.08)" }, ticks: { color: "#9eb2cb" } },
+          },
+        },
+      });
+
+      document.getElementById("yHaTable").innerHTML = table(
+        ["Health Authority", "Questions", "Deficiency Letters", "Avg Q/Doc", "Share %"],
+        countries.map(function(h) {
+          return [h.ha, fmt(h.questions), fmt(h.documents), h.avg_q_per_doc, h.share_pct];
+        }),
+        [1, 2, 3, 4]
+      );
+
+      var topCodes = (dash.top_codes || []).slice(0, 12);
+      makeHorizBar(
+        "yChartCodes",
+        topCodes.map(function(x) { return formatCodeChartLabel(x.code); }),
+        topCodes.map(function(x) { return x.count; })
+      );
+
+      var sRows = corp.ctd_s_sections || [];
+      makeVertBar("yChartCtdS", "yChartCtdSWrap", sRows.map(function(x) { return x.code; }), sRows.map(function(x) { return x.count; }), "#f59e0bcc", 48);
+      var pRows = corp.ctd_p_sections || [];
+      makeVertBar("yChartCtdP", "yChartCtdPWrap", pRows.map(function(x) { return x.code; }), pRows.map(function(x) { return x.count; }), "#34d399cc", 44);
+      var arRows = corp.ctd_ar_sections || [];
+      var arWrap = document.getElementById("yChartCtdArWrap");
+      arWrap.style.width = Math.max(arWrap.parentElement.clientWidth || 640, arRows.length * 48) + "px";
+      arWrap.style.height = "420px";
+      yearlyCharts.yChartCtdAr = new Chart(document.getElementById("yChartCtdAr"), {
+        type: "bar",
+        data: {
+          labels: arRows.map(function(x) { return x.code; }),
+          datasets: [{
+            data: arRows.map(function(x) { return x.count; }),
+            backgroundColor: arRows.map(function(x) { return x.code.charAt(0) === "A" ? "#38bdf8cc" : "#a78bfacc"; }),
+            borderRadius: 4,
+            maxBarThickness: 36,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: "#c9d7ea", font: { size: 11 }, maxRotation: 50, minRotation: 40, autoSkip: false } },
+            y: { beginAtZero: true, ticks: { color: "#9eb2cb" }, grid: { color: "rgba(148,175,205,0.08)" } },
+          },
+        },
+      });
+
+      renderYearlySummaryTable(corp.code_summary || []);
+
+      var products = dash.product_analysis || [];
+      var pWrap = document.getElementById("yChartProductsWrap");
+      pWrap.style.width = Math.max(pWrap.parentElement.clientWidth || 640, products.length * 36) + "px";
+      pWrap.style.height = "420px";
+      yearlyCharts.yChartProducts = new Chart(document.getElementById("yChartProducts"), {
+        type: "bar",
+        data: {
+          labels: products.map(function(p) { return p.product; }),
+          datasets: [{
+            data: products.map(function(p) { return p.questions; }),
+            backgroundColor: products.map(function(_, i) { return PALETTE[i % PALETTE.length] + "cc"; }),
+            borderRadius: 6,
+            maxBarThickness: 28,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: "#c9d7ea", font: { size: 10 }, maxRotation: 70, minRotation: 50, autoSkip: false } },
+            y: { beginAtZero: true, grid: { color: "rgba(148,175,205,0.08)" }, ticks: { color: "#9eb2cb" } },
+          },
+        },
+      });
+
+      document.getElementById("yProductTable").innerHTML = table(
+        ["Product", "Questions", "Docs", "Avg Q/Doc", "Share %"],
+        products.map(function(p) {
+          return [p.product, fmt(p.questions), fmt(p.documents), p.avg_q_per_doc, p.share_pct];
+        }),
+        [1, 2, 3, 4]
+      );
+
+      var qp = corp.questions_per_product || [];
+      yearlyCharts.yInsChartProduct = new Chart(document.getElementById("yInsChartProduct"), {
+        type: "bar",
+        data: {
+          labels: qp.map(function(x) { return x.product; }),
+          datasets: [{ data: qp.map(function(x) { return x.count; }), backgroundColor: "#38bdf8cc", borderRadius: 4 }],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: "#9eb2cb", maxRotation: 50, minRotation: 30, font: { size: 10 } }, grid: { display: false } },
+            y: { beginAtZero: true, ticks: { color: "#9eb2cb" }, grid: { color: "rgba(148,175,205,0.08)" } },
+          },
+        },
+      });
+      var qc = corp.questions_per_country || [];
+      yearlyCharts.yInsChartCountry = new Chart(document.getElementById("yInsChartCountry"), {
+        type: "bar",
+        data: {
+          labels: qc.map(function(x) { return x.country; }),
+          datasets: [{ data: qc.map(function(x) { return x.count; }), backgroundColor: "#a78bfacc", borderRadius: 4 }],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: "#9eb2cb", maxRotation: 50, minRotation: 30, font: { size: 10 } }, grid: { display: false } },
+            y: { beginAtZero: true, ticks: { color: "#9eb2cb" }, grid: { color: "rgba(148,175,205,0.08)" } },
+          },
+        },
+      });
+
+      makeBubble("yBubbleS", "yBubbleSWrap", corp.ctd_characteristics_s || []);
+      makeBubble("yBubbleP", "yBubblePWrap", corp.ctd_characteristics_p || []);
+    }
+
+    async function initYearlyOverview() {
+      try {
+        const res = await fetch("./yearly_overview.json", { cache: "no-store" });
+        if (!res.ok) return;
+        YEARLY_DATA = await res.json();
+      } catch (_) {
+        return;
+      }
+      const select = document.getElementById("yearSelect");
+      const years = YEARLY_DATA.years || [];
+      select.innerHTML = years.map(function(y) {
+        return '<option value="' + y + '">' + y + "</option>";
+      }).join("");
+      if (years.length) {
+        select.value = years[years.length - 1];
+      }
+      select.addEventListener("change", function() {
+        renderYearlyOverview(select.value);
+      });
+    }
+
+    function showPortfolioView() {
+      document.getElementById("viewPortfolio").style.display = "";
+      document.getElementById("viewYearly").style.display = "none";
+      document.getElementById("btnViewPortfolio").classList.add("active");
+      document.getElementById("btnViewYearly").classList.remove("active");
+      buildToc(TOC);
+      setPortfolioMeta();
+    }
+    function showYearlyView() {
+      document.getElementById("viewPortfolio").style.display = "none";
+      document.getElementById("viewYearly").style.display = "";
+      document.getElementById("btnViewPortfolio").classList.remove("active");
+      document.getElementById("btnViewYearly").classList.add("active");
+      buildToc(YEARLY_TOC);
+      const select = document.getElementById("yearSelect");
+      if (YEARLY_DATA && select.value) renderYearlyOverview(select.value);
+      else if (YEARLY_DATA && YEARLY_DATA.years && YEARLY_DATA.years.length) {
+        select.value = YEARLY_DATA.years[YEARLY_DATA.years.length - 1];
+        renderYearlyOverview(select.value);
+      }
+    }
+    document.getElementById("btnViewPortfolio").addEventListener("click", showPortfolioView);
+    document.getElementById("btnViewYearly").addEventListener("click", showYearlyView);
+    await initYearlyOverview();
 
     // ----- CMC RAG chatbot -----
     const chatMessages = document.getElementById("chatMessages");
@@ -2701,189 +3087,6 @@
       ensureSessionId();
       restoreTranscript();
       refreshChatHealth();
-    })();
-
-    // ===== Section 12: CTD Code Comparison =====
-    (function initComparison() {
-      if (!CORPUS_STATS || !CORPUS_STATS.code_summary) return;
-
-      var cmpCode = document.getElementById("cmpCode");
-      var cmpProdA = document.getElementById("cmpProdA");
-      var cmpProdB = document.getElementById("cmpProdB");
-      var cmpBtn = document.getElementById("cmpBtn");
-      var cmpStatus = document.getElementById("cmpStatus");
-      var cmpResults = document.getElementById("cmpResults");
-      var cmpHeaderA = document.getElementById("cmpHeaderA");
-      var cmpHeaderB = document.getElementById("cmpHeaderB");
-      var cmpBodyA = document.getElementById("cmpBodyA");
-      var cmpBodyB = document.getElementById("cmpBodyB");
-
-      var codeSummaryMap = {};
-      CORPUS_STATS.code_summary.forEach(function(cs) {
-        codeSummaryMap[cs.code] = cs;
-        var opt = document.createElement("option");
-        opt.value = cs.code;
-        opt.textContent = cs.code + (cs.title ? " — " + cs.title : "") + " (" + cs.total + " Qs)";
-        cmpCode.appendChild(opt);
-      });
-
-      function populateProducts() {
-        var code = cmpCode.value;
-        cmpProdA.innerHTML = '<option value="">— Select Product A —</option>';
-        cmpProdB.innerHTML = '<option value="">— Select Product B —</option>';
-        cmpProdA.disabled = true;
-        cmpProdB.disabled = true;
-        cmpBtn.disabled = true;
-        cmpResults.style.display = "none";
-
-        if (!code || !codeSummaryMap[code]) return;
-        var cs = codeSummaryMap[code];
-        var allProducts = cs.sm_products.concat(cs.lm_products).sort();
-        var unique = [];
-        allProducts.forEach(function(p) { if (unique.indexOf(p) === -1) unique.push(p); });
-
-        unique.forEach(function(p) {
-          var optA = document.createElement("option");
-          optA.value = p; optA.textContent = p;
-          cmpProdA.appendChild(optA);
-          var optB = document.createElement("option");
-          optB.value = p; optB.textContent = p;
-          cmpProdB.appendChild(optB);
-        });
-
-        cmpProdA.disabled = unique.length < 2;
-        cmpProdB.disabled = unique.length < 2;
-      }
-
-      function checkReady() {
-        cmpBtn.disabled = !(cmpCode.value && cmpProdA.value && cmpProdB.value && cmpProdA.value !== cmpProdB.value);
-      }
-
-      cmpCode.addEventListener("change", function() { populateProducts(); checkReady(); });
-      cmpProdA.addEventListener("change", checkReady);
-      cmpProdB.addEventListener("change", checkReady);
-
-      function escHtml(s) {
-        var d = document.createElement("div"); d.textContent = s; return d.innerHTML;
-      }
-
-      function renderDiff(textA, textB) {
-        if (typeof Diff === "undefined" || !Diff.diffWords) {
-          return { htmlA: escHtml(textA), htmlB: escHtml(textB) };
-        }
-        var parts = Diff.diffWords(textA, textB);
-        var htmlA = "", htmlB = "";
-        parts.forEach(function(part) {
-          var safe = escHtml(part.value);
-          if (part.added) {
-            htmlB += '<span class="cmp-diff-add">' + safe + "</span>";
-          } else if (part.removed) {
-            htmlA += '<span class="cmp-diff-del">' + safe + "</span>";
-          } else {
-            htmlA += safe;
-            htmlB += safe;
-          }
-        });
-        return { htmlA: htmlA, htmlB: htmlB };
-      }
-
-      function renderQaBlocks(questions, containerId, diffFn) {
-        var container = document.getElementById(containerId);
-        container.innerHTML = "";
-        if (!questions.length) {
-          container.innerHTML = '<div class="cmp-empty">No Q&amp;A found for this product + code combination</div>';
-          return;
-        }
-        questions.forEach(function(qa, idx) {
-          var block = document.createElement("div");
-          block.className = "cmp-qa-block";
-          var qHtml = diffFn ? diffFn(qa.question, "q", idx) : escHtml(qa.question);
-          var aHtml = diffFn ? diffFn(qa.answer, "a", idx) : escHtml(qa.answer);
-          block.innerHTML =
-            '<h4>Question ' + (idx + 1) + '</h4>' +
-            '<div class="cmp-text">' + qHtml + '</div>' +
-            '<h4 style="margin-top:10px">Answer</h4>' +
-            '<div class="cmp-text">' + aHtml + '</div>';
-          container.appendChild(block);
-        });
-      }
-
-      cmpBtn.addEventListener("click", function() {
-        var code = cmpCode.value;
-        var prodA = cmpProdA.value;
-        var prodB = cmpProdB.value;
-
-        cmpBtn.disabled = true;
-        cmpStatus.style.display = "";
-        cmpStatus.textContent = "Loading comparison…";
-        cmpResults.style.display = "none";
-
-        var url = "./api/compare?" +
-          "code=" + encodeURIComponent(code) +
-          "&product_a=" + encodeURIComponent(prodA) +
-          "&product_b=" + encodeURIComponent(prodB);
-
-        fetch(url, {
-          credentials: "same-origin"
-        })
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-          cmpStatus.style.display = "none";
-          cmpBtn.disabled = false;
-          cmpResults.style.display = "";
-
-          cmpHeaderA.textContent = data.product_a.name + " (" + data.product_a.questions.length + " Q&A)";
-          cmpHeaderB.textContent = data.product_b.name + " (" + data.product_b.questions.length + " Q&A)";
-
-          var qsA = data.product_a.questions;
-          var qsB = data.product_b.questions;
-
-          // Render side A with diff highlights
-          cmpBodyA.innerHTML = "";
-          cmpBodyB.innerHTML = "";
-
-          if (!qsA.length && !qsB.length) {
-            cmpBodyA.innerHTML = '<div class="cmp-empty">No Q&amp;A found</div>';
-            cmpBodyB.innerHTML = '<div class="cmp-empty">No Q&amp;A found</div>';
-            return;
-          }
-
-          // Pair up by index for diff (best-effort alignment)
-          var maxLen = Math.max(qsA.length, qsB.length);
-          for (var i = 0; i < maxLen; i++) {
-            var qaA = qsA[i] || { question: "", answer: "" };
-            var qaB = qsB[i] || { question: "", answer: "" };
-
-            var qDiff = renderDiff(qaA.question, qaB.question);
-            var aDiff = renderDiff(qaA.answer, qaB.answer);
-
-            var blockA = document.createElement("div");
-            blockA.className = "cmp-qa-block";
-            blockA.innerHTML = (qsA[i] ? (
-              '<h4>Question ' + (i + 1) + '</h4>' +
-              '<div class="cmp-text">' + qDiff.htmlA + '</div>' +
-              '<h4 style="margin-top:10px">Answer</h4>' +
-              '<div class="cmp-text">' + aDiff.htmlA + '</div>'
-            ) : '<div class="cmp-empty">No matching Q&amp;A at this position</div>');
-            cmpBodyA.appendChild(blockA);
-
-            var blockB = document.createElement("div");
-            blockB.className = "cmp-qa-block";
-            blockB.innerHTML = (qsB[i] ? (
-              '<h4>Question ' + (i + 1) + '</h4>' +
-              '<div class="cmp-text">' + qDiff.htmlB + '</div>' +
-              '<h4 style="margin-top:10px">Answer</h4>' +
-              '<div class="cmp-text">' + aDiff.htmlB + '</div>'
-            ) : '<div class="cmp-empty">No matching Q&amp;A at this position</div>');
-            cmpBodyB.appendChild(blockB);
-          }
-        })
-        .catch(function(err) {
-          cmpStatus.textContent = "Error: " + err.message;
-          cmpStatus.style.display = "";
-          cmpBtn.disabled = false;
-        });
-      });
     })();
 
     })();

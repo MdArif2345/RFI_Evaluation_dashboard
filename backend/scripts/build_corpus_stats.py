@@ -69,6 +69,93 @@ def _normalize_code(raw: str) -> str | None:
     return f"{m.group(1).upper()}.{m.group(2)}"
 
 
+# Canonical X-axis subsections for Drug Substance / Drug Product / Appendices & Regional.
+CTD_S_CANONICAL = [
+    "S.1",
+    "S.2.1", "S.2.2", "S.2.3", "S.2.4", "S.2.5", "S.2.6",
+    "S.3.1", "S.3.2",
+    "S.4.1", "S.4.2", "S.4.3", "S.4.4", "S.4.5",
+    "S.5", "S.6",
+    "S.7.1", "S.7.2", "S.7.3",
+]
+CTD_P_CANONICAL = [
+    "P.1",
+    "P.2.1", "P.2.2", "P.2.3", "P.2.4", "P.2.5", "P.2.6",
+    "P.3.1", "P.3.2", "P.3.3", "P.3.4", "P.3.5",
+    "P.4.1", "P.4.2", "P.4.3", "P.4.4", "P.4.5", "P.4.6",
+    "P.5.1", "P.5.2", "P.5.3", "P.5.4", "P.5.5", "P.5.6",
+    "P.6", "P.7",
+    "P.8.1", "P.8.2", "P.8.3",
+]
+CTD_AR_CANONICAL = [
+    "A.1", "A.2", "A.3",
+    "R.1", "R.2",
+    "R.3.1", "R.3.2", "R.3.3", "R.3.5",
+    "R.5", "R.6", "R.7", "R.8", "R.9", "R.10",
+]
+_CTD_LEAF_PARENTS = frozenset({
+    "S.1", "S.5", "S.6",
+    "P.1", "P.6", "P.7",
+    "A.1", "A.2", "A.3",
+    "R.1", "R.2", "R.5", "R.6", "R.7", "R.8", "R.9", "R.10",
+})
+_CTD_S_SET = frozenset(CTD_S_CANONICAL)
+_CTD_P_SET = frozenset(CTD_P_CANONICAL)
+_CTD_AR_SET = frozenset(CTD_AR_CANONICAL)
+
+
+def _normalize_numeric_parts(code: str) -> str | None:
+    """Uppercase prefix and strip leading zeros from numeric segments (S.7.01 -> S.7.1)."""
+    m = re.match(r"^([SPARsp])\.([\d.]+)$", code.strip())
+    if not m:
+        return None
+    prefix = m.group(1).upper()
+    parts = [str(int(p)) for p in m.group(2).split(".") if p.isdigit()]
+    if not parts:
+        return None
+    return f"{prefix}.{'.'.join(parts)}"
+
+
+def _map_to_canonical_ctd(raw: str) -> str | None:
+    """Map a raw CTD code onto the fixed S/P/A/R subsection axis, or None if unmatched."""
+    normalized = _normalize_numeric_parts(raw)
+    if not normalized:
+        return None
+    prefix = normalized[0]
+    if prefix == "S":
+        allowed = _CTD_S_SET
+    elif prefix == "P":
+        allowed = _CTD_P_SET
+    elif prefix in ("A", "R"):
+        allowed = _CTD_AR_SET
+    else:
+        return None
+
+    parts = normalized.split(".")
+    # Leaf parents roll up any deeper codes (A.1.02 -> A.1, R.5.01 -> R.5).
+    if len(parts) >= 2:
+        leaf = f"{parts[0]}.{parts[1]}"
+        if leaf in _CTD_LEAF_PARENTS:
+            return leaf if leaf in allowed else None
+
+    # Two-level subsection (R.3.3.xx -> R.3.3)
+    if len(parts) >= 3:
+        two_level = f"{parts[0]}.{parts[1]}.{parts[2]}"
+        if two_level in allowed:
+            return two_level
+
+    # Exact match on normalized code (already a leaf or listed subsection)
+    if normalized in allowed:
+        return normalized
+
+    return None
+
+
+def _canonical_counts(counter: collections.Counter[str], canonical: list[str]) -> list[dict[str, Any]]:
+    """Emit fixed-order subsection rows, including zeros."""
+    return [{"code": code, "count": int(counter.get(code, 0))} for code in canonical]
+
+
 _STOP_WORDS = {
     "the", "a", "an", "and", "or", "of", "to", "in", "for", "is", "are", "be",
     "was", "were", "with", "that", "this", "these", "those", "it", "its", "as",
@@ -175,7 +262,7 @@ def build_stats(rows: list[dict[str, Any]]) -> dict[str, Any]:
         for k, v in sorted(country_counts.items(), key=lambda x: -x[1])
     ]
 
-    # --- CTD S-sections (Drug Substance) ---
+    # --- CTD S/P/A/R sections (canonical subsections on X-axis) ---
     s_counts: dict[str, int] = collections.Counter()
     p_counts: dict[str, int] = collections.Counter()
     ar_counts: dict[str, int] = collections.Counter()
@@ -183,32 +270,19 @@ def build_stats(rows: list[dict[str, Any]]) -> dict[str, Any]:
     for r in rows:
         codes = _parse_individual_codes(r.get("codes", ""))
         for c in codes:
-            # Normalize to parent section (e.g. S.4.1.01 -> S.4.1)
-            # Keep up to 3 numeric parts: S.x.y
-            m = re.match(r"^([SPARsp])\.(\d+(?:\.\d+)?)", c)
-            if not m:
+            mapped = _map_to_canonical_ctd(c)
+            if not mapped:
                 continue
-            prefix = m.group(1).upper()
-            section = f"{prefix}.{m.group(2)}"
-            if prefix == "S":
-                s_counts[section] += 1
-            elif prefix == "P":
-                p_counts[section] += 1
-            elif prefix in ("A", "R"):
-                ar_counts[section] += 1
+            if mapped.startswith("S."):
+                s_counts[mapped] += 1
+            elif mapped.startswith("P."):
+                p_counts[mapped] += 1
+            elif mapped.startswith("A.") or mapped.startswith("R."):
+                ar_counts[mapped] += 1
 
-    stats["ctd_s_sections"] = [
-        {"code": k, "count": v}
-        for k, v in sorted(s_counts.items(), key=lambda x: _code_sort_key(x[0]))
-    ]
-    stats["ctd_p_sections"] = [
-        {"code": k, "count": v}
-        for k, v in sorted(p_counts.items(), key=lambda x: _code_sort_key(x[0]))
-    ]
-    stats["ctd_ar_sections"] = [
-        {"code": k, "count": v}
-        for k, v in sorted(ar_counts.items(), key=lambda x: _code_sort_key(x[0]))
-    ]
+    stats["ctd_s_sections"] = _canonical_counts(s_counts, CTD_S_CANONICAL)
+    stats["ctd_p_sections"] = _canonical_counts(p_counts, CTD_P_CANONICAL)
+    stats["ctd_ar_sections"] = _canonical_counts(ar_counts, CTD_AR_CANONICAL)
 
     # --- Questions per year (total, small, large) ---
     year_data: dict[str, dict[str, int]] = {}
@@ -253,23 +327,30 @@ def build_stats(rows: list[dict[str, Any]]) -> dict[str, Any]:
         for y in sorted(year_docs.keys())
     ]
 
-    # --- CTD Characteristics (code -> products bubble chart) ---
-    code_products: dict[str, set[str]] = {}
+    # --- CTD Characteristics bubble data (canonical S/P subsections only) ---
+    s_products: dict[str, set[str]] = {c: set() for c in CTD_S_CANONICAL}
+    p_products: dict[str, set[str]] = {c: set() for c in CTD_P_CANONICAL}
+
     for r in rows:
         prod = (r.get("doc_product") or "").strip()
         if not prod:
             continue
-        codes = _parse_individual_codes(r.get("codes", ""))
-        for c in codes:
-            m = re.match(r"^([SPARsp])\.(\d+(?:\.\d+)?)", c)
-            if not m:
+        for c in _parse_individual_codes(r.get("codes", "")):
+            mapped = _map_to_canonical_ctd(c)
+            if not mapped:
                 continue
-            section = f"{m.group(1).upper()}.{m.group(2)}"
-            code_products.setdefault(section, set()).add(prod)
+            if mapped in s_products:
+                s_products[mapped].add(prod)
+            elif mapped in p_products:
+                p_products[mapped].add(prod)
 
-    stats["ctd_characteristics"] = [
-        {"code": k, "product_count": len(v), "products": sorted(v)}
-        for k, v in sorted(code_products.items(), key=lambda x: _code_sort_key(x[0]))
+    stats["ctd_characteristics_s"] = [
+        {"code": code, "product_count": len(s_products[code]), "products": sorted(s_products[code])}
+        for code in CTD_S_CANONICAL
+    ]
+    stats["ctd_characteristics_p"] = [
+        {"code": code, "product_count": len(p_products[code]), "products": sorted(p_products[code])}
+        for code in CTD_P_CANONICAL
     ]
 
     # --- Code summary: SM vs LM split per CTD code ---

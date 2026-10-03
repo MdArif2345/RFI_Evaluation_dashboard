@@ -18,10 +18,232 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+# Allow importing canonical CTD mapping from sibling script.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_corpus_stats import _map_to_canonical_ctd  # noqa: E402
+
 DASHBOARD_DIR = Path(__file__).resolve().parent.parent.parent
 INPUT_PATH = DASHBOARD_DIR / "cmc_response_documents (4).json"
 OUTPUT_JS = DASHBOARD_DIR / "data.js"
 OUTPUT_JSON = DASHBOARD_DIR / "metrics.json"
+
+
+def _section_from_canonical(code: str) -> str:
+    """High-level CTD section from a canonical subsection (P.8.3 -> P.8)."""
+    parts = code.split(".")
+    if len(parts) >= 2:
+        return f"{parts[0]}.{parts[1]}"
+    return code
+
+
+def _build_recommendations(
+    questions: list[dict[str, Any]],
+    *,
+    total_questions: int,
+    brief: int,
+    empty: int,
+    ha_analysis: list[dict[str, Any]],
+    product_analysis: list[dict[str, Any]],
+    top_keywords: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """TRD/RFI-style recommendations: priority, decision, owner, root cause."""
+    code_stats: dict[str, dict[str, Any]] = {}
+    for r in questions:
+        product = (r.get("doc_product") or "").strip()
+        country = (r.get("doc_country") or "").strip()
+        if country == "N/A":
+            country = ""
+        for raw in _parse_codes(r.get("codes", "")):
+            canon = _map_to_canonical_ctd(raw) or raw
+            bucket = code_stats.setdefault(
+                canon,
+                {
+                    "questions": 0,
+                    "products": set(),
+                    "countries": set(),
+                    "raw_codes": collections.Counter(),
+                },
+            )
+            bucket["questions"] += 1
+            if product:
+                bucket["products"].add(product)
+            if country:
+                bucket["countries"].add(country)
+            bucket["raw_codes"][raw] += 1
+
+    ranked = sorted(
+        code_stats.items(),
+        key=lambda item: (
+            -item[1]["questions"],
+            -len(item[1]["products"]),
+            -len(item[1]["countries"]),
+        ),
+    )
+
+    recs: list[dict[str, Any]] = []
+
+    # 1–2: Systemic multi-HA / multi-product CTD clusters → Monitor / SME review
+    systemic = [
+        (code, st)
+        for code, st in ranked
+        if st["questions"] >= 8
+        and len(st["products"]) >= 2
+        and len(st["countries"]) >= 2
+    ]
+    for code, st in systemic[:2]:
+        n_prod = len(st["products"])
+        n_ha = len(st["countries"])
+        top_raw = st["raw_codes"].most_common(1)[0][0] if st["raw_codes"] else code
+        section = _section_from_canonical(code)
+        if st["questions"] >= 40 and n_prod >= 5 and n_ha >= 5:
+            priority, decision = "High", "SME review required"
+        elif st["questions"] >= 20:
+            priority, decision = "High", "Monitor trend"
+        else:
+            priority, decision = "Medium", "Monitor trend"
+        recs.append(
+            {
+                "title": f"Review recurring questions in {code}",
+                "detail": (
+                    f"{st['questions']} questions map to {code} across {n_prod} products "
+                    f"and {n_ha} Health Authorities. Recurrence across products/HAs warrants "
+                    f"hierarchical TRD review (section {section} → granular profile code), "
+                    f"not a one-off dossier fix."
+                ),
+                "priority": priority,
+                "decision": decision,
+                "ctd_section": section,
+                "trd_code": top_raw if top_raw != code else code,
+                "root_cause": "Evolving regulatory expectation / possible profile gap",
+                "owner": "RA CMC / TRD Profile Owner",
+                "action_type": "SME review",
+                "recurring": "Recurring",
+            }
+        )
+
+    # 3: Product-concentrated code → product-specific, no general update
+    product_specific = [
+        (code, st)
+        for code, st in ranked
+        if st["questions"] >= 10 and len(st["products"]) == 1
+    ]
+    if product_specific:
+        code, st = product_specific[0]
+        prod = next(iter(st["products"]))
+        section = _section_from_canonical(code)
+        top_raw = st["raw_codes"].most_common(1)[0][0] if st["raw_codes"] else code
+        recs.append(
+            {
+                "title": f"Keep {code} product-specific ({prod})",
+                "detail": (
+                    f"{st['questions']} questions for {code} concentrate on a single product "
+                    f"({prod}). Classify as product-specific; do not trigger a general TRD "
+                    f"profile update unless the same pattern appears on other products."
+                ),
+                "priority": "Medium",
+                "decision": "No, product-specific issue only",
+                "ctd_section": section,
+                "trd_code": top_raw if top_raw != code else code,
+                "root_cause": "Product-specific technical issue",
+                "owner": "RA CMC / Pharmaceutical Development",
+                "action_type": "monitoring",
+                "recurring": "Recurring",
+            }
+        )
+
+    # 4: Top HA concentration → regional readiness (not automatic profile update)
+    top_ha = ha_analysis[0] if ha_analysis else None
+    if top_ha:
+        recs.append(
+            {
+                "title": f"Strengthen {top_ha['ha']} regional readiness",
+                "detail": (
+                    f"{top_ha['ha']} drives {top_ha['questions']} questions "
+                    f"({top_ha['share_pct']}% of corpus) across {top_ha['documents']} documents. "
+                    f"Treat as regional expectation / response playbook work unless the same "
+                    f"CTD topics recur across multiple HAs."
+                ),
+                "priority": "High" if top_ha["share_pct"] >= 8 else "Medium",
+                "decision": "Monitor trend",
+                "ctd_section": "R / Regional",
+                "trd_code": "—",
+                "root_cause": "Regional expectation",
+                "owner": "Regulatory Strategy / RA CMC",
+                "action_type": "checklist update",
+                "recurring": "Recurring",
+            }
+        )
+
+    # 5: Theme cluster → template / checklist, conservative on profile update
+    if top_keywords:
+        themes = ", ".join(k["keyword"] for k in top_keywords[:5])
+        top_theme = top_keywords[0]
+        recs.append(
+            {
+                "title": f"Cluster theme: {top_theme['keyword']}",
+                "detail": (
+                    f"Top deficiency themes: {themes}. Build reusable justification blocks "
+                    f"and author checklists. Recommend a TRD profile change only if the theme "
+                    f"maps to a silent/ambiguous profile after hierarchical CTD→TRD mapping."
+                ),
+                "priority": "Medium",
+                "decision": "Monitor trend",
+                "ctd_section": "Cross-cutting",
+                "trd_code": "—",
+                "root_cause": "Inadequate justification / authoring guidance",
+                "owner": "RA CMC / TRD Profile Owner",
+                "action_type": "template update",
+                "recurring": "Recurring",
+            }
+        )
+
+    # 6: Brief/empty answers → dossier execution / SME review
+    weak = brief + empty
+    if weak > 0:
+        pct = round(100 * weak / max(total_questions, 1), 1)
+        recs.append(
+            {
+                "title": "Close answer-completeness gaps",
+                "detail": (
+                    f"{weak} questions have empty or very brief answers ({pct}%). "
+                    f"This points to dossier execution / SME completeness, not an automatic "
+                    f"TRD profile update. Flag for SME review before any profile change."
+                ),
+                "priority": "High" if pct >= 10 else "Medium",
+                "decision": "No, dossier execution issue",
+                "ctd_section": "Cross-cutting",
+                "trd_code": "—",
+                "root_cause": "Insufficient authoring execution",
+                "owner": "RA CMC / Quality Control",
+                "action_type": "SME review",
+                "recurring": "Recurring",
+            }
+        )
+
+    # 7: Highest-volume product → depth focus, still product-scoped
+    top_prod = product_analysis[0] if product_analysis else None
+    if top_prod and len(recs) < 7:
+        recs.append(
+            {
+                "title": f"Deep-dive CMC readiness for {top_prod['product']}",
+                "detail": (
+                    f"{top_prod['product']} accounts for {top_prod['questions']} questions "
+                    f"({top_prod['share_pct']}%) across {top_prod['documents']} documents. "
+                    f"Prioritize product-level dossier quality; escalate to TRD profile update "
+                    f"only when the same CTD subsection also recurs on other products."
+                ),
+                "priority": "Medium",
+                "decision": "No, product-specific issue only",
+                "ctd_section": "Cross-cutting",
+                "trd_code": "—",
+                "root_cause": "Product-specific technical issue",
+                "owner": "RA CMC / Manufacturing",
+                "action_type": "training",
+                "recurring": "Recurring",
+            }
+        )
+
+    return recs[:7]
 
 
 def _parse_codes(codes_val) -> list[str]:
@@ -234,20 +456,22 @@ def build(rows: list[dict[str, Any]]) -> dict[str, Any]:
         {"label": "Analysis coverage", "value": f"{total_rows} analyzed / {total_rows} rows"},
     ]
 
-    # --- Heatmap ---
-    top_countries_list = [x["ha"] for x in data["ha_analysis"][:12]]
-    top_products_list = [x["product"] for x in data["product_analysis"][:10]]
-    matrix = [[0] * len(top_products_list) for _ in range(len(top_countries_list))]
+    # --- Heatmap (all countries × all products) ---
+    all_countries_list = [x["ha"] for x in data["ha_analysis"]]
+    all_products_list = [x["product"] for x in data["product_analysis"]]
+    country_index = {c: i for i, c in enumerate(all_countries_list)}
+    product_index = {p: i for i, p in enumerate(all_products_list)}
+    matrix = [[0] * len(all_products_list) for _ in range(len(all_countries_list))]
     for r in questions:
         c = (r.get("doc_country") or "").strip()
         p = (r.get("doc_product") or "").strip()
-        if c in top_countries_list and p in top_products_list:
-            ci = top_countries_list.index(c)
-            pi = top_products_list.index(p)
+        ci = country_index.get(c)
+        pi = product_index.get(p)
+        if ci is not None and pi is not None:
             matrix[ci][pi] += 1
     data["heatmap"] = {
-        "countries": top_countries_list,
-        "products": top_products_list,
+        "countries": all_countries_list,
+        "products": all_products_list,
         "matrix": matrix,
     }
 
@@ -264,14 +488,16 @@ def build(rows: list[dict[str, Any]]) -> dict[str, Any]:
     ]
 
     # --- Chart helpers ---
-    data["chart_country_top15"] = [
+    data["chart_country_all"] = [
         {"country": x["ha"], "questions": x["questions"]}
-        for x in data["ha_analysis"][:15]
+        for x in data["ha_analysis"]
     ]
-    data["chart_product_top12"] = [
+    data["chart_country_top15"] = data["chart_country_all"][:15]
+    data["chart_product_all"] = [
         {"product": x["product"], "questions": x["questions"]}
-        for x in data["product_analysis"][:12]
+        for x in data["product_analysis"]
     ]
+    data["chart_product_top12"] = data["chart_product_all"][:12]
 
     # --- Recent documents ---
     sorted_rows = sorted(rows, key=lambda r: (r.get("doc_approve_date") or ""), reverse=True)
@@ -294,29 +520,16 @@ def build(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 break
     data["recent_documents"] = recent
 
-    # --- Recommendations ---
-    data["recommendations"] = [
-        {
-            "title": f"Prioritize {top_ha['ha']} readiness" if top_ha else "Review top HA",
-            "detail": f"{top_ha['ha']} accounts for {top_ha['questions']} questions ({top_ha['share_pct']}% of all RFIs). Build HA-specific response playbooks." if top_ha else "",
-        },
-        {
-            "title": f"Focus CMC depth on {top_prod['product']}" if top_prod else "Review top product",
-            "detail": f"{top_prod['product']} drives {top_prod['questions']} questions across {top_prod['documents']} documents." if top_prod else "",
-        },
-        {
-            "title": "Address recurring deficiency themes",
-            "detail": f"Most frequent themes: {', '.join(k['keyword'] for k in data['top_keywords'][:5])}. Create reusable response templates.",
-        },
-        {
-            "title": "Strengthen high-hit CTD sections",
-            "detail": f"Top referenced codes: {', '.join(c['code'] for c in data['top_codes'][:5])}. Audit dossier quality in these sections.",
-        },
-        {
-            "title": "Improve answer completeness",
-            "detail": f"{brief + empty} questions have empty or very brief answers ({round(100 * (brief + empty) / max(total_questions, 1), 1)}%). Flag these for SME review.",
-        },
-    ]
+    # --- Recommendations (TRD / RFI evaluation framework) ---
+    data["recommendations"] = _build_recommendations(
+        questions,
+        total_questions=total_questions,
+        brief=brief,
+        empty=empty,
+        ha_analysis=data["ha_analysis"],
+        product_analysis=data["product_analysis"],
+        top_keywords=data["top_keywords"],
+    )
 
     # --- Languages ---
     data["languages"] = [{"language": "English", "documents": len(doc_ids)}]
