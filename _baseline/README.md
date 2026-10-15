@@ -1,145 +1,186 @@
 # CMC Dashboard
 
-Static portfolio report for CMC response / RFI metrics. Open it in a browser to see KPIs, charts, tables, and recommendations.
+Portfolio report for CMC response / RFI metrics, plus a **RAG chatbot** over `QnA_pairs_extracted.json`.
 
-This folder is **independent of `yaap-infra-v2`** (AWS/Terraform). They are unrelated projects that only share the same parent workspace.
+This folder is **independent of `yaap-infra-v2`**. Do not mix the two projects.
 
 ---
 
 ## What’s inside
 
-| File | Role |
+| Path | Role |
 |------|------|
-| `index.html` | Main dashboard: layout, TOC, sections, Chart.js rendering logic |
-| `data.js` | Pre-aggregated metrics as `window.CMC_DATA` (what the UI reads) |
-| `metrics.json` | Same metrics as plain JSON (audit / reuse; not loaded by the UI) |
-| `cmc-portfolio-report.html` | Single-file bundle (HTML + embedded data) for offline / alternate sharing |
-| `decision.md` | Why Cloudflare Quick Tunnel was chosen for shareable links |
-| `README.md` | This file — how pieces connect and how to run |
-
-There is **no backend, database, or build step**. The browser loads HTML + JS and draws charts client-side.
+| `index.html` | Dashboard UI + CMC Q&A chat panel (section 10) |
+| `data.js` / `metrics.json` | Pre-aggregated metrics |
+| `code_catalog.json` | CTD code titles |
+| `QnA_pairs_extracted.json` | Knowledge base for RAG (~2k Q&A pairs) |
+| `qna_insights.json` | Precomputed clustering/analytics for dashboard section 10 (generated) |
+| `backend/` | FastAPI app, Chroma index, ingest/verify/insights scripts |
+| `backend/app/corpus.py` | Exact (non-semantic) index for CTD-code and theme lookups |
+| `backend/app/tools.py` | Tools the chat model can call, with their schemas |
+| `backend/.env` | **Your secrets** — replace placeholders (gitignored) |
+| `backend/.env.example` | Same key list, safe to commit |
+| `Dockerfile` / `render.yaml` | Shareable hosting on Render |
+| `_baseline/` | Snapshot of current dashboard (pre–QnA Extractor); see `_baseline/RESTORE.md` |
 
 ---
 
-## How the pieces connect
+## Providers
+
+| Stage | Default | Notes |
+|-------|---------|-------|
+| Embeddings / retrieval | **local** (`all-MiniLM-L6-v2` ONNX, 384-dim) | Runs on-device; no CMC text leaves the machine; no API key needed |
+| Chat / generation | **myGenAssist** (`LLM_PROVIDER=mga`) | Enterprise-approved; public OpenAI is blocked |
+
+Only the user's question plus the top retrieved snippets are sent to MGA for wording the answer.
+
+## Secrets (`backend/.env`)
+
+Edit [`backend/.env`](backend/.env) and replace placeholders:
+
+| Key | Required | Purpose |
+|-----|----------|---------|
+| `MGA_API_KEY` | Yes | myGenAssist API key |
+| `MGA_BASE_URL` | Yes | MGA OpenAI-compatible base URL (ask your MGA admin) |
+| `MGA_MODEL` | Default `gpt-4o` | Model/deployment name exposed by MGA |
+| `MGA_AUTH_HEADER` | Default `Authorization` | Use `api-key` or `Ocp-Apim-Subscription-Key` if the gateway requires it |
+| `MGA_API_VERSION` | Blank | Set only if MGA is Azure-OpenAI style |
+| `APP_PASSWORD` | Yes | Shared Basic Auth password for the shareable site |
+| `APP_USERNAME` | Default `cmc` | Basic Auth username |
+| `EMBED_PROVIDER` | Default `local` | `local` \| `mga` \| `openai` |
+
+Then verify and index:
+
+```bash
+cd backend
+.venv/bin/python scripts/verify_providers.py   # checks embeddings + MGA chat
+.venv/bin/python scripts/ingest.py             # embeddings only; no key required
+```
+
+If MGA answers behave oddly, `scripts/diagnose_mga.py` probes system-prompt and long-context handling on the gateway.
+
+The index is already built (2,048 pairs). Re-run `ingest.py` only when the Q&A JSON changes.
+
+## Q&A Corpus Insights (section 10)
+
+`qna_insights.json` powers the analytics section: semantic themes, question intent, most challenged CTD sections, response posture, repeat-question backlog, and answer effort. It also stores `theme_by_id`, the per-pair cluster assignment the chat assistant filters on.
+
+```bash
+cd backend
+.venv/bin/python scripts/build_insights.py
+```
+
+The script reuses the embeddings already in Chroma (nothing is re-embedded) and clusters them with a numpy spherical k-means at `K=12`. Cluster names come from one short myGenAssist call each; if MGA is unreachable it falls back to top-term labels and still completes. Re-run it only when `QnA_pairs_extracted.json` changes, after `ingest.py`.
+
+If the file is missing the dashboard still loads and section 10 shows a build hint instead.
+
+Two helper checks:
+
+```bash
+node backend/scripts/check_dashboard.js   # element/chart wiring in index.html
+node backend/scripts/check_insights.js    # JSON field contract and totals
+node backend/scripts/check_chat_memory.js # transcript storage, caps, and clearing
+```
+
+---
+
+## Run locally (dashboard + chatbot)
+
+```bash
+cd /Users/mohd.arif1/Documents/Healthcare_app/cmc-dashboard/backend
+# 1) Fill backend/.env (MGA_API_KEY, MGA_BASE_URL, APP_PASSWORD)
+# 2) Verify providers
+.venv/bin/python scripts/verify_providers.py
+# 3) Start API + static files
+.venv/bin/uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) and sign in with `APP_USERNAME` / `APP_PASSWORD`.
+
+Static-only mode (metrics only, **no chatbot**):
+
+```bash
+cd /Users/mohd.arif1/Documents/Healthcare_app/cmc-dashboard
+python3 -m http.server 8765
+```
+
+---
+
+## Architecture
 
 ```
-Source extract (CMC NDJSON / JSON)
-        │
-        ▼  (aggregated once offline)
-   metrics.json  ←→  data.js   (same numbers; JS wraps them for the page)
-        │
+Browser (index.html + chat)
+        │  Basic Auth
         ▼
-   index.html
-     ├─ loads Chart.js from CDN
-     ├─ loads ./data.js  →  window.CMC_DATA
-     └─ JS fills KPIs, tables, canvas charts from CMC_DATA
+FastAPI (backend/app/main.py)
+  ├─ serves static dashboard files
+  ├─ /api/chat, /api/chat/stream → agent loop (max 4 rounds)
+  │     MGA decides → search_qna (Chroma, semantic)
+  │                 → list_questions (corpus.py, exact code/theme filter)
+  │     → MGA answers from the tool output (+ accumulated sources)
+  └─ /api/ingest → (re)build vector index from QnA JSON
 ```
 
-### Page load sequence
+- One Q&A pair = one Chroma document (`Question: …\nAnswer: …`).
+- The model chooses its own tools, so it can count, list, and compare across the
+  whole corpus instead of answering from one fixed top-5 retrieval.
+- `list_questions` matches CTD codes with boundary-aware regex, so `S.4.1`
+  returns 75 and does not absorb `S.4.10`. `3.2.S.4.1` resolves to the same key.
+- When the corpus has no coverage the model answers from general CMC regulatory
+  knowledge. The sources panel stays empty in that case, which is the provenance cue.
+- Empty / `n.a.` pairs are dropped at ingest.
 
-1. Browser requests `index.html` (locally or via tunnel).
-2. `<script src="…chart.js…">` loads Chart.js from jsDelivr (viewer needs internet for CDN + fonts).
-3. `<script src="./data.js">` sets `window.CMC_DATA`.
-4. Inline script in `index.html` reads `CMC_DATA`, builds the sidebar TOC, fills section DOM, and creates Chart.js charts on `<canvas>` elements.
+### Conversation memory
 
-### Data shape (high level)
+The chat is multi-turn, so follow-ups like "and P.8.3?" resolve against earlier
+turns. The transcript lives in the browser's `localStorage` (`cmc-chat-v1`) and
+is replayed to the server on each request, so it survives a refresh but is
+per-browser — nothing is stored server-side and nobody sees anyone else's chat.
+"New chat" clears it.
 
-`CMC_DATA` includes objects used by sections such as:
-
-- `kpis` — totals, countries, products, status, date range  
-- `findings` / `recommendations` — highlight cards  
-- `questions_per_country`, `ha_analysis`, `product_analysis`  
-- `quarterly`, `monthly`, `top_keywords`, `top_codes`  
-- `heatmap`, chart-ready slices (`chart_country_top15`, etc.)  
-
-`metrics.json` mirrors that content without the `window.CMC_DATA = …` wrapper.
-
----
-
-## Report sections (UI)
-
-Sidebar TOC (`00`–`09`) maps to blocks in `index.html`, for example:
-
-- Overview KPIs  
-- Questions per country  
-- Top findings / keywords / CTD codes  
-- Quarterly & monthly trends  
-- Status / answer quality / language  
-- Product analysis  
-- HA analysis  
-- Heatmap / country–product pairs  
-- Recent documents  
-- Recommendations  
+Only plain user/assistant text is replayed. Tool calls and their results are not:
+the chat API requires each `tool_calls` message to be followed by its matching
+results, and one `list_questions` payload would swamp the context. The model
+re-calls a tool when it needs the data again, so counts are never stale. The
+server trims history to `HISTORY_CHAR_BUDGET` (6,000 chars) regardless of what
+the browser sends.
 
 ---
 
-## How to run it
+## Share with others (Render)
 
-### Option A — Local only (this machine)
+1. Create a [Render](https://render.com) account.
+2. New Web Service from this folder (Docker) or use `render.yaml`.
+3. Set env vars in Render: `MGA_API_KEY`, `MGA_BASE_URL`, `APP_PASSWORD`.
+4. After first deploy, run ingest once (Render shell or one-off job):
 
 ```bash
-cd /Users/mohd.arif1/Documents/Healthcare_app/cmc-dashboard
-python3 -m http.server 8765
+python scripts/ingest.py
 ```
 
-Open: [http://127.0.0.1:8765/](http://127.0.0.1:8765/)
-
-Serving over HTTP matters for consistent relative loads of `data.js`. Opening `index.html` via `file://` can work in some browsers but is less reliable.
-
-### Option B — Shareable meeting link (Cloudflare Quick Tunnel)
-
-Files stay on your Mac. Cloudflare only forwards public HTTPS traffic to the local server:
-
-```
-Viewer → https://*.trycloudflare.com → cloudflared (this Mac) → python :8765 → cmc-dashboard/
-```
-
-```bash
-# Terminal 1
-cd /Users/mohd.arif1/Documents/Healthcare_app/cmc-dashboard
-python3 -m http.server 8765
-
-# Terminal 2 (cloudflared installed or binary available)
-cloudflared tunnel --url http://127.0.0.1:8765
-```
-
-Copy the printed `https://….trycloudflare.com` URL for meetings.
-
-**Temporary:** the URL dies when you stop `cloudflared`, stop the Python server, or the Mac sleeps/goes offline. A new tunnel run gets a **new** random URL.
-
-See `decision.md` for the full decision record (why tunnel vs GitHub Pages / Netlify, security notes).
-
-### Option C — Single-file HTML
-
-Open or email `cmc-portfolio-report.html` when you want one file without a separate `data.js`. Charts still need Chart.js CDN access unless you offline-bundle further.
+5. Share the Render URL; colleagues use Basic Auth credentials you set.
 
 ---
 
-## Updating the numbers later
+## Data policy
 
-1. Re-aggregate the source CMC extract into the same metric shape.  
-2. Refresh `metrics.json` and `data.js` (`window.CMC_DATA = {…};`).  
-3. Refresh the single-file report if you still use it.  
-4. Restart or keep serving the folder; viewers refresh the browser to see changes.
+Indexing and retrieval are fully local — the 2,048 Q&A pairs are never uploaded. Only the **user question** and the **top retrieved snippets** go to myGenAssist for answer generation. Keep `APP_PASSWORD` private; treat the corpus as confidential regulatory IP.
 
-The UI does **not** query a live API — it only shows what is baked into `data.js`.
+Note: hosting this externally (Render) puts CMC content on a non-Bayer server. For internal-only sharing, run it on an internal host instead.
 
 ---
 
-## Dependencies (runtime)
+## API
 
-| Dependency | Where | Needed for |
-|------------|--------|------------|
-| Chart.js 4.x | CDN in `index.html` | Charts |
-| IBM Plex fonts | Google Fonts CDN | Typography |
-| Python 3 | Local | `http.server` |
-| cloudflared | Local (optional) | Public Quick Tunnel |
+| Endpoint | Auth | Notes |
+|----------|------|-------|
+| `GET /api/health` | No | Key configured? paths? |
+| `POST /api/chat` | Basic | `{ "message": "..." }` → answer + sources |
+| `POST /api/ingest` | Basic | Rebuild Chroma index |
+| `GET /` | Basic | Dashboard |
 
 ---
 
-## Bottom line
+## Updating metrics later
 
-- **Source of truth for the live multi-file dashboard:** `index.html` + `data.js` on disk.  
-- **How it runs:** static files → local HTTP server → (optional) Cloudflare Quick Tunnel for a shareable HTTPS link.  
-- **Not permanently hosted** on Cloudflare Pages; the tunnel is only a temporary reverse proxy.  
+Same as before: refresh `metrics.json` / `data.js`, restart or refresh. Chatbot index is separate — re-run `scripts/ingest.py` only when `QnA_pairs_extracted.json` changes.

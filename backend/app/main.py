@@ -1,6 +1,12 @@
 from __future__ import annotations
 
 import json
+import os
+import re
+import subprocess
+import sys
+import tempfile
+from datetime import datetime, timezone
 from typing import Annotated, Any, Iterator, Literal
 
 from fastapi import Depends, FastAPI, HTTPException
@@ -12,7 +18,7 @@ from .auth import require_basic_auth
 from .chat_db import delete_session, ensure_session, get_analytics, get_session_messages, get_sessions, init_db, save_message
 from .config import Settings, DASHBOARD_DIR, get_settings
 from .corpus import get_corpus
-from .rag import chat_client, ingest
+from .rag import chat_client, ingest, pair_from_row, upsert_pairs
 from .tools import describe_call, run_tool, tool_schemas
 
 MAX_TOOL_ROUNDS = 4
@@ -461,6 +467,266 @@ def api_ingest(
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 
 
+class ExtractRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=40000)
+    filename: str = ""
+    header_text: str = ""
+    chunk_index: int = 0
+    chunk_count: int = 1
+
+
+class ExtractedRowIn(BaseModel):
+    registrationName: str = ""
+    filename: str = ""
+    country: str = ""
+    smLm: str = ""
+    question: str = ""
+    response: str = ""
+    codes: str = ""
+    keywords: str = ""
+
+
+class CorpusAppendRequest(BaseModel):
+    rows: list[ExtractedRowIn] = Field(min_length=1, max_length=2000)
+
+
+_EXTRACT_KEYWORDS = (
+    "Batch formula; specification; Batch Analyses; Container closure system; "
+    "Process Validation; analytical procedures; stability data; Shelf Life; "
+    "impurity; specifications; manufacturing process; GMP inspection; "
+    "Nitrosamine; dissolution; method validation"
+)
+
+_EXTRACT_SYSTEM = (
+    "You extract CMC regulatory Q&A from deficiency-letter text. "
+    "Return JSON only, no markdown."
+)
+
+
+def _extract_prompt(body: ExtractRequest) -> str:
+    n = body.chunk_index + 1
+    total = max(body.chunk_count, 1)
+    header = f"Document header:\n{body.header_text}\n\n" if body.header_text else ""
+    meta = ""
+    if body.chunk_index == 0:
+        meta = (
+            "Also extract metadata:\n"
+            '- "registrationName": product name with strength\n'
+            '- "country": Health Authority country\n'
+            '- "smLm": SM or LM\n'
+        )
+    return (
+        f"Extract Q&A from {body.filename or 'document'} chunk {n}/{total}. "
+        "Use original wording. If a field is missing, use empty string or 'not found'.\n\n"
+        f"{header}{meta}"
+        "Each pair: questionNumber, question, response, codes, keywords "
+        f"(up to 7 from: {_EXTRACT_KEYWORDS}; join with '; ').\n"
+        "Codes: CTD-like tokens such as 3.2.P.1, P.8.3, T.01.02-05, and Source: lines.\n"
+        "JSON shape:\n"
+        '{"registrationName":"","country":"","smLm":"","qaPairs":['
+        '{"questionNumber":1,"question":"","response":"","codes":"","keywords":""}]}\n\n'
+        f"Text:\n{body.text}"
+    )
+
+
+def _parse_extract_json(content: str) -> dict[str, Any]:
+    match = re.search(r"\{[\s\S]*\}", content or "")
+    if not match:
+        return {"registrationName": "", "country": "", "smLm": "", "qaPairs": []}
+    try:
+        data = json.loads(match.group(0))
+    except json.JSONDecodeError:
+        return {"registrationName": "", "country": "", "smLm": "", "qaPairs": []}
+    pairs = data.get("qaPairs") if isinstance(data, dict) else None
+    if not isinstance(pairs, list):
+        pairs = []
+    cleaned = []
+    for qa in pairs:
+        if not isinstance(qa, dict):
+            continue
+        cleaned.append(
+            {
+                "questionNumber": qa.get("questionNumber") or 0,
+                "question": qa.get("question") or "",
+                "response": qa.get("response") or "",
+                "codes": qa.get("codes") or "",
+                "keywords": qa.get("keywords") or "",
+            }
+        )
+    return {
+        "registrationName": data.get("registrationName") or "",
+        "country": data.get("country") or "",
+        "smLm": data.get("smLm") or "",
+        "qaPairs": cleaned,
+    }
+
+
+@app.post("/api/extract")
+def api_extract(
+    body: ExtractRequest,
+    _: Annotated[str, Depends(require_basic_auth)],
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> dict[str, Any]:
+    try:
+        client = chat_client(settings)
+        completion = client.chat.completions.create(
+            model=settings.chat_model(),
+            temperature=0.1,
+            max_tokens=4000,
+            messages=[
+                {"role": "system", "content": _EXTRACT_SYSTEM},
+                {"role": "user", "content": _extract_prompt(body)},
+            ],
+        )
+        content = (completion.choices[0].message.content or "") if completion.choices else ""
+        return _parse_extract_json(content)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+def _map_product_type(sm_lm: str) -> str:
+    raw = (sm_lm or "").strip()
+    low = raw.lower()
+    if low in {"sm", "small molecule"}:
+        return "Small Molecule"
+    if low in {"lm", "large molecule", "biotech"}:
+        return "Biotech"
+    return raw
+
+
+def _pair_key(question: str, answer: str) -> str:
+    return f"{question.strip().lower()}\n{answer.strip().lower()}"
+
+
+def _rebuild_metrics() -> dict[str, Any]:
+    scripts = [
+        DASHBOARD_DIR / "backend" / "scripts" / "build_data_js.py",
+        DASHBOARD_DIR / "backend" / "scripts" / "build_corpus_stats.py",
+        DASHBOARD_DIR / "backend" / "scripts" / "build_yearly_overview.py",
+    ]
+    results: dict[str, Any] = {}
+    for script in scripts:
+        if not script.exists():
+            results[script.name] = "missing"
+            continue
+        proc = subprocess.run(
+            [sys.executable, str(script)],
+            cwd=str(DASHBOARD_DIR),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        results[script.name] = {
+            "ok": proc.returncode == 0,
+            "stderr": (proc.stderr or "")[-400:],
+        }
+    return results
+
+
+@app.post("/api/corpus/append")
+def api_corpus_append(
+    body: CorpusAppendRequest,
+    _: Annotated[str, Depends(require_basic_auth)],
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> dict[str, Any]:
+    qna_path = settings.qna_path
+    if not qna_path.exists():
+        raise HTTPException(status_code=404, detail=f"Corpus file not found: {qna_path}")
+
+    raw = json.loads(qna_path.read_text(encoding="utf-8"))
+    if not isinstance(raw, list):
+        raise HTTPException(status_code=500, detail="Corpus file is not a JSON array")
+
+    seen: set[str] = set()
+    max_doc_id = 0
+    max_id = 0
+    for row in raw:
+        if not isinstance(row, dict):
+            continue
+        q = str(row.get("Question/Consideration") or row.get("question") or "")
+        a = str(row.get("Answer/Response") or row.get("answer") or "")
+        seen.add(_pair_key(q, a))
+        try:
+            max_doc_id = max(max_doc_id, int(row.get("doc_id") or 0))
+        except (TypeError, ValueError):
+            pass
+        try:
+            max_id = max(max_id, int(row.get("id") or 0))
+        except (TypeError, ValueError):
+            pass
+
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    added_rows: list[dict[str, Any]] = []
+    skipped = 0
+    for item in body.rows:
+        question = (item.question or "").strip()
+        answer = (item.response or "").strip()
+        key = _pair_key(question, answer)
+        if not question or not answer or key in seen:
+            skipped += 1
+            continue
+        seen.add(key)
+        max_doc_id += 1
+        max_id += 1
+        added_rows.append(
+            {
+                "doc_id": max_doc_id,
+                "doc_name": item.filename or "",
+                "doc_approve_date": today,
+                "doc_country": item.country or "",
+                "doc_product": item.registrationName or "",
+                "doc_product_type": _map_product_type(item.smLm),
+                "id": max_id,
+                "Question/Consideration": question,
+                "Answer/Response": answer,
+                "codes": item.codes or "",
+                "keywords": item.keywords or "",
+                "last_action": "extracted",
+            }
+        )
+
+    if added_rows:
+        raw.extend(added_rows)
+        fd, tmp_name = tempfile.mkstemp(prefix="qna-", suffix=".json", dir=str(qna_path.parent))
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as handle:
+                json.dump(raw, handle, ensure_ascii=False)
+            os.replace(tmp_name, qna_path)
+        except Exception:
+            if os.path.exists(tmp_name):
+                os.unlink(tmp_name)
+            raise
+
+    cleaned_new = []
+    for i, row in enumerate(added_rows):
+        pair = pair_from_row(row, i)
+        if pair:
+            cleaned_new.append(pair)
+
+    index_info: dict[str, Any] = {"indexed": 0, "mode": "noop"}
+    if cleaned_new:
+        try:
+            index_info = upsert_pairs(cleaned_new, settings)
+        except Exception:
+            try:
+                index_info = {**ingest(settings, reset=True), "mode": "full_reset"}
+            except Exception as exc:
+                index_info = {"indexed": 0, "mode": "failed", "error": str(exc)}
+
+    get_corpus.cache_clear()
+    rebuild = _rebuild_metrics()
+
+    return {
+        "added": len(added_rows),
+        "skipped_duplicates": skipped,
+        "total_rows": len(raw),
+        "index": index_info,
+        "rebuild": rebuild,
+    }
+
+
 @app.post("/api/chat", response_model=ChatResponse)
 def api_chat(
     body: ChatRequest,
@@ -662,7 +928,7 @@ def api_compare(
 
 
 # Static dashboard files (same folder as index.html)
-_STATIC_SKIP = {"backend", ".git", "__pycache__", "_baseline"}
+_STATIC_SKIP = {"backend", ".git", "__pycache__", "_baseline", "venv", "CMC Data Analysis_v6"}
 
 
 @app.get("/")

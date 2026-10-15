@@ -21,7 +21,7 @@ This folder is **independent of `yaap-infra-v2`**. Do not mix the two projects.
 | `backend/.env` | **Your secrets** — replace placeholders (gitignored) |
 | `backend/.env.example` | Same key list, safe to commit |
 | `Dockerfile` / `render.yaml` | Shareable hosting on Render |
-| `_baseline/` | Pre–code-catalog rollback copies |
+| `_baseline/` | Snapshot of current dashboard (pre–QnA Extractor); see `_baseline/RESTORE.md` |
 
 ---
 

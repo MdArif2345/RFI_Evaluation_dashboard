@@ -64,44 +64,46 @@ def load_qna_pairs(path: Path) -> list[dict[str, Any]]:
     for row in raw:
         if not isinstance(row, dict):
             continue
-
-        question = _normalize(str(
-            row.get("Question/Consideration", "")
-            or row.get("question", "")
-            or row.get("Question", "")
-        ))
-        answer = _normalize(str(
-            row.get("Answer/Response", "")
-            or row.get("answer", "")
-            or row.get("Answer", "")
-        ))
-        if _is_bad(question) or _is_bad(answer):
+        pair = pair_from_row(row, idx)
+        if pair is None:
             continue
-
-        pair_key = (question + "\n" + answer).lower()
+        pair_key = (pair["question"] + "\n" + pair["answer"]).lower()
         if pair_key in seen_pairs:
             continue
         seen_pairs.add(pair_key)
-
-        cleaned.append(
-            {
-                "id": f"qna-{idx}",
-                "question": question,
-                "answer": answer,
-                "document": f"Question: {question}\n\nAnswer: {answer}",
-                "product": _normalize(str(row.get("doc_product", "") or "")),
-                "country": _normalize(str(row.get("doc_country", "") or "")),
-                "date": _normalize(str(row.get("doc_approve_date", "") or "")),
-                "doc_name": _normalize(str(row.get("doc_name", "") or "")),
-                "doc_id": str(row.get("doc_id", "") or ""),
-                "doc_product_type": _normalize(str(row.get("doc_product_type", "") or "")),
-                "codes": _parse_codes_field(row.get("codes", "")),
-                "keywords": _parse_keywords_field(row.get("keywords", "")),
-            }
-        )
+        cleaned.append(pair)
         idx += 1
 
     return cleaned
+
+
+def pair_from_row(row: dict[str, Any], idx: int) -> dict[str, Any] | None:
+    question = _normalize(str(
+        row.get("Question/Consideration", "")
+        or row.get("question", "")
+        or row.get("Question", "")
+    ))
+    answer = _normalize(str(
+        row.get("Answer/Response", "")
+        or row.get("answer", "")
+        or row.get("Answer", "")
+    ))
+    if _is_bad(question) or _is_bad(answer):
+        return None
+    return {
+        "id": f"qna-{idx}",
+        "question": question,
+        "answer": answer,
+        "document": f"Question: {question}\n\nAnswer: {answer}",
+        "product": _normalize(str(row.get("doc_product", "") or "")),
+        "country": _normalize(str(row.get("doc_country", "") or "")),
+        "date": _normalize(str(row.get("doc_approve_date", "") or "")),
+        "doc_name": _normalize(str(row.get("doc_name", "") or "")),
+        "doc_id": str(row.get("doc_id", "") or ""),
+        "doc_product_type": _normalize(str(row.get("doc_product_type", "") or "")),
+        "codes": _parse_codes_field(row.get("codes", "")),
+        "keywords": _parse_keywords_field(row.get("keywords", "")),
+    }
 
 
 def _placeholder(value: str) -> bool:
@@ -192,6 +194,54 @@ def ingest(settings: Settings | None = None, *, reset: bool = True) -> dict[str,
         "chroma_dir": str(settings.chroma_dir),
         "source": str(settings.qna_path),
     }
+
+
+def _next_qna_index(ids: list[str]) -> int:
+    mx = -1
+    for raw in ids:
+        if not raw.startswith("qna-"):
+            continue
+        try:
+            mx = max(mx, int(raw.split("-", 1)[1]))
+        except ValueError:
+            continue
+    return mx + 1
+
+
+def upsert_pairs(pairs: list[dict[str, Any]], settings: Settings | None = None) -> dict[str, Any]:
+    """Index only the given cleaned pairs. Falls back to full ingest on ID collision."""
+    settings = settings or get_settings()
+    if not pairs:
+        return {"indexed": 0, "mode": "noop"}
+
+    collection = get_collection(settings)
+    existing = set((collection.get(include=[]) or {}).get("ids") or [])
+    start = _next_qna_index(list(existing))
+    new_ids = [f"qna-{start + i}" for i in range(len(pairs))]
+    if any(i in existing for i in new_ids):
+        return {**ingest(settings, reset=True), "mode": "full_reset"}
+
+    for p, pid in zip(pairs, new_ids):
+        p["id"] = pid
+
+    batch_size = 64
+    for start_i in range(0, len(pairs), batch_size):
+        batch = pairs[start_i : start_i + batch_size]
+        collection.upsert(
+            ids=[p["id"] for p in batch],
+            documents=[p["document"] for p in batch],
+            metadatas=[
+                {
+                    "question": p["question"][:500],
+                    "answer_preview": p["answer"][:500],
+                    "product": (p.get("product") or "")[:200],
+                    "country": (p.get("country") or "")[:200],
+                    "doc_id": (p.get("doc_id") or "")[:50],
+                }
+                for p in batch
+            ],
+        )
+    return {"indexed": len(pairs), "mode": "upsert", "ids": new_ids}
 
 
 def retrieve(
