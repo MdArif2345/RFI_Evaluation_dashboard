@@ -475,6 +475,43 @@ def build(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "matrix": matrix,
     }
 
+    # --- Product family × TRD code (questions with codes only) ---
+    prod_coded: collections.Counter[str] = collections.Counter()
+    code_coded: collections.Counter[str] = collections.Counter()
+    pair_coded: collections.Counter[tuple[str, str]] = collections.Counter()
+    for r in questions:
+        product = (r.get("doc_product") or "").strip()
+        codes = _parse_codes(r.get("codes", ""))
+        if not product or not codes:
+            continue
+        prod_coded[product] += 1
+        seen_codes: set[str] = set()
+        for raw in codes:
+            seen_codes.add(raw)
+        for raw in seen_codes:
+            code_coded[raw] += 1
+            pair_coded[(product, raw)] += 1
+    top_products = [p for p, _ in prod_coded.most_common(15)]
+    top_trd = [c for c, _ in code_coded.most_common(15)]
+    points = []
+    for pi, product in enumerate(top_products):
+        for ci, code in enumerate(top_trd):
+            n = pair_coded.get((product, code), 0)
+            if n:
+                points.append({
+                    "product": product,
+                    "code": code,
+                    "questions": n,
+                    "x": ci,
+                    "y": pi,
+                })
+    data["product_trd_heatmap"] = {
+        "products": top_products,
+        "codes": top_trd,
+        "points": points,
+        "question_rows": sum(prod_coded.values()),
+    }
+
     # --- Top country-product pairs ---
     cp_counter: collections.Counter[tuple[str, str]] = collections.Counter()
     for r in questions:

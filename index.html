@@ -8,9 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="./extractor/jszip.min.js"></script>
-  <script src="./extractor/extractor.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
   <script src="./data.js"></script>
   <style>
     :root {
@@ -239,11 +238,7 @@
       letter-spacing: -0.03em;
       line-height: 1;
     }
-    .kpi .sub {
-      margin-top: 8px;
-      color: var(--soft);
-      font-size: 13px;
-    }
+    .kpi .sub { display: none; }
 
     .grid-2 {
       display: grid;
@@ -818,47 +813,141 @@
       border: 1px solid rgba(56, 189, 248, 0.28);
     }
     .chat-bubble.bot {
+      --chat-text: #d5e2f0;
+      --chat-heading: #f8fafc;
+      --chat-muted: #9eb2cb;
+      --chat-rule: rgba(148, 175, 205, 0.32);
+      --chat-code-bg: rgba(255, 255, 255, 0.08);
+      --chat-pre-bg: rgba(0, 0, 0, 0.28);
+      --chat-quote: #7dd3fc;
+      --chat-th: rgba(148, 175, 205, 0.12);
+      --chat-td: #c9d7ea;
+      --chat-marker: #8ecae6;
       align-self: flex-start;
       background: rgba(94, 234, 212, 0.08);
       border: 1px solid rgba(94, 234, 212, 0.22);
       white-space: normal;
+      font-weight: 400;
+      line-height: 1.6;
+      padding: 16px 18px;
+      color: var(--chat-text);
     }
-    .chat-bubble.bot h1, .chat-bubble.bot h2, .chat-bubble.bot h3,
-    .chat-bubble.bot h4, .chat-bubble.bot h5 {
-      margin: 10px 0 4px 0;
-      font-size: 15px;
-      font-weight: 700;
-      color: #e2e8f0;
+    html[data-theme="light"] .chat-bubble.bot,
+    body.light .chat-bubble.bot {
+      --chat-text: #1e293b;
+      --chat-heading: #0f172a;
+      --chat-muted: #475569;
+      --chat-rule: rgba(15, 23, 42, 0.16);
+      --chat-code-bg: rgba(15, 23, 42, 0.06);
+      --chat-pre-bg: #f1f5f9;
+      --chat-quote: #0369a1;
+      --chat-th: rgba(15, 23, 42, 0.06);
+      --chat-td: #334155;
+      --chat-marker: #0f766e;
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      color: var(--chat-text);
     }
-    .chat-bubble.bot h1 { font-size: 17px; }
-    .chat-bubble.bot h2 { font-size: 16px; }
-    .chat-bubble.bot p {
-      margin: 4px 0;
-    }
-    .chat-bubble.bot ul, .chat-bubble.bot ol {
-      margin: 4px 0 4px 18px;
+    .chat-bubble.bot > :first-child { margin-top: 0; }
+    .chat-bubble.bot > :last-child { margin-bottom: 0; }
+    .chat-bubble.bot h1,
+    .chat-bubble.bot h2,
+    .chat-bubble.bot h3,
+    .chat-bubble.bot h4,
+    .chat-bubble.bot h5 {
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      color: var(--chat-heading);
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      background: none;
+      border-radius: 0;
+      display: block;
       padding: 0;
     }
-    .chat-bubble.bot li {
-      margin: 2px 0;
+    .chat-bubble.bot h1,
+    .chat-bubble.bot h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 22px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--chat-rule);
+    }
+    .chat-bubble.bot h3 {
+      font-size: 15.5px;
+      font-weight: 600;
+      margin: 16px 0 8px;
+      border: none;
+    }
+    .chat-bubble.bot h4 {
+      font-size: 14.5px;
+      font-weight: 600;
+      margin: 14px 0 6px;
+      color: var(--chat-heading);
+      border: none;
+    }
+    .chat-bubble.bot p {
+      margin: 0 0 10px;
+      line-height: 1.6;
+      color: var(--chat-text);
+    }
+    .chat-bubble.bot strong { font-weight: 600; color: var(--chat-heading); }
+    .chat-bubble.bot ul,
+    .chat-bubble.bot ol {
+      margin: 0 0 12px 1.25em;
+      padding: 0;
+    }
+    .chat-bubble.bot li { margin: 4px 0; }
+    .chat-bubble.bot li::marker { color: var(--chat-marker); }
+    .chat-bubble.bot ul ul,
+    .chat-bubble.bot ol ol,
+    .chat-bubble.bot ul ol,
+    .chat-bubble.bot ol ul {
+      margin: 4px 0 6px 1.15em;
+    }
+    .chat-bubble.bot blockquote {
+      margin: 10px 0 12px;
+      padding: 6px 12px;
+      border-left: 3px solid var(--chat-quote);
+      color: var(--chat-muted);
+    }
+    .chat-bubble.bot hr {
+      border: none;
+      border-top: 1px solid var(--chat-rule);
+      margin: 14px 0;
+    }
+    .chat-bubble.bot table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 12px;
+      font-size: 13px;
+    }
+    .chat-bubble.bot th,
+    .chat-bubble.bot td {
+      border: 1px solid var(--chat-rule);
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+      color: var(--chat-td);
+    }
+    .chat-bubble.bot th {
+      background: var(--chat-th);
+      color: var(--chat-heading);
+      font-weight: 600;
     }
     .chat-bubble.bot code {
-      background: rgba(255,255,255,0.08);
+      background: var(--chat-code-bg);
       padding: 1px 5px;
       border-radius: 4px;
       font-size: 13px;
     }
     .chat-bubble.bot pre {
-      background: rgba(0,0,0,0.25);
+      background: var(--chat-pre-bg);
       padding: 10px 12px;
       border-radius: 6px;
       overflow-x: auto;
-      margin: 6px 0;
+      margin: 8px 0 12px;
     }
-    .chat-bubble.bot pre code {
-      background: none;
-      padding: 0;
-    }
+    .chat-bubble.bot pre code { background: none; padding: 0; }
     .chat-bubble.system {
       align-self: center;
       color: var(--muted);
@@ -966,209 +1055,6 @@
       cursor: not-allowed;
     }
 
-    #sec-08 .ex-card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(18, 43, 74, 0.55);
-      padding: 16px;
-    }
-    #sec-08 .ex-toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 8px;
-      align-items: center;
-      margin: 12px 0;
-    }
-    #sec-08 .ex-btn {
-      font-family: "IBM Plex Sans", system-ui, sans-serif;
-      font-size: 13px;
-      border: 1px solid var(--line);
-      background: rgba(8, 22, 40, 0.55);
-      color: var(--text);
-      border-radius: 8px;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-    #sec-08 .ex-btn.primary {
-      background: rgba(94, 234, 212, 0.16);
-      border-color: rgba(94, 234, 212, 0.4);
-      color: var(--accent);
-    }
-    #sec-08 .ex-btn:disabled,
-    #sec-08 .ex-btn.btn-disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-    #sec-08 .ex-dropzone {
-      border: 1px dashed rgba(148, 175, 205, 0.35);
-      border-radius: 12px;
-      padding: 36px 20px;
-      text-align: center;
-      color: var(--soft);
-      background: rgba(8, 22, 40, 0.35);
-    }
-    #sec-08 .ex-dropzone.dragover {
-      border-color: var(--accent);
-      background: rgba(94, 234, 212, 0.08);
-    }
-    #sec-08 .ex-dropzone.processing { opacity: 0.75; }
-    #sec-08 .ex-dropzone.success { border-color: rgba(52, 211, 153, 0.45); }
-    #sec-08 .ex-link {
-      background: none;
-      border: none;
-      color: var(--accent-2);
-      cursor: pointer;
-      font: inherit;
-      text-decoration: underline;
-    }
-    #sec-08 .ex-ai {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 16px;
-      align-items: center;
-      margin-bottom: 12px;
-      color: var(--soft);
-      font-size: 13px;
-    }
-    #sec-08 .ex-hint {
-      width: 100%;
-      margin: 0;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    #sec-08 .ex-search {
-      flex: 1;
-      min-width: 180px;
-      background: rgba(8, 22, 40, 0.55);
-      border: 1px solid var(--line);
-      color: var(--text);
-      border-radius: 8px;
-      padding: 8px 10px;
-    }
-    #sec-08 .file-list, #sec-08 .documents-container { display: grid; gap: 10px; }
-    #sec-08 .file-item, #sec-08 .document-item {
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: rgba(8, 22, 40, 0.35);
-      padding: 10px 12px;
-    }
-    #sec-08 .file-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-    #sec-08 .file-info { display: flex; gap: 10px; align-items: center; }
-    #sec-08 .file-details h4 { margin: 0; font-size: 13px; }
-    #sec-08 .file-details p { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
-    #sec-08 .status-badge { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--accent); }
-    #sec-08 .status-error { color: var(--danger); }
-    #sec-08 .qa-count { font-size: 12px; color: var(--soft); }
-    #sec-08 .progress-bar-wrapper { display: flex; align-items: center; gap: 10px; }
-    #sec-08 .progress-bar {
-      flex: 1; height: 8px; border-radius: 999px; background: rgba(148,175,205,0.12);
-    }
-    #sec-08 .progress-fill { height: 100%; width: 0; border-radius: inherit; background: var(--accent); }
-    #sec-08 .document-header { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
-    #sec-08 .document-title { font-weight: 600; }
-    #sec-08 .document-meta { color: var(--muted); font-size: 12px; margin-top: 4px; }
-    #sec-08 .document-content { display: none; margin-top: 12px; }
-    #sec-08 .document-item.expanded .document-content { display: grid; gap: 12px; }
-    #sec-08 .document-item.expanded .expand-icon { transform: rotate(90deg); }
-    #sec-08 .expand-icon { color: var(--accent); transition: transform .15s ease; }
-    #sec-08 .delete-btn {
-      background: none; border: none; cursor: pointer; color: var(--danger); font-size: 14px;
-    }
-    #sec-08 .ex-qa {
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 12px 14px;
-      background: rgba(11, 28, 51, 0.45);
-    }
-    #sec-08 .ex-qa-top {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    #sec-08 .ex-qa-num {
-      font-family: "IBM Plex Mono", monospace;
-      color: var(--accent);
-      font-size: 12px;
-    }
-    #sec-08 .ex-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-    #sec-08 .ex-chip {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 11px;
-      padding: 3px 7px;
-      border-radius: 6px;
-      border: 1px solid var(--line);
-      color: var(--soft);
-      background: rgba(8, 22, 40, 0.45);
-    }
-    #sec-08 .ex-qa-block + .ex-qa-block { margin-top: 12px; }
-    #sec-08 .ex-qa-label {
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-    #sec-08 .ex-qa-text {
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-      line-height: 1.6;
-      font-size: 14px;
-      color: var(--text);
-    }
-    #sec-08 .ex-qa-text.is-clamped {
-      display: -webkit-box;
-      -webkit-line-clamp: 8;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    #sec-08 .ex-more {
-      margin-top: 6px;
-      background: none;
-      border: none;
-      color: var(--accent-2);
-      cursor: pointer;
-      font-size: 12px;
-      padding: 0;
-    }
-    #sec-08 .results-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-    #sec-08 .results-table th, #sec-08 .results-table td {
-      border-bottom: 1px solid var(--line);
-      padding: 8px 8px;
-      vertical-align: top;
-      text-align: left;
-    }
-    #sec-08 .no-response { color: var(--muted); font-style: italic; margin: 0; }
-    #sec-08 .excel-file-status { font-size: 12px; color: var(--soft); margin-top: 8px; }
-    #sec-08 .toast-container {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 40;
-      display: grid;
-      gap: 8px;
-      max-width: min(420px, calc(100vw - 32px));
-    }
-    #sec-08 .toast {
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: #122b4a;
-      color: var(--text);
-      font-size: 13px;
-      white-space: pre-wrap;
-      cursor: pointer;
-    }
-    #sec-08 .toast.success { border-color: rgba(52, 211, 153, 0.45); }
-    #sec-08 .toast.warning { border-color: rgba(245, 158, 11, 0.5); }
-    #sec-08 .toast.error { border-color: rgba(248, 113, 113, 0.5); }
-
     @media (max-width: 1100px) {
       .shell { grid-template-columns: 1fr; }
       .toc {
@@ -1210,7 +1096,6 @@
           <div>
             <div class="idx">00</div>
             <h2>Overview</h2>
-            <p>Portfolio snapshot: volume, coverage, and answer quality.</p>
           </div>
         </div>
         <div class="kpi-grid" id="kpiGrid"></div>
@@ -1221,7 +1106,6 @@
           <div>
             <div class="idx">01</div>
             <h2>Health Authority View</h2>
-            <p>Health-authority intensity: volume, deficiency letters, and avg questions/doc.</p>
           </div>
         </div>
         <div class="card">
@@ -1241,12 +1125,10 @@
           <div>
             <div class="idx">02</div>
             <h2>Chapter View</h2>
-            <p>Most cited dossier section codes and CTD chapter breakdown across the corpus.</p>
           </div>
         </div>
         <div class="card">
           <h3>Top CTD / code references</h3>
-          <p class="hint">Most cited dossier section codes</p>
           <div class="chart-wrap"><canvas id="chartCodes"></canvas></div>
         </div>
         <div class="card" style="margin-top:14px">
@@ -1269,7 +1151,6 @@
         </div>
         <div class="card" style="margin-top:14px">
           <h3>Summary of Q&amp;A per CTD Code (SM vs LM)</h3>
-          <p class="hint">Questions split by Small Molecule and Large Molecule products for each CTD code</p>
           <div style="margin-bottom:10px">
             <input type="text" id="codeSummaryFilter" placeholder="Filter by code or title…"
               style="width:100%;max-width:360px;padding:6px 10px;border-radius:6px;border:1px solid rgba(148,175,205,0.25);background:rgba(0,16,36,0.5);color:#c9d7ea;font-size:13px;" />
@@ -1318,14 +1199,44 @@
         <div class="section-head">
           <div>
             <div class="idx">04</div>
-            <h2>Additional Insights</h2>
-            <p>Country × product concentration across the full corpus.</p>
+            <h2>Additional Statistics</h2>
           </div>
         </div>
         <div class="card">
           <h3>Country × product heat (all countries × all products)</h3>
-          <p class="hint">Darker cells = more questions · scroll to explore the full matrix</p>
           <div class="heat" id="heatmap"></div>
+        </div>
+        <div id="insightsBody">
+          <div class="card" style="margin-top:14px">
+            <h3>Number of Deficiency Letters per Product Family</h3>
+            <div class="chart-wrap tall"><canvas id="insChartProduct"></canvas></div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <h3>Number of Questions per Country</h3>
+            <div class="chart-wrap"><canvas id="insChartCountry"></canvas></div>
+          </div>
+          <div class="grid-2" style="margin-top:14px">
+            <div class="card">
+              <h3>Number of Deficiency Letters per Year</h3>
+              <div class="chart-wrap tall"><canvas id="insChartYearQ"></canvas></div>
+            </div>
+            <div class="card">
+              <h3 class="chart-title-lg">Number of Questions per Year (for SM and LM)</h3>
+              <div class="chart-wrap tall"><canvas id="insChartYearQuestions"></canvas></div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3>Product family × TRD code</h3>
+          <div class="chart-scroll chart-scroll-x">
+            <div class="chart-wrap" id="insChartProductTrdWrap" style="height:560px"><canvas id="insChartProductTrd"></canvas></div>
+          </div>
+        </div>
+        <div class="card" id="insightsMissing" style="display:none">
+          <p class="hint">
+            <code>corpus_stats.json</code> not found. Generate it with
+            <code>backend/.venv/bin/python scripts/build_corpus_stats.py</code>.
+          </p>
         </div>
       </section>
 
@@ -1344,56 +1255,6 @@
         <div class="section-head">
           <div>
             <div class="idx">06</div>
-            <h2>Corpus Insights</h2>
-            <p>Deficiency letter statistics across products, countries, and years.</p>
-          </div>
-        </div>
-        <div id="insightsBody">
-          <div class="card">
-            <h3>Number of Deficiency Letters per Product Family</h3>
-            <p class="hint">Questions grouped by product, sorted alphabetically</p>
-            <div class="chart-wrap tall"><canvas id="insChartProduct"></canvas></div>
-          </div>
-          <div class="card" style="margin-top:14px">
-            <h3>Number of Questions per Country</h3>
-            <p class="hint">Geographic distribution of deficiency questions</p>
-            <div class="chart-wrap"><canvas id="insChartCountry"></canvas></div>
-          </div>
-          <div class="grid-2" style="margin-top:14px">
-            <div class="card">
-              <h3>Number of Deficiency Letters per Year</h3>
-              <p class="hint">Questions by year, split by molecule type</p>
-              <div class="chart-wrap tall"><canvas id="insChartYearQ"></canvas></div>
-            </div>
-            <div class="card">
-              <h3 class="chart-title-lg">Number of Questions per Year (for SM and LM)</h3>
-              <div class="chart-wrap tall"><canvas id="insChartYearQuestions"></canvas></div>
-            </div>
-          </div>
-          <div class="card" style="margin-top:14px">
-            <h3>CTD Chapter Heatmap</h3>
-            <h4 style="margin:12px 0 8px;font-size:14px;color:#c9d7ea;">Drug Substance (S)</h4>
-            <div class="chart-scroll chart-scroll-x">
-              <div class="chart-wrap" id="insChartBubbleSWrap" style="height:420px"><canvas id="insChartBubbleS"></canvas></div>
-            </div>
-            <h4 style="margin:18px 0 8px;font-size:14px;color:#c9d7ea;">Drug Product (P)</h4>
-            <div class="chart-scroll chart-scroll-x">
-              <div class="chart-wrap" id="insChartBubblePWrap" style="height:420px"><canvas id="insChartBubbleP"></canvas></div>
-            </div>
-          </div>
-        </div>
-        <div class="card" id="insightsMissing" style="display:none">
-          <p class="hint">
-            <code>corpus_stats.json</code> not found. Generate it with
-            <code>backend/.venv/bin/python scripts/build_corpus_stats.py</code>.
-          </p>
-        </div>
-      </section>
-
-      <section class="block" id="sec-07">
-        <div class="section-head">
-          <div>
-            <div class="idx">07</div>
             <h2>CMC Q&amp;A Assistant</h2>
             <p>Reasoning assistant over extracted CMC question/answer pairs. It searches, counts, and filters the corpus on-device, and shows the pairs it used.</p>
           </div>
@@ -1414,70 +1275,6 @@
         </div>
       </section>
 
-      <section class="block" id="sec-08">
-        <div class="section-head">
-          <div>
-            <div class="idx">08</div>
-            <h2>QnA Extractor</h2>
-            <p>Drop CMC deficiency DOCX files, extract Q&amp;A rows, export them, or add approved pairs to the live corpus.</p>
-          </div>
-        </div>
-        <div class="ex-card">
-          <div class="ex-ai">
-            <label>
-              <input type="checkbox" id="ex-ai-scan-checkbox" />
-              Use AI extraction (backend)
-            </label>
-            <p class="ex-hint" id="ex-ai-hint" style="display:none">Uses the dashboard myGenAssist connection. Rule-based parsing still runs if AI fails.</p>
-          </div>
-          <div id="ex-dropzone" class="ex-dropzone">
-            <h3>Drop DOCX files here</h3>
-            <p>or <button type="button" id="ex-file-select-btn" class="ex-link">select files</button></p>
-            <input type="file" id="ex-file-input" multiple accept=".docx" style="display:none" />
-          </div>
-          <div id="ex-file-list-container" style="display:none;margin-top:12px">
-            <div id="ex-file-list" class="file-list"></div>
-          </div>
-          <div id="ex-results-container" style="display:none;margin-top:16px">
-            <div class="ex-toolbar">
-              <input type="text" id="ex-search-input" class="ex-search" placeholder="Search questions, products, countries…" />
-              <button type="button" id="ex-check-ai-btn" class="ex-btn">Check sequence</button>
-              <button type="button" id="ex-copy-tsv-btn" class="ex-btn">Copy TSV</button>
-              <button type="button" id="ex-download-btn" class="ex-btn">Download CSV</button>
-              <button type="button" id="ex-add-corpus-btn" class="ex-btn primary" disabled>Add to corpus</button>
-              <button type="button" id="ex-reset-btn" class="ex-btn">Reset</button>
-            </div>
-            <div class="ex-toolbar">
-              <label class="ex-btn">
-                Excel
-                <input type="file" id="ex-excel-input" accept=".xlsx,.xls" style="display:none" />
-              </label>
-              <button type="button" id="ex-insert-btn" class="ex-btn" disabled>Insert into Excel</button>
-              <button type="button" id="ex-excel-remove-btn" class="ex-btn">Remove Excel</button>
-              <span id="ex-excel-file-status" class="excel-file-status" style="display:none">
-                <span id="ex-excel-file-name"></span>
-              </span>
-            </div>
-            <div id="ex-documents-container" class="documents-container"></div>
-            <div class="table-container" style="display:none">
-              <table class="results-table">
-                <thead>
-                  <tr>
-                    <th>Registration name</th>
-                    <th>Filename</th>
-                    <th>Country</th>
-                    <th>SM/LM</th>
-                    <th>Question</th>
-                    <th>Response</th>
-                  </tr>
-                </thead>
-                <tbody id="ex-results-tbody"></tbody>
-              </table>
-            </div>
-          </div>
-          <div id="ex-toast-container" class="toast-container"></div>
-        </div>
-      </section>
     </main>
 
     <main class="main" id="viewYearly" style="display:none">
@@ -1498,7 +1295,6 @@
           <div>
             <div class="idx">00</div>
             <h2>Overview</h2>
-            <p>Portfolio snapshot for the selected year.</p>
           </div>
         </div>
         <div class="kpi-grid" id="yKpiGrid"></div>
@@ -1509,7 +1305,6 @@
           <div>
             <div class="idx">01</div>
             <h2>Health Authority View</h2>
-            <p>Health-authority intensity for the selected year.</p>
           </div>
         </div>
         <div class="card">
@@ -1529,7 +1324,6 @@
           <div>
             <div class="idx">02</div>
             <h2>Chapter View</h2>
-            <p>CTD subsection breakdown for the selected year.</p>
           </div>
         </div>
         <div class="card">
@@ -1604,8 +1398,7 @@
         <div class="section-head">
           <div>
             <div class="idx">04</div>
-            <h2>Corpus Insights</h2>
-            <p>Year-scoped deficiency letter and CTD section analysis.</p>
+            <h2>Additional Statistics</h2>
           </div>
         </div>
         <div class="card">
@@ -1617,14 +1410,9 @@
           <div class="chart-wrap"><canvas id="yInsChartCountry"></canvas></div>
         </div>
         <div class="card" style="margin-top:14px">
-          <h3 class="chart-title-lg">CTD Chapter Heatmap</h3>
-          <h4 style="margin:12px 0 8px;font-size:14px;color:#c9d7ea;">Drug Substance (S)</h4>
+          <h3 class="chart-title-lg">Product family × TRD code</h3>
           <div class="chart-scroll chart-scroll-x">
-            <div class="chart-wrap" id="yBubbleSWrap" style="height:420px"><canvas id="yBubbleS"></canvas></div>
-          </div>
-          <h4 style="margin:18px 0 8px;font-size:14px;color:#c9d7ea;">Drug Product (P)</h4>
-          <div class="chart-scroll chart-scroll-x">
-            <div class="chart-wrap" id="yBubblePWrap" style="height:420px"><canvas id="yBubbleP"></canvas></div>
+            <div class="chart-wrap" id="yChartProductTrdWrap" style="height:560px"><canvas id="yChartProductTrd"></canvas></div>
           </div>
         </div>
       </section>
@@ -1727,11 +1515,9 @@
       ["01", "Health Authority View", "sec-01"],
       ["02", "Chapter View", "sec-02"],
       ["03", "Product Analysis", "sec-03"],
-      ["04", "Additional Insights", "sec-04"],
+      ["04", "Additional Statistics", "sec-04"],
       ["05", "Recommendations", "sec-05"],
-      ["06", "Corpus Insights", "sec-06"],
-      ["07", "CMC Q&A Assistant", "sec-07"],
-      ["08", "QnA Extractor", "sec-08"],
+      ["06", "CMC Q&A Assistant", "sec-06"],
     ];
 
     const YEARLY_TOC = [
@@ -1739,7 +1525,7 @@
       ["01", "Health Authority View", "y-sec-01"],
       ["02", "Chapter View", "y-sec-02"],
       ["03", "Product Analysis", "y-sec-03"],
-      ["04", "Corpus Insights", "y-sec-04"],
+      ["04", "Additional Statistics", "y-sec-04"],
     ];
 
     const PALETTE = [
@@ -1826,11 +1612,10 @@
         ["Large Molecule", fmt(CORPUS_STATS.kpis.large_molecule_questions), "Questions for Biotech products"],
       );
     }
-    document.getElementById("kpiGrid").innerHTML = overviewKpis.map(([label, value, sub]) => `
+    document.getElementById("kpiGrid").innerHTML = overviewKpis.map(([label, value]) => `
       <div class="kpi">
         <div class="label">${label}</div>
         <div class="value">${value}</div>
-        <div class="sub">${sub}</div>
       </div>
     `).join("");
 
@@ -2111,7 +1896,8 @@
           options: vertBarOpts,
         });
       } else {
-        document.getElementById("insChartCountry").closest(".card").querySelector(".hint").textContent = "No country data available (all marked N/A)";
+        const countryHint = document.getElementById("insChartCountry").closest(".card").querySelector(".hint");
+        if (countryHint) countryHint.textContent = "No country data available (all marked N/A)";
       }
 
       // --- CTD S-sections bar chart (Drug Substance, canonical subsections) ---
@@ -2267,90 +2053,6 @@
         },
       });
 
-      // --- CTD Chapter bubble charts (S and P, canonical subsections only) ---
-      function renderCtdBubbleChart(canvasId, wrapId, rows) {
-        var wrap = document.getElementById(wrapId);
-        var canvas = document.getElementById(canvasId);
-        if (!wrap || !canvas) return;
-        rows = rows || [];
-        wrap.style.width = Math.max(wrap.parentElement.clientWidth || 640, Math.max(rows.length, 1) * 52) + "px";
-        wrap.style.height = "420px";
-
-        var bubbleData = rows.map(function(c, i) {
-          return {
-            x: i,
-            y: c.product_count || 0,
-            r: Math.max(4, Math.min((c.product_count || 0) * 2.5, 30)),
-            code: c.code,
-            product_count: c.product_count || 0,
-            products: c.products || [],
-          };
-        });
-
-        new Chart(canvas, {
-          type: "bubble",
-          data: {
-            datasets: [{
-              label: "CTD Sections",
-              data: bubbleData,
-              backgroundColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length] + "99"; }),
-              borderColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length]; }),
-              borderWidth: 1,
-            }],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                callbacks: {
-                  title: function(items) {
-                    var d = bubbleData[items[0].dataIndex];
-                    var entry = getCodeEntry(d.code);
-                    return d.code + (entry ? " — " + entry.title : "");
-                  },
-                  label: function(ctx) {
-                    var d = bubbleData[ctx.dataIndex];
-                    var lines = [" " + d.product_count + " products"];
-                    d.products.slice(0, 6).forEach(function(p) { lines.push("  · " + p); });
-                    if (d.products.length > 6) lines.push("  · +" + (d.products.length - 6) + " more");
-                    return lines;
-                  },
-                },
-              },
-            },
-            scales: {
-              x: {
-                type: "linear",
-                min: -0.5,
-                max: Math.max(rows.length - 0.5, 0.5),
-                ticks: {
-                  color: "#9eb2cb",
-                  stepSize: 1,
-                  autoSkip: false,
-                  maxRotation: 60,
-                  minRotation: 40,
-                  callback: function(val) {
-                    var d = bubbleData[Math.round(val)];
-                    return d ? d.code : "";
-                  },
-                },
-                grid: { display: false },
-              },
-              y: {
-                beginAtZero: true,
-                title: { display: true, text: "Products affected", color: "#9eb2cb" },
-                ticks: { color: "#9eb2cb" },
-                grid: { color: "rgba(148,175,205,0.08)" },
-              },
-            },
-          },
-        });
-      }
-
-      renderCtdBubbleChart("insChartBubbleS", "insChartBubbleSWrap", S.ctd_characteristics_s);
-      renderCtdBubbleChart("insChartBubbleP", "insChartBubblePWrap", S.ctd_characteristics_p);
 
       // --- Code Summary Table (SM vs LM) ---
       if (S.code_summary && S.code_summary.length) {
@@ -2411,6 +2113,7 @@
     }
 
     renderInsights();
+    renderProductTrdHeatmap("insChartProductTrd", "insChartProductTrdWrap", D.product_trd_heatmap);
 
     // ----- Yearly Overview page -----
     let YEARLY_DATA = null;
@@ -2482,47 +2185,53 @@
         },
       });
     }
-    function makeBubble(canvasId, wrapId, rows) {
+    function renderProductTrdHeatmap(canvasId, wrapId, hm, chartStore) {
       var wrap = document.getElementById(wrapId);
       var canvas = document.getElementById(canvasId);
       if (!wrap || !canvas) return;
-      rows = rows || [];
-      wrap.style.width = Math.max(wrap.parentElement.clientWidth || 640, Math.max(rows.length, 1) * 52) + "px";
-      wrap.style.height = "420px";
-      var bubbleData = rows.map(function(c, i) {
+      hm = hm || {};
+      var products = hm.products || [];
+      var codes = hm.codes || [];
+      var points = hm.points || [];
+      wrap.style.width = Math.max(wrap.parentElement.clientWidth || 640, Math.max(codes.length, 1) * 72) + "px";
+      wrap.style.height = Math.max(420, products.length * 36 + 80) + "px";
+      var maxQ = 1;
+      points.forEach(function(p) { if ((p.questions || 0) > maxQ) maxQ = p.questions; });
+      var bubbleData = points.map(function(p) {
+        var q = p.questions || 0;
         return {
-          x: i,
-          y: c.product_count || 0,
-          r: Math.max(4, Math.min((c.product_count || 0) * 2.5, 30)),
-          code: c.code,
-          product_count: c.product_count || 0,
-          products: c.products || [],
+          x: p.x,
+          y: products.length - 1 - p.y,
+          r: Math.max(5, Math.sqrt(q / maxQ) * 22),
+          product: p.product,
+          code: p.code,
+          questions: q,
         };
       });
-      yearlyCharts[canvasId] = new Chart(canvas, {
+      var chart = new Chart(canvas, {
         type: "bubble",
         data: {
           datasets: [{
             data: bubbleData,
-            backgroundColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length] + "99"; }),
-            borderColor: bubbleData.map(function(_, i) { return PALETTE[i % PALETTE.length]; }),
+            backgroundColor: "rgba(94, 179, 196, 0.72)",
+            borderColor: "rgba(94, 179, 196, 0.95)",
             borderWidth: 1,
           }],
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: { padding: { left: 8, right: 8, top: 4 } },
           plugins: {
             legend: { display: false },
             tooltip: {
               callbacks: {
                 title: function(items) {
                   var d = bubbleData[items[0].dataIndex];
-                  return d.code;
+                  return (d.product || "") + "  ×  " + (d.code || "");
                 },
                 label: function(ctx) {
-                  var d = bubbleData[ctx.dataIndex];
-                  return [" " + d.product_count + " products"];
+                  return " " + (bubbleData[ctx.dataIndex].questions || 0) + " questions";
                 },
               },
             },
@@ -2531,29 +2240,41 @@
             x: {
               type: "linear",
               min: -0.5,
-              max: Math.max(rows.length - 0.5, 0.5),
+              max: Math.max(codes.length - 0.5, 0.5),
+              position: "top",
               ticks: {
                 color: "#9eb2cb",
                 stepSize: 1,
                 autoSkip: false,
-                maxRotation: 60,
+                maxRotation: 55,
                 minRotation: 40,
                 callback: function(val) {
-                  var d = bubbleData[Math.round(val)];
-                  return d ? d.code : "";
+                  return codes[Math.round(val)] || "";
                 },
               },
               grid: { display: false },
             },
             y: {
-              beginAtZero: true,
-              title: { display: true, text: "Products affected", color: "#9eb2cb" },
-              ticks: { color: "#9eb2cb" },
-              grid: { color: "rgba(148,175,205,0.08)" },
+              type: "linear",
+              min: -0.5,
+              max: Math.max(products.length - 0.5, 0.5),
+              afterFit: function(scale) { scale.width = 168; },
+              ticks: {
+                color: "#c9d7ea",
+                stepSize: 1,
+                autoSkip: false,
+                font: { size: 11 },
+                callback: function(val) {
+                  var name = products[products.length - 1 - Math.round(val)] || "";
+                  return name.length > 26 ? name.slice(0, 24) + "…" : name;
+                },
+              },
+              grid: { color: "rgba(148,175,205,0.06)" },
             },
           },
         },
       });
+      if (chartStore) chartStore[canvasId] = chart;
     }
 
     function renderYearlySummaryTable(rows) {
@@ -2624,7 +2345,7 @@
         ["Large Molecule", fmt(ck.large_molecule_questions || 0), "Questions for Biotech products"],
       ];
       document.getElementById("yKpiGrid").innerHTML = kpiRows.map(function(arr) {
-        return '<div class="kpi"><div class="label">' + arr[0] + '</div><div class="value">' + arr[1] + '</div><div class="sub">' + arr[2] + '</div></div>';
+        return '<div class="kpi"><div class="label">' + arr[0] + '</div><div class="value">' + arr[1] + '</div></div>';
       }).join("");
 
       destroyYearlyCharts();
@@ -2769,8 +2490,7 @@
         },
       });
 
-      makeBubble("yBubbleS", "yBubbleSWrap", corp.ctd_characteristics_s || []);
-      makeBubble("yBubbleP", "yBubblePWrap", corp.ctd_characteristics_p || []);
+      renderProductTrdHeatmap("yChartProductTrd", "yChartProductTrdWrap", dash.product_trd_heatmap || {}, yearlyCharts);
     }
 
     async function initYearlyOverview() {
@@ -2863,25 +2583,25 @@
       return wrap;
     }
 
+    function normalizeMarkdown(md) {
+      var s = String(md || "").replace(/\r\n/g, "\n").trim();
+      s = s.replace(/\n{3,}/g, "\n\n");
+      s = s.replace(/([^\n])\n(#{1,6} )/g, "$1\n\n$2");
+      s = s.replace(/(#{1,6} [^\n]+)\n(?!\n|#)/g, "$1\n\n");
+      return s;
+    }
     function renderMarkdown(md) {
       if (!md) return "";
-      let html = md
-        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-        .replace(/\*(.+?)\*/g, "<em>$1</em>")
-        .replace(/`([^`]+)`/g, "<code>$1</code>")
-        .replace(/^[-*] (.+)$/gm, "<li>$1</li>")
-        .replace(/^(\d+)\. (.+)$/gm, "<li>$2</li>");
-      html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>");
-      html = html.replace(/\n{2,}/g, "</p><p>");
-      html = "<p>" + html + "</p>";
-      html = html.replace(/<p>\s*<(h[1-5]|ul|ol|pre)/g, "<$1");
-      html = html.replace(/<\/(h[1-5]|ul|ol|pre)>\s*<\/p>/g, "</$1>");
-      html = html.replace(/<p>\s*<\/p>/g, "");
-      return html;
+      var text = normalizeMarkdown(md);
+      if (typeof marked === "undefined" || !marked.parse) {
+        return escapeHtml(text).replace(/\n/g, "<br>");
+      }
+      marked.setOptions({ gfm: true, breaks: false });
+      var html = marked.parse(text);
+      if (!window.DOMPurify) {
+        return escapeHtml(text).replace(/\n/g, "<br>");
+      }
+      return DOMPurify.sanitize(html);
     }
 
     function appendChat(role, text, sources) {
@@ -3360,14 +3080,6 @@
       restoreTranscript();
       refreshChatHealth();
     })();
-
-    window.reloadDashboardMetrics = async function reloadDashboardMetrics() {
-      window.location.reload();
-    };
-
-    if (window.CMCExtractor) {
-      window.CMCExtractor.mount(document.getElementById("sec-08"));
-    }
 
     })();
   </script>

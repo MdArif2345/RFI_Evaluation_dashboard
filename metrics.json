@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T09:02:50",
+  "generated_at": "2026-10-28T21:02:08",
   "source_file": "cmc_response_documents (4).json",
   "kpis": {
     "total_rows": 5516,
@@ -10740,6 +10740,1473 @@
         0
       ]
     ]
+  },
+  "product_trd_heatmap": {
+    "products": [
+      "Aflibercept",
+      "Rivaroxaban",
+      "Levonorgestrel",
+      "Gadoquatrane",
+      "Iopromide",
+      "Finerenone",
+      "Octocog alfa",
+      "Sevabertinib",
+      "Darolutamide",
+      "Sorafenib",
+      "Testosterone",
+      "Gadoxetic acid",
+      "Drospirenone + Estradiol",
+      "Iloprost",
+      "Gadobutrol"
+    ],
+    "codes": [
+      "P.8.3.01",
+      "P.5.1.01",
+      "P.5.2.01",
+      "P.3.3.01",
+      "P.5.6.01",
+      "P.5.1.02",
+      "S.4.1.01",
+      "P.3.5.01",
+      "P.5.4.01",
+      "P.8.1.01",
+      "S.4.2.01",
+      "P.8.3.02",
+      "P.3.1.01",
+      "P.2.3.01",
+      "S.4.5.01"
+    ],
+    "points": [
+      {
+        "product": "Aflibercept",
+        "code": "P.8.3.01",
+        "questions": 52,
+        "x": 0,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "P.5.1.01",
+        "questions": 29,
+        "x": 1,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "P.5.2.01",
+        "questions": 11,
+        "x": 2,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "P.3.3.01",
+        "questions": 17,
+        "x": 3,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "P.5.6.01",
+        "questions": 31,
+        "x": 4,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "P.5.1.02",
+        "questions": 22,
+        "x": 5,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "S.4.1.01",
+        "questions": 21,
+        "x": 6,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "P.3.5.01",
+        "questions": 26,
+        "x": 7,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "P.5.4.01",
+        "questions": 19,
+        "x": 8,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "P.8.1.01",
+        "questions": 31,
+        "x": 9,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "S.4.2.01",
+        "questions": 7,
+        "x": 10,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "P.8.3.02",
+        "questions": 4,
+        "x": 11,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "P.3.1.01",
+        "questions": 25,
+        "x": 12,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "P.2.3.01",
+        "questions": 18,
+        "x": 13,
+        "y": 0
+      },
+      {
+        "product": "Aflibercept",
+        "code": "S.4.5.01",
+        "questions": 20,
+        "x": 14,
+        "y": 0
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.8.3.01",
+        "questions": 25,
+        "x": 0,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.5.1.01",
+        "questions": 28,
+        "x": 1,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.5.2.01",
+        "questions": 34,
+        "x": 2,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.3.3.01",
+        "questions": 20,
+        "x": 3,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.5.6.01",
+        "questions": 26,
+        "x": 4,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.5.1.02",
+        "questions": 11,
+        "x": 5,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "S.4.1.01",
+        "questions": 7,
+        "x": 6,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.3.5.01",
+        "questions": 3,
+        "x": 7,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.5.4.01",
+        "questions": 19,
+        "x": 8,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.8.1.01",
+        "questions": 12,
+        "x": 9,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "S.4.2.01",
+        "questions": 3,
+        "x": 10,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.8.3.02",
+        "questions": 5,
+        "x": 11,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.3.1.01",
+        "questions": 11,
+        "x": 12,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "P.2.3.01",
+        "questions": 9,
+        "x": 13,
+        "y": 1
+      },
+      {
+        "product": "Rivaroxaban",
+        "code": "S.4.5.01",
+        "questions": 4,
+        "x": 14,
+        "y": 1
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.8.3.01",
+        "questions": 32,
+        "x": 0,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.5.1.01",
+        "questions": 43,
+        "x": 1,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.5.2.01",
+        "questions": 18,
+        "x": 2,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.3.3.01",
+        "questions": 26,
+        "x": 3,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.5.6.01",
+        "questions": 47,
+        "x": 4,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.5.1.02",
+        "questions": 45,
+        "x": 5,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "S.4.1.01",
+        "questions": 6,
+        "x": 6,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.3.5.01",
+        "questions": 24,
+        "x": 7,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.5.4.01",
+        "questions": 16,
+        "x": 8,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.8.1.01",
+        "questions": 2,
+        "x": 9,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "S.4.2.01",
+        "questions": 7,
+        "x": 10,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.8.3.02",
+        "questions": 8,
+        "x": 11,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.3.1.01",
+        "questions": 2,
+        "x": 12,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "P.2.3.01",
+        "questions": 1,
+        "x": 13,
+        "y": 2
+      },
+      {
+        "product": "Levonorgestrel",
+        "code": "S.4.5.01",
+        "questions": 2,
+        "x": 14,
+        "y": 2
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "P.8.3.01",
+        "questions": 9,
+        "x": 0,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "P.5.1.01",
+        "questions": 39,
+        "x": 1,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "P.5.2.01",
+        "questions": 12,
+        "x": 2,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "P.3.3.01",
+        "questions": 45,
+        "x": 3,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "P.5.6.01",
+        "questions": 38,
+        "x": 4,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "P.5.1.02",
+        "questions": 25,
+        "x": 5,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "S.4.1.01",
+        "questions": 7,
+        "x": 6,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "P.3.5.01",
+        "questions": 15,
+        "x": 7,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "P.5.4.01",
+        "questions": 15,
+        "x": 8,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "P.8.1.01",
+        "questions": 4,
+        "x": 9,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "S.4.2.01",
+        "questions": 11,
+        "x": 10,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "P.3.1.01",
+        "questions": 22,
+        "x": 12,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "P.2.3.01",
+        "questions": 20,
+        "x": 13,
+        "y": 3
+      },
+      {
+        "product": "Gadoquatrane",
+        "code": "S.4.5.01",
+        "questions": 5,
+        "x": 14,
+        "y": 3
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.8.3.01",
+        "questions": 45,
+        "x": 0,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.5.1.01",
+        "questions": 9,
+        "x": 1,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.5.2.01",
+        "questions": 6,
+        "x": 2,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.3.3.01",
+        "questions": 11,
+        "x": 3,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.5.6.01",
+        "questions": 7,
+        "x": 4,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.5.1.02",
+        "questions": 4,
+        "x": 5,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "S.4.1.01",
+        "questions": 13,
+        "x": 6,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.3.5.01",
+        "questions": 7,
+        "x": 7,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.5.4.01",
+        "questions": 15,
+        "x": 8,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.8.1.01",
+        "questions": 8,
+        "x": 9,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "S.4.2.01",
+        "questions": 6,
+        "x": 10,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.8.3.02",
+        "questions": 18,
+        "x": 11,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.3.1.01",
+        "questions": 3,
+        "x": 12,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "P.2.3.01",
+        "questions": 3,
+        "x": 13,
+        "y": 4
+      },
+      {
+        "product": "Iopromide",
+        "code": "S.4.5.01",
+        "questions": 8,
+        "x": 14,
+        "y": 4
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.8.3.01",
+        "questions": 24,
+        "x": 0,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.5.1.01",
+        "questions": 14,
+        "x": 1,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.5.2.01",
+        "questions": 15,
+        "x": 2,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.3.3.01",
+        "questions": 21,
+        "x": 3,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.5.6.01",
+        "questions": 5,
+        "x": 4,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.5.1.02",
+        "questions": 7,
+        "x": 5,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "S.4.1.01",
+        "questions": 1,
+        "x": 6,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.3.5.01",
+        "questions": 13,
+        "x": 7,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.5.4.01",
+        "questions": 10,
+        "x": 8,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.8.1.01",
+        "questions": 11,
+        "x": 9,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.8.3.02",
+        "questions": 2,
+        "x": 11,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.3.1.01",
+        "questions": 6,
+        "x": 12,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "P.2.3.01",
+        "questions": 8,
+        "x": 13,
+        "y": 5
+      },
+      {
+        "product": "Finerenone",
+        "code": "S.4.5.01",
+        "questions": 1,
+        "x": 14,
+        "y": 5
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.8.3.01",
+        "questions": 7,
+        "x": 0,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.5.1.01",
+        "questions": 10,
+        "x": 1,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.5.2.01",
+        "questions": 3,
+        "x": 2,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.3.3.01",
+        "questions": 5,
+        "x": 3,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.5.6.01",
+        "questions": 5,
+        "x": 4,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.5.1.02",
+        "questions": 7,
+        "x": 5,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "S.4.1.01",
+        "questions": 7,
+        "x": 6,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.3.5.01",
+        "questions": 4,
+        "x": 7,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.5.4.01",
+        "questions": 5,
+        "x": 8,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.8.1.01",
+        "questions": 7,
+        "x": 9,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "S.4.2.01",
+        "questions": 3,
+        "x": 10,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.8.3.02",
+        "questions": 20,
+        "x": 11,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.3.1.01",
+        "questions": 2,
+        "x": 12,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "P.2.3.01",
+        "questions": 2,
+        "x": 13,
+        "y": 6
+      },
+      {
+        "product": "Octocog alfa",
+        "code": "S.4.5.01",
+        "questions": 6,
+        "x": 14,
+        "y": 6
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "P.8.3.01",
+        "questions": 13,
+        "x": 0,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "P.5.1.01",
+        "questions": 6,
+        "x": 1,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "P.5.2.01",
+        "questions": 3,
+        "x": 2,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "P.3.3.01",
+        "questions": 8,
+        "x": 3,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "P.5.6.01",
+        "questions": 4,
+        "x": 4,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "P.5.1.02",
+        "questions": 6,
+        "x": 5,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "S.4.1.01",
+        "questions": 9,
+        "x": 6,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "P.3.5.01",
+        "questions": 14,
+        "x": 7,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "P.5.4.01",
+        "questions": 6,
+        "x": 8,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "P.8.1.01",
+        "questions": 7,
+        "x": 9,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "S.4.2.01",
+        "questions": 11,
+        "x": 10,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "P.2.3.01",
+        "questions": 8,
+        "x": 13,
+        "y": 7
+      },
+      {
+        "product": "Sevabertinib",
+        "code": "S.4.5.01",
+        "questions": 4,
+        "x": 14,
+        "y": 7
+      },
+      {
+        "product": "Darolutamide",
+        "code": "P.8.3.01",
+        "questions": 12,
+        "x": 0,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "P.5.1.01",
+        "questions": 6,
+        "x": 1,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "P.5.2.01",
+        "questions": 5,
+        "x": 2,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "P.3.3.01",
+        "questions": 5,
+        "x": 3,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "P.5.6.01",
+        "questions": 2,
+        "x": 4,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "P.5.1.02",
+        "questions": 2,
+        "x": 5,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "S.4.1.01",
+        "questions": 4,
+        "x": 6,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "P.3.5.01",
+        "questions": 5,
+        "x": 7,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "P.5.4.01",
+        "questions": 4,
+        "x": 8,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "P.8.1.01",
+        "questions": 3,
+        "x": 9,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "S.4.2.01",
+        "questions": 4,
+        "x": 10,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "P.8.3.02",
+        "questions": 2,
+        "x": 11,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "P.2.3.01",
+        "questions": 3,
+        "x": 13,
+        "y": 8
+      },
+      {
+        "product": "Darolutamide",
+        "code": "S.4.5.01",
+        "questions": 2,
+        "x": 14,
+        "y": 8
+      },
+      {
+        "product": "Sorafenib",
+        "code": "P.8.3.01",
+        "questions": 3,
+        "x": 0,
+        "y": 9
+      },
+      {
+        "product": "Sorafenib",
+        "code": "P.5.1.01",
+        "questions": 1,
+        "x": 1,
+        "y": 9
+      },
+      {
+        "product": "Sorafenib",
+        "code": "P.5.2.01",
+        "questions": 6,
+        "x": 2,
+        "y": 9
+      },
+      {
+        "product": "Sorafenib",
+        "code": "P.3.3.01",
+        "questions": 13,
+        "x": 3,
+        "y": 9
+      },
+      {
+        "product": "Sorafenib",
+        "code": "S.4.1.01",
+        "questions": 3,
+        "x": 6,
+        "y": 9
+      },
+      {
+        "product": "Sorafenib",
+        "code": "P.3.5.01",
+        "questions": 8,
+        "x": 7,
+        "y": 9
+      },
+      {
+        "product": "Sorafenib",
+        "code": "P.5.4.01",
+        "questions": 2,
+        "x": 8,
+        "y": 9
+      },
+      {
+        "product": "Sorafenib",
+        "code": "P.8.1.01",
+        "questions": 2,
+        "x": 9,
+        "y": 9
+      },
+      {
+        "product": "Sorafenib",
+        "code": "P.3.1.01",
+        "questions": 2,
+        "x": 12,
+        "y": 9
+      },
+      {
+        "product": "Testosterone",
+        "code": "P.8.3.01",
+        "questions": 10,
+        "x": 0,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "P.5.1.01",
+        "questions": 4,
+        "x": 1,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "P.5.2.01",
+        "questions": 3,
+        "x": 2,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "P.3.3.01",
+        "questions": 4,
+        "x": 3,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "P.5.6.01",
+        "questions": 1,
+        "x": 4,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "P.5.1.02",
+        "questions": 2,
+        "x": 5,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "S.4.1.01",
+        "questions": 4,
+        "x": 6,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "P.3.5.01",
+        "questions": 4,
+        "x": 7,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "P.5.4.01",
+        "questions": 3,
+        "x": 8,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "S.4.2.01",
+        "questions": 2,
+        "x": 10,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "P.8.3.02",
+        "questions": 5,
+        "x": 11,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "P.3.1.01",
+        "questions": 3,
+        "x": 12,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "P.2.3.01",
+        "questions": 1,
+        "x": 13,
+        "y": 10
+      },
+      {
+        "product": "Testosterone",
+        "code": "S.4.5.01",
+        "questions": 2,
+        "x": 14,
+        "y": 10
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "P.8.3.01",
+        "questions": 6,
+        "x": 0,
+        "y": 11
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "P.5.1.01",
+        "questions": 8,
+        "x": 1,
+        "y": 11
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "P.5.2.01",
+        "questions": 7,
+        "x": 2,
+        "y": 11
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "P.3.3.01",
+        "questions": 1,
+        "x": 3,
+        "y": 11
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "P.5.6.01",
+        "questions": 1,
+        "x": 4,
+        "y": 11
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "P.5.1.02",
+        "questions": 7,
+        "x": 5,
+        "y": 11
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "S.4.1.01",
+        "questions": 10,
+        "x": 6,
+        "y": 11
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "P.3.5.01",
+        "questions": 5,
+        "x": 7,
+        "y": 11
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "P.5.4.01",
+        "questions": 3,
+        "x": 8,
+        "y": 11
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "P.8.1.01",
+        "questions": 8,
+        "x": 9,
+        "y": 11
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "S.4.2.01",
+        "questions": 6,
+        "x": 10,
+        "y": 11
+      },
+      {
+        "product": "Gadoxetic acid",
+        "code": "P.8.3.02",
+        "questions": 4,
+        "x": 11,
+        "y": 11
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "P.8.3.01",
+        "questions": 5,
+        "x": 0,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "P.5.1.01",
+        "questions": 2,
+        "x": 1,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "P.5.2.01",
+        "questions": 6,
+        "x": 2,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "P.3.3.01",
+        "questions": 1,
+        "x": 3,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "P.5.6.01",
+        "questions": 2,
+        "x": 4,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "P.5.1.02",
+        "questions": 4,
+        "x": 5,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "S.4.1.01",
+        "questions": 3,
+        "x": 6,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "P.3.5.01",
+        "questions": 2,
+        "x": 7,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "P.5.4.01",
+        "questions": 2,
+        "x": 8,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "P.8.1.01",
+        "questions": 1,
+        "x": 9,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "S.4.2.01",
+        "questions": 4,
+        "x": 10,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "P.8.3.02",
+        "questions": 3,
+        "x": 11,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "P.3.1.01",
+        "questions": 2,
+        "x": 12,
+        "y": 12
+      },
+      {
+        "product": "Drospirenone + Estradiol",
+        "code": "S.4.5.01",
+        "questions": 2,
+        "x": 14,
+        "y": 12
+      },
+      {
+        "product": "Iloprost",
+        "code": "P.8.3.01",
+        "questions": 5,
+        "x": 0,
+        "y": 13
+      },
+      {
+        "product": "Iloprost",
+        "code": "P.5.1.01",
+        "questions": 2,
+        "x": 1,
+        "y": 13
+      },
+      {
+        "product": "Iloprost",
+        "code": "P.5.2.01",
+        "questions": 7,
+        "x": 2,
+        "y": 13
+      },
+      {
+        "product": "Iloprost",
+        "code": "P.5.6.01",
+        "questions": 2,
+        "x": 4,
+        "y": 13
+      },
+      {
+        "product": "Iloprost",
+        "code": "S.4.1.01",
+        "questions": 5,
+        "x": 6,
+        "y": 13
+      },
+      {
+        "product": "Iloprost",
+        "code": "P.3.5.01",
+        "questions": 2,
+        "x": 7,
+        "y": 13
+      },
+      {
+        "product": "Iloprost",
+        "code": "P.5.4.01",
+        "questions": 2,
+        "x": 8,
+        "y": 13
+      },
+      {
+        "product": "Iloprost",
+        "code": "S.4.2.01",
+        "questions": 5,
+        "x": 10,
+        "y": 13
+      },
+      {
+        "product": "Iloprost",
+        "code": "P.8.3.02",
+        "questions": 1,
+        "x": 11,
+        "y": 13
+      },
+      {
+        "product": "Iloprost",
+        "code": "P.2.3.01",
+        "questions": 2,
+        "x": 13,
+        "y": 13
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.8.3.01",
+        "questions": 13,
+        "x": 0,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.5.1.01",
+        "questions": 3,
+        "x": 1,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.5.2.01",
+        "questions": 8,
+        "x": 2,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.3.3.01",
+        "questions": 2,
+        "x": 3,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.5.6.01",
+        "questions": 5,
+        "x": 4,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.5.1.02",
+        "questions": 3,
+        "x": 5,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "S.4.1.01",
+        "questions": 4,
+        "x": 6,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.3.5.01",
+        "questions": 3,
+        "x": 7,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.5.4.01",
+        "questions": 1,
+        "x": 8,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.8.1.01",
+        "questions": 4,
+        "x": 9,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "S.4.2.01",
+        "questions": 1,
+        "x": 10,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.8.3.02",
+        "questions": 4,
+        "x": 11,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.3.1.01",
+        "questions": 4,
+        "x": 12,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "P.2.3.01",
+        "questions": 1,
+        "x": 13,
+        "y": 14
+      },
+      {
+        "product": "Gadobutrol",
+        "code": "S.4.5.01",
+        "questions": 1,
+        "x": 14,
+        "y": 14
+      }
+    ],
+    "question_rows": 2945
   },
   "top_country_product_pairs": [
     {

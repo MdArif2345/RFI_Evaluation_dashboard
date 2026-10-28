@@ -74,6 +74,7 @@ def _slim_dashboard(data: dict[str, Any]) -> dict[str, Any]:
         "chart_country_all": data.get("chart_country_all", data.get("chart_country_top15", [])),
         "chart_product_top12": data.get("chart_product_top12", []),
         "questions_per_country": data.get("questions_per_country", []),
+        "product_trd_heatmap": data.get("product_trd_heatmap", {}),
     }
 
 
