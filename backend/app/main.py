@@ -6,15 +6,24 @@ import re
 import subprocess
 import sys
 import tempfile
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from typing import Annotated, Any, Iterator, Literal
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, Response, StreamingResponse
 from pydantic import BaseModel, Field
 
-from .auth import require_basic_auth
+from . import prompt_store, recommendations, trd_profiles
+from .attachments import (
+    add_attachment,
+    clear_attachments,
+    context_block,
+    get_attachment,
+    list_attachments,
+    remove_attachment,
+)
+from .auth import require_basic_auth, require_prompt_editor
 from .chat_db import delete_session, ensure_session, get_analytics, get_session_messages, get_sessions, init_db, save_message
 from .config import Settings, DASHBOARD_DIR, get_settings
 from .corpus import get_corpus
@@ -297,18 +306,25 @@ def build_system_prompt() -> str:
     stats = corpus.corpus_summary()
     top_products_str = ", ".join(f"{p} ({c})" for p, c in stats["top_products"][:5])
     top_countries_str = ", ".join(f"{c} ({n})" for c, n in stats["top_countries"][:5])
-    return SYSTEM_PROMPT_TEMPLATE.format(
-        total=len(corpus.pairs),
-        total_documents=stats["total_documents"],
-        sm_count=stats["small_molecule_count"],
-        lm_count=stats["large_molecule_count"],
-        unique_products=stats["unique_products"],
-        unique_countries=stats["unique_countries"],
-        top_products_str=top_products_str,
-        top_countries_str=top_countries_str,
-        catalog_size=len(corpus.code_catalog),
-        themes="; ".join(corpus.available_themes()),
-    )
+    values = {
+        "total": len(corpus.pairs),
+        "total_documents": stats["total_documents"],
+        "sm_count": stats["small_molecule_count"],
+        "lm_count": stats["large_molecule_count"],
+        "unique_products": stats["unique_products"],
+        "unique_countries": stats["unique_countries"],
+        "top_products_str": top_products_str,
+        "top_countries_str": top_countries_str,
+        "catalog_size": len(corpus.code_catalog),
+        "themes": "; ".join(corpus.available_themes()),
+    }
+    active = prompt_store.get_active()
+    if active:
+        try:
+            return active["content"].format(**values)
+        except (ValueError, KeyError, IndexError):
+            pass
+    return SYSTEM_PROMPT_TEMPLATE.format(**values)
 
 
 app = FastAPI(title="CMC Dashboard RAG", version="1.0.0")
@@ -325,6 +341,8 @@ app.add_middleware(
 def _startup() -> None:
     settings = get_settings()
     init_db(settings.chat_db_path)
+    prompt_store.seed_default(SYSTEM_PROMPT_TEMPLATE)
+    recommendations.mark_interrupted_runs()
 
 
 class Turn(BaseModel):
@@ -378,6 +396,7 @@ def run_agent(
     message: str,
     settings: Settings,
     history: list[Turn] | None = None,
+    session_id: str | None = None,
 ) -> Iterator[dict[str, Any]]:
     """Bounded tool loop. Yields UI events: tool, sources, delta, done, error.
 
@@ -387,11 +406,14 @@ def run_agent(
     """
     client = chat_client(settings)
     schemas = tool_schemas()
+    uploaded = context_block(session_id)
     messages: list[dict[str, Any]] = [
         {"role": "system", "content": build_system_prompt()},
-        *_trim_history(history or []),
-        {"role": "user", "content": message},
     ]
+    if uploaded:
+        messages.append({"role": "system", "content": uploaded})
+    messages.extend(_trim_history(history or []))
+    messages.append({"role": "user", "content": message})
 
     seen_source_ids: set[str] = set()
     used_retrieval = False
@@ -424,8 +446,11 @@ def run_agent(
     )
     _word_count = len(_msg_lower.split())
     is_casual = (
-        _msg_clean in _CASUAL_PHRASES
-        or (_word_count <= 6 and not _PHARMA_KEYWORDS.search(_msg_lower))
+        not uploaded
+        and (
+            _msg_clean in _CASUAL_PHRASES
+            or (_word_count <= 6 and not _PHARMA_KEYWORDS.search(_msg_lower))
+        )
     )
 
     for round_index in range(MAX_TOOL_ROUNDS):
@@ -434,7 +459,7 @@ def run_agent(
         extra: dict[str, Any] = {}
         if not last_round:
             extra["tools"] = schemas
-            if round_index == 0 and not is_casual:
+            if round_index == 0 and not is_casual and not uploaded:
                 # Force the model to call a tool on the first round for
                 # substantive questions so the source panel always appears.
                 extra["tool_choice"] = "required"
@@ -703,6 +728,7 @@ def _rebuild_metrics() -> dict[str, Any]:
 def api_corpus_append(
     body: CorpusAppendRequest,
     _: Annotated[str, Depends(require_basic_auth)],
+    __: Annotated[None, Depends(require_prompt_editor)],
     settings: Annotated[Settings, Depends(get_settings)],
 ) -> dict[str, Any]:
     qna_path = settings.qna_path
@@ -801,6 +827,114 @@ def api_corpus_append(
     }
 
 
+@app.post("/api/chat/attachments")
+async def api_chat_attachments_upload(
+    _: Annotated[str, Depends(require_basic_auth)],
+    session_id: str = Form(...),
+    files: list[UploadFile] = File(...),
+) -> dict[str, Any]:
+    if not session_id.strip():
+        raise HTTPException(status_code=400, detail="session_id is required")
+    added: list[dict[str, Any]] = []
+    for upload in files:
+        data = await upload.read()
+        try:
+            added.append(add_attachment(session_id.strip(), upload.filename or "upload", data))
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        except Exception as exc:
+            raise HTTPException(status_code=422, detail=f"Could not read {upload.filename}: {exc}") from exc
+    return {"attachments": list_attachments(session_id.strip()), "added": added}
+
+
+@app.get("/api/chat/attachments")
+def api_chat_attachments_list(
+    _: Annotated[str, Depends(require_basic_auth)],
+    session_id: str,
+) -> dict[str, Any]:
+    return {"attachments": list_attachments(session_id)}
+
+
+@app.delete("/api/chat/attachments")
+def api_chat_attachments_clear(
+    _: Annotated[str, Depends(require_basic_auth)],
+    session_id: str,
+) -> dict[str, Any]:
+    clear_attachments(session_id)
+    return {"attachments": []}
+
+
+@app.delete("/api/chat/attachments/{attach_id}")
+def api_chat_attachments_remove(
+    attach_id: str,
+    _: Annotated[str, Depends(require_basic_auth)],
+    session_id: str,
+) -> dict[str, Any]:
+    if not remove_attachment(session_id, attach_id):
+        raise HTTPException(status_code=404, detail="Attachment not found")
+    return {"attachments": list_attachments(session_id)}
+
+
+@app.post("/api/chat/attachments/{attach_id}/to-corpus")
+def api_chat_attachment_to_corpus(
+    attach_id: str,
+    _: Annotated[str, Depends(require_basic_auth)],
+    __: Annotated[None, Depends(require_prompt_editor)],
+    settings: Annotated[Settings, Depends(get_settings)],
+    session_id: str,
+) -> dict[str, Any]:
+    item = get_attachment(session_id, attach_id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Attachment not found")
+    text = (item.get("text") or "").strip()
+    if len(text) < 40:
+        raise HTTPException(status_code=422, detail="Not enough text to extract Q&A (scanned PDFs are not supported)")
+
+    chunk_size = 12000
+    chunks = [text[i : i + chunk_size] for i in range(0, len(text), chunk_size)]
+    header = chunks[0][:1500] if chunks else ""
+    filename = item.get("filename") or ""
+    meta = {"registrationName": "", "country": "", "smLm": ""}
+    pairs: list[dict[str, Any]] = []
+    for idx, chunk in enumerate(chunks):
+        extracted = api_extract(
+            ExtractRequest(
+                text=chunk[:40000],
+                filename=filename,
+                header_text=header if idx else "",
+                chunk_index=idx,
+                chunk_count=len(chunks),
+            ),
+            _,
+            settings,
+        )
+        if idx == 0:
+            meta["registrationName"] = extracted.get("registrationName") or ""
+            meta["country"] = extracted.get("country") or ""
+            meta["smLm"] = extracted.get("smLm") or ""
+        for qa in extracted.get("qaPairs") or []:
+            if qa.get("question") and qa.get("response"):
+                pairs.append(qa)
+    if not pairs:
+        raise HTTPException(status_code=422, detail="No question/answer pairs were found in this file")
+
+    rows = [
+        ExtractedRowIn(
+            registrationName=meta["registrationName"],
+            filename=filename,
+            country=meta["country"],
+            smLm=meta["smLm"],
+            question=qa.get("question") or "",
+            response=qa.get("response") or "",
+            codes=qa.get("codes") or "",
+            keywords=qa.get("keywords") or "",
+        )
+        for qa in pairs
+    ]
+    result = api_corpus_append(CorpusAppendRequest(rows=rows), _, settings)
+    return {**result, "extracted_pairs": len(pairs), "filename": filename}
+
+
 @app.post("/api/chat", response_model=ChatResponse)
 def api_chat(
     body: ChatRequest,
@@ -818,7 +952,7 @@ def api_chat(
     used_retrieval = False
 
     try:
-        for event in run_agent(message, settings, body.history):
+        for event in run_agent(message, settings, body.history, body.session_id):
             if event["type"] == "delta":
                 answer_parts.append(event["text"])
             elif event["type"] == "sources":
@@ -868,7 +1002,7 @@ def api_chat_stream(
         all_sources: list[dict[str, Any]] = []
         try:
             yield emit({"type": "stage", "stage": "thinking"})
-            for event in run_agent(message, settings, history):
+            for event in run_agent(message, settings, history, sid):
                 yield emit(event)
                 if event["type"] == "delta":
                     answer_parts.append(event["text"])
@@ -907,6 +1041,7 @@ def api_delete_session(
     deleted = delete_session(session_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Session not found")
+    clear_attachments(session_id)
     return {"deleted": True, "session_id": session_id}
 
 
@@ -923,6 +1058,244 @@ def api_analytics(
     _: Annotated[str, Depends(require_basic_auth)],
 ) -> dict[str, Any]:
     return get_analytics()
+
+
+# ----- System prompt editor -----
+
+class PromptSaveRequest(BaseModel):
+    content: str = Field(min_length=1, max_length=prompt_store.MAX_PROMPT_CHARS)
+    author: str = Field(min_length=1, max_length=prompt_store.MAX_AUTHOR_CHARS)
+    note: str = Field(min_length=1, max_length=prompt_store.MAX_NOTE_CHARS)
+
+
+@app.get("/api/system-prompt")
+def api_system_prompt(
+    _: Annotated[str, Depends(require_basic_auth)],
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> dict[str, Any]:
+    active = prompt_store.get_active() or {
+        "id": None, "author": "default", "note": "Built-in default prompt",
+        "created_at": None, "is_active": True,
+        "chars": len(SYSTEM_PROMPT_TEMPLATE), "content": SYSTEM_PROMPT_TEMPLATE,
+    }
+    return {
+        "active": active,
+        "placeholders": list(prompt_store.ALLOWED_PLACEHOLDERS),
+        "max_chars": prompt_store.MAX_PROMPT_CHARS,
+        "editing_enabled": bool(settings.prompt_editor_password),
+    }
+
+
+@app.get("/api/system-prompt/versions")
+def api_system_prompt_versions(
+    _: Annotated[str, Depends(require_basic_auth)],
+) -> list[dict[str, Any]]:
+    return prompt_store.list_versions()
+
+
+@app.get("/api/system-prompt/versions/{version_id}")
+def api_system_prompt_version(
+    version_id: int,
+    _: Annotated[str, Depends(require_basic_auth)],
+) -> dict[str, Any]:
+    version = prompt_store.get_version(version_id)
+    if not version:
+        raise HTTPException(status_code=404, detail="Version not found")
+    return version
+
+
+@app.post("/api/system-prompt")
+def api_system_prompt_save(
+    payload: PromptSaveRequest,
+    _: Annotated[str, Depends(require_basic_auth)],
+    __: Annotated[None, Depends(require_prompt_editor)],
+) -> dict[str, Any]:
+    try:
+        return prompt_store.save_version(payload.content, payload.author, payload.note)
+    except prompt_store.PromptValidationError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@app.post("/api/system-prompt/versions/{version_id}/restore")
+def api_system_prompt_restore(
+    version_id: int,
+    _: Annotated[str, Depends(require_basic_auth)],
+    __: Annotated[None, Depends(require_prompt_editor)],
+) -> dict[str, Any]:
+    version = prompt_store.activate(version_id)
+    if not version:
+        raise HTTPException(status_code=404, detail="Version not found")
+    return version
+
+
+# ----- TRD profiles and gap-analysis recommendations -----
+
+MAX_RANGE_DAYS = 5 * 366
+
+
+def _check_date_range(start: date | None, end: date | None) -> None:
+    if start is None and end is None:
+        return
+    if start is None or end is None:
+        raise HTTPException(status_code=400, detail="Choose both a From and a To date.")
+    if start > end:
+        raise HTTPException(status_code=400, detail="The From date must be on or before the To date.")
+    if end > date.today():
+        raise HTTPException(status_code=400, detail="The To date cannot be in the future.")
+    if end - start > timedelta(days=MAX_RANGE_DAYS):
+        raise HTTPException(status_code=400, detail="The date range can be at most 5 years.")
+
+
+@app.get("/api/trd-profiles")
+def api_trd_profiles(
+    _: Annotated[str, Depends(require_basic_auth)],
+    settings: Annotated[Settings, Depends(get_settings)],
+    months: int = 12,
+    min_questions: int = 3,
+    min_documents: int = 2,
+    start_date: date | None = None,
+    end_date: date | None = None,
+) -> dict[str, Any]:
+    _check_date_range(start_date, end_date)
+    window = recommendations.select_window(
+        settings, months=max(1, min(months, 60)), start=start_date, end=end_date
+    )
+    codes = recommendations.recurring_codes(window, max(1, min_questions), max(1, min_documents))
+    cov = trd_profiles.coverage([c["code"] for c in codes])
+    return {
+        "profiles": trd_profiles.list_profiles(),
+        "recurring_codes": codes,
+        "covered": cov["covered"],
+        "missing": cov["missing"],
+        "questions_in_window": len(window["questions"]),
+    }
+
+
+@app.post("/api/trd-profiles")
+async def api_trd_profile_upload(
+    user: Annotated[str, Depends(require_basic_auth)],
+    file: UploadFile = File(...),
+    codes: str = Form(""),
+) -> dict[str, Any]:
+    data = await file.read(trd_profiles.MAX_BYTES + 1)
+    try:
+        return trd_profiles.add_profile(file.filename or "profile", data, codes, user)
+    except trd_profiles.ProfileError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+class ProfileCodesRequest(BaseModel):
+    codes: str = Field(min_length=1, max_length=2000)
+
+
+@app.put("/api/trd-profiles/{profile_id}")
+def api_trd_profile_codes(
+    profile_id: int,
+    payload: ProfileCodesRequest,
+    _: Annotated[str, Depends(require_basic_auth)],
+) -> dict[str, Any]:
+    try:
+        profile = trd_profiles.update_codes(profile_id, payload.codes)
+    except trd_profiles.ProfileError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    return profile
+
+
+@app.delete("/api/trd-profiles/{profile_id}")
+def api_trd_profile_delete(
+    profile_id: int,
+    _: Annotated[str, Depends(require_basic_auth)],
+) -> dict[str, Any]:
+    if not trd_profiles.delete_profile(profile_id):
+        raise HTTPException(status_code=404, detail="Profile not found")
+    return {"deleted": True, "id": profile_id}
+
+
+class AnalysisRunRequest(BaseModel):
+    months: int = Field(default=12, ge=1, le=60)
+    start_date: date | None = None
+    end_date: date | None = None
+    min_questions: int = Field(default=3, ge=2, le=100)
+    min_documents: int = Field(default=2, ge=1, le=50)
+    scope: Literal["profiled", "all"] = "profiled"
+
+
+@app.post("/api/recommendations/run")
+def api_recommendations_run(
+    payload: AnalysisRunRequest,
+    user: Annotated[str, Depends(require_basic_auth)],
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> dict[str, Any]:
+    if not settings.chat_key_ready():
+        raise HTTPException(status_code=400, detail="The LLM key is not configured in backend/.env.")
+    try:
+        _check_date_range(payload.start_date, payload.end_date)
+        run_id = recommendations.start_run(
+            settings,
+            payload.months,
+            payload.min_questions,
+            payload.min_documents,
+            user,
+            payload.scope,
+            payload.start_date,
+            payload.end_date,
+        )
+    except recommendations.AnalysisBusy as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    return {"run_id": run_id}
+
+
+@app.get("/api/recommendations/runs")
+def api_recommendations_runs(
+    _: Annotated[str, Depends(require_basic_auth)],
+) -> list[dict[str, Any]]:
+    return recommendations.list_runs()
+
+
+@app.get("/api/recommendations/runs/latest")
+def api_recommendations_latest(
+    _: Annotated[str, Depends(require_basic_auth)],
+    items: bool = True,
+) -> dict[str, Any]:
+    latest = recommendations.latest_run_id()
+    if latest is None:
+        return {"run": None, "last_done": None}
+    run = recommendations.get_run(latest, with_items=items)
+    last_done = recommendations.latest_run_id(finished_only=True)
+    if run and run["status"] != "done" and last_done is not None:
+        return {"run": run, "last_done": recommendations.get_run(last_done, with_items=items)}
+    return {"run": run, "last_done": run if run and run["status"] == "done" else None}
+
+
+@app.get("/api/recommendations/runs/{run_id}")
+def api_recommendations_run_detail(
+    run_id: int,
+    _: Annotated[str, Depends(require_basic_auth)],
+    items: bool = True,
+) -> dict[str, Any]:
+    run = recommendations.get_run(run_id, with_items=items)
+    if not run:
+        raise HTTPException(status_code=404, detail="Run not found")
+    return run
+
+
+@app.get("/api/recommendations/runs/{run_id}/export.csv")
+def api_recommendations_export(
+    run_id: int,
+    _: Annotated[str, Depends(require_basic_auth)],
+) -> Response:
+    run = recommendations.get_run(run_id)
+    if not run:
+        raise HTTPException(status_code=404, detail="Run not found")
+    summary = run.get("summary") or {}
+    period = f"{summary.get('window_start', '')}_to_{summary.get('window_end', '')}"
+    return Response(
+        content="\ufeff" + recommendations.export_csv(run),
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="trd-gap-run-{run_id}_{period}.csv"'},
+    )
 
 
 # ----- CTD Code Comparison endpoint -----

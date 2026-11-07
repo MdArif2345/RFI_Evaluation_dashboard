@@ -43,6 +43,48 @@ def init_db(db_path: Path) -> None:
         );
         CREATE INDEX IF NOT EXISTS idx_messages_session ON messages(session_id);
         CREATE INDEX IF NOT EXISTS idx_sessions_username ON sessions(username);
+        CREATE TABLE IF NOT EXISTS prompt_versions (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            content     TEXT NOT NULL,
+            author      TEXT NOT NULL,
+            note        TEXT NOT NULL,
+            created_at  TEXT NOT NULL,
+            is_active   INTEGER NOT NULL DEFAULT 0
+        );
+        CREATE TABLE IF NOT EXISTS trd_profiles (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            codes        TEXT NOT NULL,
+            filename     TEXT NOT NULL,
+            content      TEXT NOT NULL,
+            uploaded_by  TEXT NOT NULL,
+            uploaded_at  TEXT NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS analysis_runs (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            status       TEXT NOT NULL,
+            params       TEXT NOT NULL,
+            progress     TEXT,
+            started_by   TEXT,
+            started_at   TEXT NOT NULL,
+            finished_at  TEXT,
+            error        TEXT,
+            summary      TEXT
+        );
+        CREATE TABLE IF NOT EXISTS analysis_items (
+            id       INTEGER PRIMARY KEY AUTOINCREMENT,
+            run_id   INTEGER NOT NULL REFERENCES analysis_runs(id),
+            code     TEXT NOT NULL,
+            kind     TEXT NOT NULL,
+            cluster  TEXT NOT NULL,
+            result   TEXT
+        );
+        CREATE INDEX IF NOT EXISTS idx_analysis_items_run ON analysis_items(run_id);
+        CREATE TABLE IF NOT EXISTS analysis_cache (
+            hash     TEXT PRIMARY KEY,
+            stage    TEXT NOT NULL,
+            output   TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        );
     """)
     _conn.commit()
 

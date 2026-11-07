@@ -526,6 +526,80 @@
     .rec-fields span { color: #9eb2cb; }
     .rec-fields b { color: #dbeafe; font-weight: 500; }
 
+    .rx-panel {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(8, 22, 40, 0.35);
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+    .rx-bar { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; font-size: 12px; color: var(--muted); }
+    .rx-bar label { display: inline-flex; align-items: center; gap: 6px; }
+    .rx-bar select, .rx-bar input, .rx-upload input[type=text] {
+      padding: 6px 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      font-size: 12px;
+      outline: none;
+    }
+    .rx-bar input[type=number] { width: 56px; }
+    .rx-range { display: inline-flex; gap: 8px 12px; flex-wrap: wrap; }
+    .rx-range[hidden] { display: none; }
+    .rx-bar input[type=date] { color-scheme: dark; }
+    .rx-bar input[type=text], .rx-bar input[type=password] { width: 140px; }
+    .rx-bar select option { background: #0f2744; }
+    .rx-bar a.sp-btn { text-decoration: none; }
+    .rx-progress { height: 6px; border-radius: 4px; background: rgba(255,255,255,0.08); margin-top: 10px; overflow: hidden; }
+    .rx-progress[hidden] { display: none; }
+    .rx-progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent-2), var(--accent)); transition: width .4s; }
+    .rx-status { font-size: 12px; color: var(--soft); margin-top: 8px; min-height: 1em; }
+    .rx-status.err { color: var(--danger); }
+    .rx-profiles summary, .rx-list summary { cursor: pointer; font-size: 13px; color: var(--text); }
+    .rx-warn { color: var(--accent-4); font-size: 12px; margin-left: 8px; }
+    .rx-upload { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; font-size: 12px; color: var(--soft); }
+    .rx-upload input[type=text] { flex: 1; min-width: 240px; }
+    .rx-hint { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+    .rx-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+    .rx-table th, .rx-table td { text-align: left; padding: 6px 8px; border-top: 1px solid rgba(255,255,255,0.06); vertical-align: top; }
+    .rx-table th { color: var(--muted); font-weight: 500; }
+    .rx-codes { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--accent); word-break: break-word; }
+    .rx-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-bottom: 12px; }
+    .rx-summary[hidden], .rx-filters[hidden] { display: none; }
+    .rx-stat { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: rgba(8, 22, 40, 0.35); }
+    .rx-stat b { display: block; font-size: 20px; color: var(--text); font-family: "IBM Plex Mono", monospace; }
+    .rx-stat span { font-size: 11px; color: var(--muted); }
+    .rx-filters { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-bottom: 12px; font-size: 12px; color: var(--soft); }
+    .rx-filters select { padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #0f2744; color: var(--text); font-size: 12px; }
+    .rx-code { border: 1px solid var(--line); border-radius: 12px; background: rgba(8, 22, 40, 0.35); margin-bottom: 8px; }
+    .rx-code > summary {
+      cursor: pointer;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 12px;
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+    .rx-code[open] > summary { border-bottom: 1px solid var(--line); }
+    .rx-code > .recs { padding: 12px; }
+    .rx-code-id { font-family: "IBM Plex Mono", monospace; color: var(--accent); font-weight: 600; min-width: 74px; }
+    .rx-code-title { color: var(--text); font-weight: 500; flex: 1; min-width: 160px; }
+    .rx-code-meta { color: var(--muted); font-size: 12px; }
+    .rx-group-head { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 16px 0 8px; }
+    .rx-block { margin-top: 10px; font-size: 13px; color: var(--soft); line-height: 1.55; }
+    .rx-block > span { display: block; font-size: 11px; color: #9eb2cb; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+    .rx-quote { border-left: 3px solid var(--line); padding-left: 10px; color: var(--soft); font-style: italic; }
+    .rx-wording { white-space: pre-wrap; background: rgba(94,234,212,0.06); border: 1px solid rgba(94,234,212,0.25); border-radius: 8px; padding: 8px 10px; color: #dbeafe; }
+    .rx-evidence { margin-top: 10px; font-size: 12px; }
+    .rx-evidence summary { cursor: pointer; color: var(--accent-2); }
+    .rx-evidence ol { margin: 8px 0 0; padding-left: 20px; color: var(--soft); display: grid; gap: 6px; }
+    .rx-evidence small { color: var(--muted); display: block; }
+    .rx-item { padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.06); font-size: 13px; color: var(--soft); }
+    .rx-item b { color: var(--text); }
+    .rx-item small { color: var(--muted); }
+
     .bars {
       display: grid;
       gap: 10px;
@@ -790,6 +864,152 @@
       cursor: pointer;
     }
     .username-modal button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .sp-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .sp-overlay[hidden] { display: none; }
+    .sp-modal {
+      background: linear-gradient(180deg, #1a3a5c, #0f2744);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      width: min(1180px, 100%);
+      height: min(860px, 100%);
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+      color: var(--text);
+    }
+    .sp-head {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .sp-head h3 { margin: 0; font-size: 16px; }
+    .sp-dirty { font-size: 12px; color: var(--accent-4); }
+    .sp-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .sp-close:hover { color: var(--text); }
+    .sp-main {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px 18px;
+      min-height: 0;
+    }
+    .sp-banner {
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--soft);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .sp-banner.warn { border-color: rgba(245,158,11,.5); color: var(--accent-4); }
+    .sp-banner[hidden] { display: none; }
+    .sp-textarea {
+      flex: 1;
+      min-height: 200px;
+      resize: none;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(0,0,0,0.25);
+      color: var(--text);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12.5px;
+      line-height: 1.55;
+      outline: none;
+    }
+    .sp-textarea:focus { border-color: var(--accent); }
+    .sp-textarea[readonly] { opacity: 0.8; }
+    .sp-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 11px; color: var(--muted); }
+    .sp-chip {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      padding: 3px 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--soft);
+      cursor: pointer;
+    }
+    .sp-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .sp-form { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 8px; }
+    .sp-form input {
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      min-width: 0;
+    }
+    .sp-form input:focus { border-color: var(--accent); }
+    .sp-actions { display: flex; align-items: center; gap: 8px; }
+    .sp-error { color: var(--danger); font-size: 12px; flex: 1; white-space: pre-wrap; }
+    .sp-ok { color: var(--good); }
+    .sp-btn {
+      padding: 7px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--soft);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .sp-btn:hover { color: var(--text); border-color: var(--muted); }
+    .sp-btn.primary { background: var(--accent); border-color: var(--accent); color: #0f2744; font-weight: 600; }
+    .sp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .sp-btn.small { padding: 3px 8px; font-size: 11px; }
+    .sp-side {
+      border-left: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .sp-side h4 { margin: 0; padding: 14px 14px 8px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .sp-versions { overflow-y: auto; flex: 1; }
+    .sp-ver {
+      padding: 10px 14px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 12px;
+    }
+    .sp-ver.viewing { background: rgba(56, 189, 248, 0.1); }
+    .sp-ver-top { display: flex; align-items: center; gap: 6px; }
+    .sp-ver-num { font-weight: 600; color: var(--text); }
+    .sp-ver-active { font-size: 10px; color: var(--good); border: 1px solid rgba(52,211,153,.5); border-radius: 4px; padding: 0 4px; }
+    .sp-ver-meta { color: var(--muted); margin-top: 2px; }
+    .sp-ver-note { color: var(--soft); margin-top: 4px; word-break: break-word; }
+    .sp-ver-btns { display: flex; gap: 6px; margin-top: 6px; }
+    @media (max-width: 820px) {
+      .sp-modal { grid-template-columns: 1fr; grid-template-rows: auto 1fr 220px; }
+      .sp-side { border-left: none; border-top: 1px solid var(--line); }
+      .sp-form { grid-template-columns: 1fr; }
+    }
     .chat-messages {
       flex: 1;
       overflow: auto;
@@ -1054,6 +1274,131 @@
       opacity: 0.5;
       cursor: not-allowed;
     }
+    .chat-input-wrap {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: rgba(8, 21, 38, 0.65);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+    .chat-input-wrap:focus-within {
+      border-color: rgba(94, 234, 212, 0.45);
+    }
+    .chat-form .chat-input-wrap input {
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      padding-left: 6px;
+      min-width: 0;
+    }
+    .chat-form .chat-input-wrap input:focus { border: none; }
+    .chat-clip-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding-left: 6px;
+    }
+    .chat-form .chat-clip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .chat-form .chat-clip:hover,
+    .chat-form .chat-clip:focus-visible {
+      background: rgba(148, 175, 205, 0.14);
+      color: var(--text);
+      outline: none;
+    }
+    .chat-form .chat-clip svg { width: 18px; height: 18px; }
+    .chat-clip-tip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: #0a0f17;
+      color: #e8eef7;
+      font-size: 12px;
+      white-space: nowrap;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 150ms ease, visibility 0s linear 150ms;
+      z-index: 20;
+    }
+    .chat-clip-tip kbd {
+      font-family: inherit;
+      font-size: 11px;
+      color: #8fa6c2;
+    }
+    .chat-clip-wrap:hover .chat-clip-tip,
+    .chat-clip:focus-visible + .chat-clip-tip {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 150ms ease 300ms, visibility 0s linear 300ms;
+    }
+    .chat-attach-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 16px 12px;
+    }
+    .chat-attach-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 100%;
+      padding: 6px 8px 6px 10px;
+      border-radius: 8px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      font-size: 12px;
+      color: var(--soft);
+    }
+    .chat-attach-chip .chip-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 220px;
+      color: var(--text);
+    }
+    .chat-attach-chip .chip-warn { color: var(--warn); }
+    .chat-attach-chip button {
+      font: inherit;
+      font-size: 11px;
+      border: none;
+      border-radius: 6px;
+      padding: 3px 7px;
+      cursor: pointer;
+      background: rgba(94, 234, 212, 0.16);
+      color: var(--accent);
+    }
+    .chat-attach-chip button.chip-remove {
+      background: transparent;
+      color: var(--muted);
+      padding: 0 4px;
+      font-size: 14px;
+    }
+    .chat-attach-status {
+      width: 100%;
+      font-size: 12px;
+      color: var(--muted);
+    }
 
     @media (max-width: 1100px) {
       .shell { grid-template-columns: 1fr; }
@@ -1087,7 +1432,7 @@
       <div class="hero">
         <div>
           <h1>CMC Response Portfolio Report</h1>
-          <p>Shareable analytics across health-authority RFIs, products, deficiency themes, and quarterly demand — built from extracted CMC response documents.</p>
+          <p>Shareable analytics across health-authority RFIs, products, deficiency themes, and quarterly demand — built from CMC response documents.</p>
         </div>
       </div>
 
@@ -1108,12 +1453,12 @@
             <h2>Health Authority View</h2>
           </div>
         </div>
-        <div class="card">
+          <div class="card">
           <h3 class="chart-title-lg">Questions by country</h3>
           <div class="chart-scroll chart-scroll-x">
             <div class="chart-wrap" id="chartCountryWrap"><canvas id="chartCountry"></canvas></div>
           </div>
-        </div>
+          </div>
         <div class="card" style="margin-top:14px">
           <h3 class="chart-title-lg">Most active health authorities</h3>
           <div class="table-wrap" id="haTable"></div>
@@ -1126,10 +1471,10 @@
             <div class="idx">02</div>
             <h2>Chapter View</h2>
           </div>
-        </div>
-        <div class="card">
-          <h3>Top CTD / code references</h3>
-          <div class="chart-wrap"><canvas id="chartCodes"></canvas></div>
+          </div>
+          <div class="card">
+            <h3>Top CTD / code references</h3>
+            <div class="chart-wrap"><canvas id="chartCodes"></canvas></div>
         </div>
         <div class="card" style="margin-top:14px">
           <h3 class="chart-title-lg">Number of Questions per CTD Section — Drug Substance</h3>
@@ -1183,12 +1528,12 @@
             <p>Which molecules attract the most CMC questioning.</p>
           </div>
         </div>
-        <div class="card">
+          <div class="card">
           <h3 class="chart-title-lg">Products by questions</h3>
           <div class="chart-scroll chart-scroll-x">
             <div class="chart-wrap" id="chartProductsWrap"><canvas id="chartProducts"></canvas></div>
           </div>
-        </div>
+          </div>
         <div class="card" style="margin-top:14px">
           <h3 class="chart-title-lg">Product table</h3>
           <div class="table-wrap" id="productTable"></div>
@@ -1202,10 +1547,10 @@
             <h2>Additional Statistics</h2>
           </div>
         </div>
-        <div class="card">
+          <div class="card">
           <h3>Country × product heat (all countries × all products)</h3>
           <div class="heat" id="heatmap"></div>
-        </div>
+          </div>
         <div id="insightsBody">
           <div class="card" style="margin-top:14px">
             <h3>Number of Deficiency Letters per Product Family</h3>
@@ -1216,10 +1561,10 @@
             <div class="chart-wrap"><canvas id="insChartCountry"></canvas></div>
           </div>
           <div class="grid-2" style="margin-top:14px">
-            <div class="card">
+          <div class="card">
               <h3>Number of Deficiency Letters per Year</h3>
               <div class="chart-wrap tall"><canvas id="insChartYearQ"></canvas></div>
-            </div>
+          </div>
             <div class="card">
               <h3 class="chart-title-lg">Number of Questions per Year (for SM and LM)</h3>
               <div class="chart-wrap tall"><canvas id="insChartYearQuestions"></canvas></div>
@@ -1245,10 +1590,58 @@
           <div>
             <div class="idx">05</div>
             <h2>Recommendations</h2>
-            <p>TRD / RFI decision support — priority, decision, CTD mapping, root cause, and owner.</p>
+            <p>Recurring authority questions compared with TRD writing profiles, turned into profile-update to-dos. Decision support for RA CMC and TRD profile owners, not approval to change controlled documents.</p>
           </div>
         </div>
-        <div class="recs" id="recs"></div>
+
+        <div class="rx-panel">
+          <div class="rx-bar">
+            <label>Window
+              <select id="rxMonths"><option value="6">Last 6 months</option><option value="12" selected>Last 12 months</option><option value="24">Last 24 months</option><option value="custom">Custom range</option></select>
+            </label>
+            <span class="rx-range" id="rxRange" hidden>
+              <label>From <input id="rxFrom" type="date" /></label>
+              <label>To <input id="rxTo" type="date" /></label>
+            </span>
+            <label>Min questions <input id="rxMinQ" type="number" min="2" max="100" value="3" /></label>
+            <label>Min documents <input id="rxMinD" type="number" min="1" max="50" value="2" /></label>
+            <label>Analyse
+              <select id="rxScope"><option value="profiled" selected>Codes with uploaded profiles</option><option value="all">All recurring codes</option></select>
+            </label>
+            <button type="button" class="sp-btn primary" id="rxRunBtn">Run analysis</button>
+            <a class="sp-btn" id="rxExport" href="#" hidden>Export CSV</a>
+          </div>
+          <div class="rx-progress" id="rxProgressWrap" hidden><div class="rx-progress-fill" id="rxProgress"></div></div>
+          <div class="rx-status" id="rxStatus" role="status"></div>
+          </div>
+
+        <details class="rx-panel rx-profiles" id="rxProfilesBox">
+          <summary><b>TRD profiles</b> <span id="rxProfilesCount"></span> <span class="rx-warn" id="rxCoverage"></span></summary>
+          <div class="rx-upload">
+            <input id="rxFile" type="file" accept=".docx,.pdf,.txt" />
+            <input id="rxCodes" type="text" placeholder="Codes this profile covers, e.g. P.5.1 or P.5.1.01, P.5.1.02" />
+            <button type="button" class="sp-btn" id="rxUploadBtn">Upload profile</button>
+          </div>
+          <div class="rx-hint">Export the profile from SharePoint as DOCX or PDF. A profile mapped to P.5.1 also applies to P.5.1.01, P.5.1.02 and so on, unless a profile for the exact code is uploaded. If you leave the codes empty, they are read from the file name (or the first code in the text), so check them after upload.</div>
+          <div id="rxProfileList"></div>
+        </details>
+
+        <div class="rx-summary" id="rxSummary" hidden></div>
+        <div class="rx-filters" id="rxFilters" hidden>
+          <select id="rxFDecision"><option value="">All decisions</option></select>
+          <select id="rxFOwner"><option value="">All owners</option></select>
+          <select id="rxFSection"><option value="">All CTD sections</option></select>
+          <label><input type="checkbox" id="rxFProvisional" checked /> Show codes without a profile</label>
+        </div>
+        <div id="rxTodos"></div>
+        <details class="rx-panel rx-list" id="rxCoveredBox" hidden><summary></summary><div></div></details>
+        <details class="rx-panel rx-list" id="rxExcludedBox" hidden><summary></summary><div></div></details>
+        <details class="rx-panel rx-list" id="rxErrorsBox" hidden><summary></summary><div></div></details>
+
+        <div id="rxFallback">
+          <div class="rx-hint" style="margin-bottom:10px">No analysis has run yet. The cards below are rule-based summaries of the dashboard data.</div>
+          <div class="recs" id="recs"></div>
+        </div>
       </section>
 
       <section class="block" id="sec-06">
@@ -1256,22 +1649,67 @@
           <div>
             <div class="idx">06</div>
             <h2>CMC Q&amp;A Assistant</h2>
-            <p>Reasoning assistant over extracted CMC question/answer pairs. It searches, counts, and filters the corpus on-device, and shows the pairs it used.</p>
+            <p>A chatbot for CMC response documents.</p>
           </div>
         </div>
         <div class="chat-panel" id="chatPanel" style="position:relative;">
           <div class="chat-status" id="chatStatus">
             <span><span class="dot" id="chatDot"></span><span id="chatHealthLabel">Checking API…</span></span>
+            <button type="button" class="chat-newchat" id="spOpenBtn">System prompt</button>
             <button type="button" class="chat-history-btn" id="chatHistoryBtn">History</button>
-            <button type="button" class="chat-newchat" id="chatNewBtn">New chat</button>
+            <button type="button" class="chat-history-btn" id="chatNewBtn">New chat</button>
           </div>
           <div class="chat-sessions-dropdown" id="chatSessionsDropdown"></div>
           <div class="chat-messages" id="chatMessages">
           </div>
+          <div class="chat-attach-row" id="chatAttachRow" hidden></div>
           <form class="chat-form" id="chatForm">
-            <input id="chatInput" type="text" autocomplete="off" placeholder="e.g. What leachables data was provided for the drug product?" />
+            <input id="chatFile" type="file" multiple accept=".docx,.pdf,.txt,.csv,application/pdf,text/plain,text/csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden />
+            <div class="chat-input-wrap">
+              <div class="chat-clip-wrap">
+                <button type="button" class="chat-clip" id="chatAttachBtn" aria-label="Upload or add files" aria-describedby="chatClipTip">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                </button>
+                <span class="chat-clip-tip" id="chatClipTip" role="tooltip">Upload or add files <kbd id="chatClipKbd">Ctrl U</kbd></span>
+        </div>
+              <input id="chatInput" type="text" autocomplete="off" placeholder="e.g. What leachables data was provided for the drug product?" />
+          </div>
             <button type="submit" id="chatSend">Ask</button>
           </form>
+        </div>
+        <div class="sp-overlay" id="spOverlay" hidden>
+          <div class="sp-modal" role="dialog" aria-modal="true" aria-labelledby="spTitle">
+            <div class="sp-head">
+              <h3 id="spTitle">System prompt</h3>
+              <span class="sp-dirty" id="spDirty" hidden>Unsaved changes</span>
+              <button type="button" class="sp-close" id="spClose" aria-label="Close">&times;</button>
+        </div>
+            <div class="sp-main">
+              <div class="sp-banner warn" id="spDisabled" hidden>Editing is disabled on this server. Set <code>PROMPT_EDITOR_PASSWORD</code> in the backend environment to enable saving and restoring.</div>
+              <div class="sp-banner" id="spViewing" hidden>
+                <span id="spViewingText"></span>
+                <button type="button" class="sp-btn small" id="spEditCopy">Edit from this version</button>
+                <button type="button" class="sp-btn small" id="spBackActive">Back to active</button>
+          </div>
+              <textarea class="sp-textarea" id="spText" spellcheck="false" aria-label="System prompt text"></textarea>
+              <div class="sp-chips" id="spChips"><span>Insert placeholder:</span></div>
+              <div class="sp-form">
+                <input id="spAuthor" type="text" maxlength="80" placeholder="Your name" autocomplete="name" />
+                <input id="spNote" type="text" maxlength="300" placeholder="What changed and why (required)" />
+                <input id="spPassword" type="password" placeholder="Editor password" autocomplete="off" />
+        </div>
+              <div class="sp-actions">
+                <span class="sp-error" id="spMsg" role="status"></span>
+                <span class="sp-dirty" id="spCount"></span>
+                <button type="button" class="sp-btn" id="spCancel">Cancel</button>
+                <button type="button" class="sp-btn primary" id="spSave">Save as new version</button>
+          </div>
+          </div>
+            <aside class="sp-side">
+              <h4>Version history</h4>
+              <div class="sp-versions" id="spVersions"></div>
+            </aside>
+        </div>
         </div>
       </section>
 
@@ -1312,11 +1750,11 @@
           <div class="chart-scroll chart-scroll-x">
             <div class="chart-wrap" id="yChartCountryWrap"><canvas id="yChartCountry"></canvas></div>
           </div>
-        </div>
-        <div class="card" style="margin-top:14px">
+          </div>
+          <div class="card" style="margin-top:14px">
           <h3 class="chart-title-lg">Most active health authorities</h3>
           <div class="table-wrap" id="yHaTable"></div>
-        </div>
+          </div>
       </section>
 
       <section class="block" id="y-sec-02">
@@ -1325,24 +1763,24 @@
             <div class="idx">02</div>
             <h2>Chapter View</h2>
           </div>
-        </div>
-        <div class="card">
+          </div>
+            <div class="card">
           <h3 class="chart-title-lg">Top CTD / code references</h3>
           <div class="chart-wrap"><canvas id="yChartCodes"></canvas></div>
-        </div>
+            </div>
         <div class="card" style="margin-top:14px">
           <h3 class="chart-title-lg">Number of Questions per CTD Section — Drug Substance</h3>
           <div class="chart-scroll chart-scroll-x">
             <div class="chart-wrap" id="yChartCtdSWrap"><canvas id="yChartCtdS"></canvas></div>
+            </div>
           </div>
-        </div>
-        <div class="card" style="margin-top:14px">
+          <div class="card" style="margin-top:14px">
           <h3 class="chart-title-lg">Number of Questions per CTD Section — Drug Product</h3>
           <div class="chart-scroll chart-scroll-x">
             <div class="chart-wrap" id="yChartCtdPWrap"><canvas id="yChartCtdP"></canvas></div>
           </div>
-        </div>
-        <div class="card" style="margin-top:14px">
+          </div>
+          <div class="card" style="margin-top:14px">
           <h3 class="chart-title-lg">CTD Sections — Appendices &amp; Regional</h3>
           <div class="chart-scroll chart-scroll-x">
             <div class="chart-wrap" id="yChartCtdArWrap"><canvas id="yChartCtdAr"></canvas></div>
@@ -1350,27 +1788,27 @@
         </div>
         <div class="card" style="margin-top:14px">
           <h3 class="chart-title-lg">Summary of Q&amp;A per CTD Code (SM vs LM)</h3>
-          <div style="margin-bottom:10px">
+            <div style="margin-bottom:10px">
             <input type="text" id="yCodeSummaryFilter" placeholder="Filter by code or title…"
-              style="width:100%;max-width:360px;padding:6px 10px;border-radius:6px;border:1px solid rgba(148,175,205,0.25);background:rgba(0,16,36,0.5);color:#c9d7ea;font-size:13px;" />
-          </div>
-          <div class="table-wrap" style="max-height:520px;overflow-y:auto;">
+                style="width:100%;max-width:360px;padding:6px 10px;border-radius:6px;border:1px solid rgba(148,175,205,0.25);background:rgba(0,16,36,0.5);color:#c9d7ea;font-size:13px;" />
+            </div>
+            <div class="table-wrap" style="max-height:520px;overflow-y:auto;">
             <table id="yCodeSummaryTable">
-              <thead>
-                <tr>
+                <thead>
+                  <tr>
                   <th style="cursor:pointer" data-sort="code">CTD Code</th>
-                  <th>Title</th>
-                  <th style="cursor:pointer;text-align:right" data-sort="sm">SM Qs</th>
-                  <th style="cursor:pointer;text-align:right" data-sort="lm">LM Qs</th>
-                  <th style="cursor:pointer;text-align:right" data-sort="total">Total</th>
-                  <th>SM Products</th>
-                  <th>LM Products</th>
-                  <th style="min-width:220px">Summary</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
+                    <th>Title</th>
+                    <th style="cursor:pointer;text-align:right" data-sort="sm">SM Qs</th>
+                    <th style="cursor:pointer;text-align:right" data-sort="lm">LM Qs</th>
+                    <th style="cursor:pointer;text-align:right" data-sort="total">Total</th>
+                    <th>SM Products</th>
+                    <th>LM Products</th>
+                    <th style="min-width:220px">Summary</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
         </div>
       </section>
 
@@ -1387,7 +1825,7 @@
           <div class="chart-scroll chart-scroll-x">
             <div class="chart-wrap" id="yChartProductsWrap"><canvas id="yChartProducts"></canvas></div>
           </div>
-        </div>
+          </div>
         <div class="card" style="margin-top:14px">
           <h3 class="chart-title-lg">Product table</h3>
           <div class="table-wrap" id="yProductTable"></div>
@@ -1404,11 +1842,11 @@
         <div class="card">
           <h3 class="chart-title-lg">Number of Deficiency Letters per Product Family</h3>
           <div class="chart-wrap tall"><canvas id="yInsChartProduct"></canvas></div>
-        </div>
+            </div>
         <div class="card" style="margin-top:14px">
           <h3 class="chart-title-lg">Number of Questions per Country</h3>
           <div class="chart-wrap"><canvas id="yInsChartCountry"></canvas></div>
-        </div>
+            </div>
         <div class="card" style="margin-top:14px">
           <h3 class="chart-title-lg">Product family × TRD code</h3>
           <div class="chart-scroll chart-scroll-x">
@@ -1563,13 +2001,13 @@
       nav.innerHTML = "";
       if (tocObserver) tocObserver.disconnect();
       entries.forEach(([num, label, id], i) => {
-        const a = document.createElement("a");
-        a.className = "toc-link" + (i === 0 ? " active" : "");
-        a.href = "#" + id;
-        a.dataset.target = id;
-        a.innerHTML = `<span class="num">${num}</span><span>${label}</span>`;
-        nav.appendChild(a);
-      });
+      const a = document.createElement("a");
+      a.className = "toc-link" + (i === 0 ? " active" : "");
+      a.href = "#" + id;
+      a.dataset.target = id;
+      a.innerHTML = `<span class="num">${num}</span><span>${label}</span>`;
+      nav.appendChild(a);
+    });
       const links = [...document.querySelectorAll(".toc-link")];
       tocObserver = new IntersectionObserver((entriesObs) => {
         entriesObs.forEach((e) => {
@@ -1586,15 +2024,15 @@
 
     const k = D.kpis;
     function setPortfolioMeta() {
-      document.getElementById("metaBox").innerHTML = `
-        <div class="meta-row"><span>Doc. Type</span><span>Portfolio Report</span></div>
-        <div class="meta-row"><span>Records</span><span>${fmt(k.total_rows)}</span></div>
-        <div class="meta-row"><span>Questions</span><span>${fmt(k.total_questions)}</span></div>
-        <div class="meta-row"><span>Period</span><span>${shortPeriod(k.date_range.min, k.date_range.max)}</span></div>
-        <div class="meta-row"><span>Status</span><span>Analyzed</span></div>
-      `;
-      document.getElementById("tocFoot").textContent =
-        `Docs ${fmt(k.unique_documents)} · Markets ${fmt(k.unique_countries)} · Products ${fmt(k.unique_products)}`;
+    document.getElementById("metaBox").innerHTML = `
+      <div class="meta-row"><span>Doc. Type</span><span>Portfolio Report</span></div>
+      <div class="meta-row"><span>Records</span><span>${fmt(k.total_rows)}</span></div>
+      <div class="meta-row"><span>Questions</span><span>${fmt(k.total_questions)}</span></div>
+      <div class="meta-row"><span>Period</span><span>${shortPeriod(k.date_range.min, k.date_range.max)}</span></div>
+      <div class="meta-row"><span>Status</span><span>Analyzed</span></div>
+    `;
+    document.getElementById("tocFoot").textContent =
+      `Docs ${fmt(k.unique_documents)} · Markets ${fmt(k.unique_countries)} · Products ${fmt(k.unique_products)}`;
     }
     setPortfolioMeta();
 
@@ -1680,10 +2118,10 @@
             <span class="rec-chip ${pClass}"><strong>${escapeHtml(priority)}</strong></span>
             ${r.decision ? `<span class="rec-chip"><strong>Decision</strong> ${escapeHtml(r.decision)}</span>` : ""}
             ${r.recurring ? `<span class="rec-chip"><strong>${escapeHtml(r.recurring)}</strong></span>` : ""}
-          </div>
+        </div>
           <p>${enrichCodeText(r.detail || "")}</p>
           ${fields ? `<div class="rec-fields">${fields}</div>` : ""}
-        </div>
+      </div>
       </div>`;
     }).join("");
 
@@ -1906,18 +2344,18 @@
         var wrap = document.getElementById("insChartCtdSWrap");
         wrap.style.width = Math.max(wrap.parentElement.clientWidth || 640, rows.length * 48) + "px";
         wrap.style.height = "420px";
-        new Chart(document.getElementById("insChartCtdS"), {
-          type: "bar",
-          data: {
+      new Chart(document.getElementById("insChartCtdS"), {
+        type: "bar",
+        data: {
             labels: rows.map(function(x) { return x.code; }),
-            datasets: [{
-              label: "Questions",
+          datasets: [{
+            label: "Questions",
               data: rows.map(function(x) { return x.count; }),
-              backgroundColor: "#f59e0bcc",
-              borderRadius: 4,
+            backgroundColor: "#f59e0bcc",
+            borderRadius: 4,
               maxBarThickness: 36,
-            }],
-          },
+          }],
+        },
           options: {
             responsive: true,
             maintainAspectRatio: false,
@@ -1943,18 +2381,18 @@
         var wrap = document.getElementById("insChartCtdPWrap");
         wrap.style.width = Math.max(wrap.parentElement.clientWidth || 640, rows.length * 44) + "px";
         wrap.style.height = "420px";
-        new Chart(document.getElementById("insChartCtdP"), {
-          type: "bar",
-          data: {
+      new Chart(document.getElementById("insChartCtdP"), {
+        type: "bar",
+        data: {
             labels: rows.map(function(x) { return x.code; }),
-            datasets: [{
-              label: "Questions",
+          datasets: [{
+            label: "Questions",
               data: rows.map(function(x) { return x.count; }),
-              backgroundColor: "#34d399cc",
-              borderRadius: 4,
+            backgroundColor: "#34d399cc",
+            borderRadius: 4,
               maxBarThickness: 36,
-            }],
-          },
+          }],
+        },
           options: {
             responsive: true,
             maintainAspectRatio: false,
@@ -2549,6 +2987,156 @@
     const chatNewBtn = document.getElementById("chatNewBtn");
     const chatHistoryBtn = document.getElementById("chatHistoryBtn");
     const chatSessionsDropdown = document.getElementById("chatSessionsDropdown");
+    const chatFile = document.getElementById("chatFile");
+    const chatAttachBtn = document.getElementById("chatAttachBtn");
+    const chatAttachRow = document.getElementById("chatAttachRow");
+    let CHAT_ATTACHMENTS = [];
+
+    function setAttachStatus(text) {
+      renderAttachChips(text || "");
+    }
+    function renderAttachChips(statusText) {
+      if (!chatAttachRow) return;
+      chatAttachRow.innerHTML = "";
+      if (!CHAT_ATTACHMENTS.length && !statusText) {
+        chatAttachRow.hidden = true;
+        return;
+      }
+      chatAttachRow.hidden = false;
+      CHAT_ATTACHMENTS.forEach(function(att) {
+        const chip = document.createElement("div");
+        chip.className = "chat-attach-chip";
+        const name = document.createElement("span");
+        name.className = "chip-name";
+        name.textContent = att.filename;
+        name.title = att.filename + " · " + (att.chars || 0) + " characters";
+        chip.appendChild(name);
+        if (att.low_text) {
+          const warn = document.createElement("span");
+          warn.className = "chip-warn";
+          warn.textContent = "Little text found";
+          chip.appendChild(warn);
+        }
+        const addBtn = document.createElement("button");
+        addBtn.type = "button";
+        addBtn.textContent = "Add to corpus";
+        addBtn.disabled = !!att.low_text;
+        addBtn.addEventListener("click", function() { addAttachmentToCorpus(att.id); });
+        chip.appendChild(addBtn);
+        const rm = document.createElement("button");
+        rm.type = "button";
+        rm.className = "chip-remove";
+        rm.title = "Remove";
+        rm.textContent = "×";
+        rm.addEventListener("click", function() { removeAttachment(att.id); });
+        chip.appendChild(rm);
+        chatAttachRow.appendChild(chip);
+      });
+      if (statusText) {
+        const st = document.createElement("div");
+        st.className = "chat-attach-status";
+        st.textContent = statusText;
+        chatAttachRow.appendChild(st);
+      }
+    }
+    async function refreshAttachments() {
+      const sid = getSessionId();
+      if (!sid) { CHAT_ATTACHMENTS = []; renderAttachChips(); return; }
+      try {
+        const res = await fetch("/api/chat/attachments?session_id=" + encodeURIComponent(sid), { credentials: "same-origin" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        CHAT_ATTACHMENTS = data.attachments || [];
+      } catch (_) {
+        CHAT_ATTACHMENTS = [];
+      }
+      renderAttachChips();
+    }
+    async function uploadAttachments(fileList) {
+      const files = Array.from(fileList || []);
+      if (!files.length) return;
+      const sid = ensureSessionId();
+      const body = new FormData();
+      body.append("session_id", sid);
+      files.forEach(function(f) { body.append("files", f); });
+      setAttachStatus("Reading " + files.length + " file" + (files.length > 1 ? "s" : "") + "…");
+      try {
+        const res = await fetch("/api/chat/attachments", { method: "POST", credentials: "same-origin", body: body });
+        const data = await res.json().catch(function() { return {}; });
+        if (!res.ok) throw new Error(data.detail || ("Upload failed (" + res.status + ")"));
+        CHAT_ATTACHMENTS = data.attachments || [];
+        const names = (data.added || []).map(function(a) { return a.filename; }).join(", ");
+        renderAttachChips(names ? "Attached: " + names : "");
+        appendChat("system", "Attached " + (names || "file") + ". Ask about this document, or add it to the corpus.");
+      } catch (err) {
+        renderAttachChips(String(err.message || err));
+      }
+      if (chatFile) chatFile.value = "";
+    }
+    async function removeAttachment(attachId) {
+      const sid = getSessionId();
+      try {
+        const res = await fetch("/api/chat/attachments/" + encodeURIComponent(attachId) + "?session_id=" + encodeURIComponent(sid), {
+          method: "DELETE",
+          credentials: "same-origin",
+        });
+        const data = await res.json().catch(function() { return {}; });
+        if (res.ok) CHAT_ATTACHMENTS = data.attachments || [];
+      } catch (_) { /* keep local list */ }
+      renderAttachChips();
+    }
+    async function clearRemoteAttachments() {
+      const sid = getSessionId();
+      if (!sid) return;
+      try {
+        await fetch("/api/chat/attachments?session_id=" + encodeURIComponent(sid), { method: "DELETE", credentials: "same-origin" });
+      } catch (_) { /* ignore */ }
+      CHAT_ATTACHMENTS = [];
+      renderAttachChips();
+    }
+    async function addAttachmentToCorpus(attachId) {
+      const sid = ensureSessionId();
+      let pw = "";
+      try { pw = sessionStorage.getItem("cmc-prompt-editor-pw") || ""; } catch (_) { /* private mode */ }
+      if (!pw) pw = window.prompt("Enter the editor password to add Q&A to the corpus:") || "";
+      if (!pw) { setAttachStatus("Adding to the corpus needs the editor password."); return; }
+      setAttachStatus("Extracting Q&A and adding to the corpus…");
+      try {
+        const res = await fetch("/api/chat/attachments/" + encodeURIComponent(attachId) + "/to-corpus?session_id=" + encodeURIComponent(sid), {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "X-Editor-Password": pw },
+        });
+        const data = await res.json().catch(function() { return {}; });
+        try {
+          if (res.status === 403) sessionStorage.removeItem("cmc-prompt-editor-pw");
+          else if (res.ok) sessionStorage.setItem("cmc-prompt-editor-pw", pw);
+        } catch (_) { /* private mode */ }
+        if (!res.ok) throw new Error(typeof data.detail === "string" ? data.detail : ("Could not add to corpus (" + res.status + ")"));
+        const line = (data.filename || "File") + ": added " + (data.added || 0) + " Q&A pair(s), skipped " + (data.skipped_duplicates || 0) + " duplicate(s).";
+        appendChat("system", line);
+        setAttachStatus(line);
+      } catch (err) {
+        const msg = String(err.message || err);
+        appendChat("system", msg);
+        setAttachStatus(msg);
+      }
+    }
+    if (chatAttachBtn && chatFile) {
+      const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+      const clipKbd = document.getElementById("chatClipKbd");
+      if (clipKbd) clipKbd.textContent = isMac ? "\u2318 U" : "Ctrl U";
+      chatAttachBtn.addEventListener("click", function() { chatFile.click(); });
+      chatFile.addEventListener("change", function() { uploadAttachments(chatFile.files); });
+      document.addEventListener("keydown", function(e) {
+        const mod = isMac ? e.metaKey : e.ctrlKey;
+        if (!mod || e.shiftKey || e.altKey || (e.key || "").toLowerCase() !== "u") return;
+        if (document.getElementById("viewPortfolio").style.display === "none") return;
+        if (!document.getElementById("spOverlay").hidden) return;
+        e.preventDefault();
+        chatFile.click();
+      });
+    }
 
     function scrollChat() {
       chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -2773,9 +3361,12 @@
     }
 
     function startNewSession() {
+      clearRemoteAttachments();
       clearTranscript();
       const sid = generateSessionId();
       setSessionId(sid);
+      CHAT_ATTACHMENTS = [];
+      renderAttachChips();
       chatInput.focus();
     }
 
@@ -2851,6 +3442,7 @@
         const messages = await res.json();
         clearTranscript();
         setSessionId(sessionId);
+        refreshAttachments();
         messages.forEach((m) => {
           const role = m.role === "assistant" ? "bot" : m.role;
           appendChat(role, m.content, m.sources || []);
@@ -3070,6 +3662,275 @@
 
     chatNewBtn.addEventListener("click", startNewSession);
 
+    // ----- System prompt editor -----
+    const SP_AUTHOR_KEY = "cmc-prompt-author";
+    const SP_PW_KEY = "cmc-prompt-editor-pw";
+    const sp = {
+      overlay: document.getElementById("spOverlay"),
+      text: document.getElementById("spText"),
+      dirty: document.getElementById("spDirty"),
+      count: document.getElementById("spCount"),
+      msg: document.getElementById("spMsg"),
+      author: document.getElementById("spAuthor"),
+      note: document.getElementById("spNote"),
+      pw: document.getElementById("spPassword"),
+      save: document.getElementById("spSave"),
+      chips: document.getElementById("spChips"),
+      versions: document.getElementById("spVersions"),
+      disabled: document.getElementById("spDisabled"),
+      viewing: document.getElementById("spViewing"),
+      viewingText: document.getElementById("spViewingText"),
+    };
+    let spActive = null;
+    let spBaseline = "";
+    let spViewingId = null;
+    let spEditingEnabled = false;
+    let spMaxChars = 60000;
+    let spVersionList = [];
+
+    function spSetMsg(text, ok) {
+      sp.msg.textContent = text || "";
+      sp.msg.classList.toggle("sp-ok", !!ok);
+    }
+
+    function spIsDirty() {
+      return !sp.text.readOnly && sp.text.value !== spBaseline;
+    }
+
+    function spRefreshState() {
+      sp.dirty.hidden = !spIsDirty();
+      const n = sp.text.value.length;
+      sp.count.textContent = n.toLocaleString() + " / " + spMaxChars.toLocaleString() + " chars";
+      sp.save.disabled = !spEditingEnabled || sp.text.readOnly || !spIsDirty();
+    }
+
+    async function spErrorText(res) {
+      try {
+        const data = await res.json();
+        if (typeof data.detail === "string") return data.detail;
+        if (Array.isArray(data.detail)) return data.detail.map((d) => d.msg).join("; ");
+      } catch (_) { /* non-JSON */ }
+      return "Request failed (HTTP " + res.status + ").";
+    }
+
+    function spFormatDate(iso) {
+      if (!iso) return "";
+      const d = new Date(iso);
+      return isNaN(d) ? iso : d.toLocaleString();
+    }
+
+    function spRenderVersions() {
+      sp.versions.innerHTML = "";
+      const oldest = spVersionList.length ? spVersionList[spVersionList.length - 1].id : null;
+      for (const v of spVersionList) {
+        const row = document.createElement("div");
+        row.className = "sp-ver" + (v.id === spViewingId ? " viewing" : "");
+        row.innerHTML =
+          '<div class="sp-ver-top"><span class="sp-ver-num">v' + v.id + "</span>" +
+          (v.is_active ? '<span class="sp-ver-active">Active</span>' : "") + "</div>" +
+          '<div class="sp-ver-meta">' + escapeHtml(v.author) + " · " + escapeHtml(spFormatDate(v.created_at)) + "</div>" +
+          '<div class="sp-ver-note">' + escapeHtml(v.note) + "</div>";
+        const btns = document.createElement("div");
+        btns.className = "sp-ver-btns";
+        const view = document.createElement("button");
+        view.type = "button";
+        view.className = "sp-btn small";
+        view.textContent = "View";
+        view.addEventListener("click", () => spViewVersion(v.id));
+        btns.appendChild(view);
+        if (!v.is_active) {
+          const restore = document.createElement("button");
+          restore.type = "button";
+          restore.className = "sp-btn small";
+          restore.textContent = v.id === oldest ? "Reset to default" : "Restore";
+          restore.disabled = !spEditingEnabled;
+          restore.addEventListener("click", () => spRestore(v.id, restore.textContent));
+          btns.appendChild(restore);
+        }
+        row.appendChild(btns);
+        sp.versions.appendChild(row);
+      }
+    }
+
+    function spShowActive() {
+      spViewingId = null;
+      sp.text.readOnly = false;
+      sp.text.value = spActive ? spActive.content : "";
+      spBaseline = sp.text.value;
+      sp.viewing.hidden = true;
+      spRenderVersions();
+      spRefreshState();
+    }
+
+    async function spLoad() {
+      spSetMsg("Loading…");
+      try {
+        const [res, vres] = await Promise.all([
+          fetch("/api/system-prompt", { credentials: "same-origin" }),
+          fetch("/api/system-prompt/versions", { credentials: "same-origin" }),
+        ]);
+        if (!res.ok) throw new Error(await spErrorText(res));
+        if (!vres.ok) throw new Error(await spErrorText(vres));
+        const data = await res.json();
+        spVersionList = await vres.json();
+        spActive = data.active;
+        spEditingEnabled = !!data.editing_enabled;
+        spMaxChars = data.max_chars || spMaxChars;
+        sp.disabled.hidden = spEditingEnabled;
+        sp.chips.querySelectorAll(".sp-chip").forEach((c) => c.remove());
+        for (const name of data.placeholders || []) {
+          const chip = document.createElement("button");
+          chip.type = "button";
+          chip.className = "sp-chip";
+          chip.textContent = "{" + name + "}";
+          chip.addEventListener("click", () => spInsert("{" + name + "}"));
+          sp.chips.appendChild(chip);
+        }
+        spShowActive();
+        spSetMsg("");
+      } catch (err) {
+        spSetMsg("Could not load the system prompt: " + err.message);
+      }
+    }
+
+    function spInsert(token) {
+      if (sp.text.readOnly) return;
+      const start = sp.text.selectionStart;
+      const end = sp.text.selectionEnd;
+      sp.text.setRangeText(token, start, end, "end");
+      sp.text.focus();
+      spRefreshState();
+    }
+
+    async function spViewVersion(id) {
+      if (spActive && id === spActive.id) {
+        if (spIsDirty() && !confirm("Discard your unsaved changes?")) return;
+        spShowActive();
+        return;
+      }
+      if (spIsDirty() && !confirm("Discard your unsaved changes?")) return;
+      try {
+        const res = await fetch("/api/system-prompt/versions/" + id, { credentials: "same-origin" });
+        if (!res.ok) throw new Error(await spErrorText(res));
+        const v = await res.json();
+        spViewingId = v.id;
+        sp.text.value = v.content;
+        sp.text.readOnly = true;
+        spBaseline = spActive ? spActive.content : "";
+        sp.viewingText.textContent = "Viewing v" + v.id + " by " + v.author + " (read-only).";
+        sp.viewing.hidden = false;
+        spRenderVersions();
+        spRefreshState();
+        spSetMsg("");
+      } catch (err) {
+        spSetMsg("Could not load version: " + err.message);
+      }
+    }
+
+    function spEditorHeaders(extra) {
+      return Object.assign({ "X-Editor-Password": sp.pw.value }, extra || {});
+    }
+
+    function spHandleForbidden() {
+      try { sessionStorage.removeItem(SP_PW_KEY); } catch (_) { /* private mode */ }
+      sp.pw.value = "";
+      sp.pw.focus();
+    }
+
+    function spRememberEditor() {
+      try {
+        sessionStorage.setItem(SP_PW_KEY, sp.pw.value);
+        localStorage.setItem(SP_AUTHOR_KEY, sp.author.value.trim());
+      } catch (_) { /* private mode */ }
+    }
+
+    async function spSave() {
+      const author = sp.author.value.trim();
+      const note = sp.note.value.trim();
+      if (!author) { spSetMsg("Enter your name."); sp.author.focus(); return; }
+      if (!note) { spSetMsg("Enter a short change note."); sp.note.focus(); return; }
+      if (!sp.pw.value) { spSetMsg("Enter the editor password."); sp.pw.focus(); return; }
+      sp.save.disabled = true;
+      spSetMsg("Saving…");
+      try {
+        const res = await fetch("/api/system-prompt", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: spEditorHeaders({ "Content-Type": "application/json" }),
+          body: JSON.stringify({ content: sp.text.value, author: author, note: note }),
+        });
+        if (res.status === 403) spHandleForbidden();
+        if (!res.ok) throw new Error(await spErrorText(res));
+        const saved = await res.json();
+        spRememberEditor();
+        sp.note.value = "";
+        await spLoad();
+        spSetMsg("Saved as v" + saved.id + ". New chat messages use it now.", true);
+      } catch (err) {
+        spSetMsg(err.message);
+        spRefreshState();
+      }
+    }
+
+    async function spRestore(id, label) {
+      if (spIsDirty() && !confirm("Discard your unsaved changes?")) return;
+      if (!sp.pw.value) { spSetMsg("Enter the editor password to restore."); sp.pw.focus(); return; }
+      if (!confirm(label + ": make v" + id + " the active system prompt?")) return;
+      spSetMsg("Restoring…");
+      try {
+        const res = await fetch("/api/system-prompt/versions/" + id + "/restore", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: spEditorHeaders(),
+        });
+        if (res.status === 403) spHandleForbidden();
+        if (!res.ok) throw new Error(await spErrorText(res));
+        spRememberEditor();
+        await spLoad();
+        spSetMsg("v" + id + " is now active.", true);
+      } catch (err) {
+        spSetMsg(err.message);
+      }
+    }
+
+    function spOpen() {
+      try {
+        sp.author.value = localStorage.getItem(SP_AUTHOR_KEY) || getUsername();
+        sp.pw.value = sessionStorage.getItem(SP_PW_KEY) || "";
+      } catch (_) { sp.author.value = getUsername(); }
+      sp.overlay.hidden = false;
+      spLoad();
+      sp.text.focus();
+    }
+
+    function spClose() {
+      if (spIsDirty() && !confirm("Close without saving your changes?")) return;
+      sp.overlay.hidden = true;
+      spSetMsg("");
+    }
+
+    document.getElementById("spOpenBtn").addEventListener("click", spOpen);
+    document.getElementById("spClose").addEventListener("click", spClose);
+    document.getElementById("spCancel").addEventListener("click", spClose);
+    document.getElementById("spBackActive").addEventListener("click", spShowActive);
+    document.getElementById("spEditCopy").addEventListener("click", () => {
+      spViewingId = null;
+      sp.text.readOnly = false;
+      sp.viewing.hidden = true;
+      spRenderVersions();
+      spRefreshState();
+      sp.text.focus();
+    });
+    sp.save.addEventListener("click", spSave);
+    sp.text.addEventListener("input", spRefreshState);
+    sp.overlay.addEventListener("click", (e) => { if (e.target === sp.overlay) spClose(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !sp.overlay.hidden) spClose();
+    });
+    window.addEventListener("beforeunload", (e) => {
+      if (!sp.overlay.hidden && spIsDirty()) e.preventDefault();
+    });
+
     // ----- Init: username modal + restore -----
     (async function initChat() {
       let username = getUsername();
@@ -3078,7 +3939,454 @@
       }
       ensureSessionId();
       restoreTranscript();
+      refreshAttachments();
       refreshChatHealth();
+    })();
+
+    // ----- Recommendations: TRD profile gap analysis -----
+    (function initRecommendations() {
+      const $ = (id) => document.getElementById(id);
+      const PRIORITY_ORDER = ["Critical", "High", "Medium", "Low", "Monitor"];
+      const REASON_LABEL = {
+        "clarification or explanation": "Clarification or explanation request",
+        "administrative": "Administrative request",
+      };
+      let rxShown = null;
+      let rxPoll = null;
+      let rxRecurring = [];
+
+      function setStatus(text, isErr) {
+        $("rxStatus").textContent = text || "";
+        $("rxStatus").classList.toggle("err", !!isErr);
+      }
+
+      async function errText(res) {
+        try {
+          const d = await res.json();
+          if (typeof d.detail === "string") return d.detail;
+          if (Array.isArray(d.detail)) return d.detail.map((x) => x.msg).join("; ");
+        } catch (_) { /* non-JSON */ }
+        return "Request failed (HTTP " + res.status + ").";
+      }
+
+      function isoDay(d) {
+        return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+      }
+
+      function humanDay(iso) {
+        const d = new Date(iso + "T00:00:00");
+        return isNaN(d) ? iso : d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+      }
+
+      (function initRange() {
+        const today = new Date();
+        const yearAgo = new Date(today);
+        yearAgo.setFullYear(today.getFullYear() - 1);
+        $("rxFrom").value = isoDay(yearAgo);
+        $("rxTo").value = isoDay(today);
+        $("rxFrom").max = $("rxTo").max = isoDay(today);
+      })();
+
+      function isCustom() {
+        return $("rxMonths").value === "custom";
+      }
+
+      function params() {
+        const p = {
+          months: isCustom() ? 12 : Number($("rxMonths").value) || 12,
+          min_questions: Math.max(2, Number($("rxMinQ").value) || 3),
+          min_documents: Math.max(1, Number($("rxMinD").value) || 2),
+          scope: $("rxScope").value,
+        };
+        if (isCustom()) {
+          p.start_date = $("rxFrom").value;
+          p.end_date = $("rxTo").value;
+        }
+        return p;
+      }
+
+      function rangeError(p) {
+        if (!p.start_date && !p.end_date) return "";
+        if (!p.start_date || !p.end_date) return "Choose both a From and a To date.";
+        if (p.start_date > p.end_date) return "The From date must be on or before the To date.";
+        if (p.end_date > isoDay(new Date())) return "The To date cannot be in the future.";
+        const days = (new Date(p.end_date) - new Date(p.start_date)) / 86400000;
+        if (days > 5 * 366) return "The date range can be at most 5 years.";
+        return "";
+      }
+
+      function windowText(p) {
+        return p.start_date
+          ? "from " + humanDay(p.start_date) + " to " + humanDay(p.end_date)
+          : "on the last " + p.months + " months";
+      }
+
+      function fmtDate(iso) {
+        if (!iso) return "";
+        const d = new Date(iso);
+        return isNaN(d) ? iso : d.toLocaleString();
+      }
+
+      // ----- profiles -----
+      async function loadProfiles() {
+        const p = params();
+        const bad = rangeError(p);
+        if (bad) { setStatus(bad, true); return; }
+        const q = new URLSearchParams({ months: p.months, min_questions: p.min_questions, min_documents: p.min_documents });
+        if (p.start_date) { q.set("start_date", p.start_date); q.set("end_date", p.end_date); }
+        try {
+          const res = await fetch("/api/trd-profiles?" + q.toString(), { credentials: "same-origin" });
+          if (!res.ok) throw new Error(await errText(res));
+          const d = await res.json();
+          rxRecurring = d.recurring_codes || [];
+          $("rxProfilesCount").textContent = "(" + d.profiles.length + " uploaded)";
+          const total = rxRecurring.length;
+          $("rxCoverage").textContent = !total ? "" : d.missing.length
+            ? d.missing.length + " of " + total + " recurring codes have no profile, so their results are provisional"
+            : "All " + total + " recurring codes have a profile";
+
+          $("rxProfileList").innerHTML = d.profiles.length ? (
+            '<table class="rx-table"><thead><tr><th>File</th><th>Codes</th><th>Text</th><th>Uploaded</th><th></th></tr></thead><tbody>' +
+            d.profiles.map((pr) =>
+              "<tr><td>" + escapeHtml(pr.filename) + "</td>" +
+              '<td class="rx-codes">' + escapeHtml(pr.codes.join(", ")) + "</td>" +
+              "<td>" + pr.chars.toLocaleString() + " chars</td>" +
+              "<td>" + escapeHtml(pr.uploaded_by) + "<br><small>" + escapeHtml(fmtDate(pr.uploaded_at)) + "</small></td>" +
+              '<td><button type="button" class="sp-btn small" data-edit="' + pr.id + '" data-codes="' + escapeHtml(pr.codes.join(", ")) + '">Edit codes</button> ' +
+              '<button type="button" class="sp-btn small" data-del="' + pr.id + '" data-name="' + escapeHtml(pr.filename) + '">Delete</button></td></tr>'
+            ).join("") + "</tbody></table>"
+          ) : '<div class="rx-hint">No profiles uploaded yet. Without a profile, results for a code are marked provisional and sent to SME review.</div>';
+
+        } catch (err) {
+          $("rxProfileList").innerHTML = '<div class="rx-hint">Could not load profiles: ' + escapeHtml(err.message) + "</div>";
+        }
+      }
+
+      $("rxFile").addEventListener("change", () => {
+        const f = $("rxFile").files[0];
+        if (!f || $("rxCodes").value.trim()) return;
+        const stem = f.name.replace(/\.[^.]+$/, "").replace(/_/g, " ");
+        const found = [];
+        for (const m of stem.matchAll(/\b(?:\d+\.\d+\.)?([A-Z]\.\d+(?:\.\d+)*)\b/g)) {
+          if (!found.includes(m[1])) found.push(m[1]);
+        }
+        if (found.length) $("rxCodes").value = found.join(", ");
+      });
+
+      $("rxUploadBtn").addEventListener("click", async () => {
+        const f = $("rxFile").files[0];
+        if (!f) { setStatus("Choose a TRD profile file first.", true); return; }
+        const body = new FormData();
+        body.append("file", f);
+        body.append("codes", $("rxCodes").value);
+        $("rxUploadBtn").disabled = true;
+        setStatus("Uploading " + f.name + "…");
+        try {
+          const res = await fetch("/api/trd-profiles", { method: "POST", credentials: "same-origin", body: body });
+          if (!res.ok) throw new Error(await errText(res));
+          const pr = await res.json();
+          $("rxFile").value = "";
+          $("rxCodes").value = "";
+          setStatus("Uploaded " + pr.filename + " for " + pr.codes.join(", ") + ". Run the analysis again to use it.");
+          await loadProfiles();
+        } catch (err) {
+          setStatus(err.message, true);
+        } finally {
+          $("rxUploadBtn").disabled = false;
+        }
+      });
+
+      $("rxProfileList").addEventListener("click", async (e) => {
+        const edit = e.target.closest("[data-edit]");
+        const del = e.target.closest("[data-del]");
+        if (!edit && !del) return;
+        try {
+          let res;
+          if (edit) {
+            const codes = prompt("TRD codes this profile covers (comma separated):", edit.dataset.codes);
+            if (codes === null) return;
+            res = await fetch("/api/trd-profiles/" + edit.dataset.edit, {
+              method: "PUT", credentials: "same-origin",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ codes: codes }),
+            });
+          } else {
+            if (!confirm("Delete the profile " + del.dataset.name + "?")) return;
+            res = await fetch("/api/trd-profiles/" + del.dataset.del, { method: "DELETE", credentials: "same-origin" });
+          }
+          if (!res.ok) throw new Error(await errText(res));
+          setStatus(edit ? "Profile codes updated." : "Profile deleted.");
+          await loadProfiles();
+        } catch (err) {
+          setStatus(err.message, true);
+        }
+      });
+
+      ["rxMonths", "rxMinQ", "rxMinD", "rxFrom", "rxTo"].forEach((id) => $(id).addEventListener("change", loadProfiles));
+      $("rxMonths").addEventListener("change", () => { $("rxRange").hidden = !isCustom(); });
+
+      // ----- runs -----
+      $("rxRunBtn").addEventListener("click", async () => {
+        const p = params();
+        const bad = rangeError(p);
+        if (bad) { setStatus(bad, true); return; }
+        const scopeText = p.scope === "profiled"
+          ? "for the codes covered by your uploaded profiles"
+          : "for all recurring codes (about 100 codes, takes several minutes)";
+        if (!confirm("Run the TRD gap analysis " + windowText(p) + " " + scopeText + "?")) return;
+        $("rxRunBtn").disabled = true;
+        try {
+          const res = await fetch("/api/recommendations/run", {
+            method: "POST", credentials: "same-origin",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(p),
+          });
+          if (!res.ok) throw new Error(await errText(res));
+          setStatus("Analysis started.");
+          await refreshRuns();
+        } catch (err) {
+          setStatus(err.message, true);
+          $("rxRunBtn").disabled = false;
+        }
+      });
+
+      function renderRunStatus(run, lastDone) {
+        const active = run && (run.status === "queued" || run.status === "running");
+        $("rxRunBtn").disabled = !!active;
+        $("rxProgressWrap").hidden = !active;
+        if (!run) { setStatus("No analysis has run yet. Upload TRD profiles, then click Run analysis."); return; }
+        const prog = run.progress || { done: 0, total: 0 };
+        if (active) {
+          const pct = prog.total ? Math.round((prog.done / prog.total) * 100) : 0;
+          $("rxProgress").style.width = pct + "%";
+          setStatus("Run " + run.id + " in progress: " + prog.done + " of " + (prog.total || "?") + " codes analysed" + (prog.current ? " (last: " + prog.current + ")" : "") + ".");
+        } else if (run.status === "failed") {
+          setStatus("Run " + run.id + " failed: " + (run.error || "unknown error") + (lastDone ? " Showing run " + lastDone.id + "." : ""), true);
+        } else {
+          const s = run.summary || {};
+          setStatus(
+            "Run " + run.id + " finished " + fmtDate(run.finished_at) + (run.started_by ? " (started by " + run.started_by + ")" : "") +
+            ". " + (s.scope === "profiled" ? "Analysed " + s.recurring_codes + " code" + (s.recurring_codes === 1 ? "" : "s") + " with uploaded profiles" : "Analysed all " + s.recurring_codes + " recurring codes") +
+            ", window " + humanDay(s.window_start || "") + " to " + humanDay(s.window_end || "") + ", model " + (s.model || "") +
+            (s.codes_from_cache ? ", " + s.codes_from_cache + " codes reused from cache" : "") + "."
+          );
+        }
+      }
+
+      async function refreshRuns() {
+        clearTimeout(rxPoll);
+        try {
+          const res = await fetch("/api/recommendations/runs/latest?items=false", { credentials: "same-origin" });
+          if (!res.ok) throw new Error(await errText(res));
+          const d = await res.json();
+          renderRunStatus(d.run, d.last_done);
+          if (d.last_done && (!rxShown || rxShown.id !== d.last_done.id)) {
+            const r2 = await fetch("/api/recommendations/runs/" + d.last_done.id, { credentials: "same-origin" });
+            if (!r2.ok) throw new Error(await errText(r2));
+            rxShown = await r2.json();
+            renderResults();
+          } else if (!d.last_done) {
+            $("rxFallback").hidden = false;
+          }
+          if (d.run && (d.run.status === "queued" || d.run.status === "running")) {
+            rxPoll = setTimeout(refreshRuns, 3000);
+          }
+        } catch (err) {
+          setStatus("Could not load analysis runs: " + err.message, true);
+        }
+      }
+
+      // ----- results -----
+      function stat(value, label) {
+        return '<div class="rx-stat"><b>' + Number(value || 0).toLocaleString() + "</b><span>" + escapeHtml(label) + "</span></div>";
+      }
+
+      function evidenceHtml(c) {
+        const ev = c.evidence || [];
+        if (!ev.length) return "";
+        return '<details class="rx-evidence"><summary>Show ' + ev.length + " underlying question" + (ev.length === 1 ? "" : "s") + "</summary><ol>" +
+          ev.map((e) =>
+            "<li>" + escapeHtml(e.question) +
+            "<small>" + escapeHtml([e.doc_name, e.product, e.country, e.date].filter(Boolean).join(" · ")) + "</small></li>"
+          ).join("") + "</ol></details>";
+      }
+
+      function recurrenceLine(c) {
+        const has = c.health_authorities || [];
+        const haText = has.length ? has.slice(0, 4).join(", ") + (has.length > 4 ? " +" + (has.length - 4) : "") : "no HA recorded";
+        return c.questions + " questions · " + c.documents + " documents · " + (c.products || []).length + " products · " +
+          haText + " · " + c.first_date + " to " + c.last_date;
+      }
+
+      function todoCard(item, n) {
+        const c = item.cluster;
+        const r = item.result;
+        const pClass = "priority-" + String(r.priority).toLowerCase();
+        const coverage = r.provisional
+          ? "No TRD profile uploaded for " + c.code + "; this conclusion is provisional."
+          : "Profile " + r.profile_file + " (mapped to " + r.profile_code + ") covers this: " + r.profile_coverage + ".";
+        const fields = [
+          '<div><span>CTD section</span> · <b>' + escapeHtml(c.ctd_section) + "</b></div>",
+          '<div><span>TRD code</span> · <b>' + enrichCodeText(c.code) + "</b></div>",
+          r.root_cause ? '<div><span>Root cause</span> · <b>' + escapeHtml(r.root_cause) + "</b></div>" : "",
+          '<div><span>Owner</span> · <b>' + escapeHtml(r.owner) + "</b></div>",
+          r.action_type ? '<div><span>Action</span> · <b>' + escapeHtml(r.action_type) + "</b></div>" : "",
+        ].join("");
+        return '<div class="rec"><div class="n">' + String(n).padStart(2, "0") + "</div><div>" +
+          "<h4>" + escapeHtml(r.title) + "</h4>" +
+          '<div class="rec-meta">' +
+            '<span class="rec-chip ' + pClass + '"><strong>' + escapeHtml(r.priority) + "</strong></span>" +
+            '<span class="rec-chip"><strong>Decision</strong> ' + escapeHtml(r.decision) + "</span>" +
+            '<span class="rec-chip"><strong>Confidence</strong> ' + escapeHtml(r.confidence) + "</span>" +
+            (r.provisional ? '<span class="rec-chip priority-medium"><strong>Provisional</strong> no profile</span>' : "") +
+          "</div>" +
+          "<p>" + escapeHtml(c.topic) + " · " + escapeHtml(recurrenceLine(c)) + "</p>" +
+          '<div class="rx-block"><span>What the authorities asked</span>' + escapeHtml(c.summary || "") + "</div>" +
+          '<div class="rx-block"><span>Profile gap</span>' + escapeHtml(r.gap || "") + "<br><small>" + escapeHtml(coverage) + "</small>" +
+            (r.profile_quote ? '<div class="rx-quote">' + escapeHtml(r.profile_quote) + "</div>" : "") + "</div>" +
+          (r.suggested_wording ? '<div class="rx-block"><span>Suggested profile wording</span><div class="rx-wording">' + escapeHtml(r.suggested_wording) + "</div></div>" : "") +
+          '<div class="rec-fields">' + fields + "</div>" +
+          evidenceHtml(c) +
+          "</div></div>";
+      }
+
+      function fillSelect(id, values, label) {
+        const sel = $(id);
+        const prev = sel.value;
+        sel.innerHTML = '<option value="">' + escapeHtml(label) + "</option>" +
+          values.map((v) => '<option value="' + escapeHtml(v) + '">' + escapeHtml(v) + "</option>").join("");
+        if (values.includes(prev)) sel.value = prev;
+      }
+
+      function renderTodos() {
+        const items = visibleItems().filter((i) => i.kind === "todo");
+        const fd = $("rxFDecision").value;
+        const fo = $("rxFOwner").value;
+        const fs = $("rxFSection").value;
+        const shown = items.filter((i) =>
+          (!fd || i.result.decision === fd) && (!fo || i.result.owner === fo) &&
+          (!fs || i.cluster.ctd_section === fs)
+        );
+        shown.sort((a, b) =>
+          PRIORITY_ORDER.indexOf(a.result.priority) - PRIORITY_ORDER.indexOf(b.result.priority) ||
+          Number(a.result.provisional) - Number(b.result.provisional) ||
+          b.cluster.questions - a.cluster.questions
+        );
+        if (!shown.length) {
+          $("rxTodos").innerHTML = '<div class="rx-hint">' + (items.length ? "No to-dos match these filters." : "No profile-update to-dos in this run.") + "</div>";
+            return;
+          }
+        const byCode = new Map();
+        for (const i of shown) {
+          if (!byCode.has(i.cluster.code)) byCode.set(i.cluster.code, []);
+          byCode.get(i.cluster.code).push(i);
+        }
+        const groups = [...byCode.entries()].map(([code, topics]) => {
+          const docs = new Set();
+          const qids = new Set();
+          topics.forEach((t) => (t.cluster.evidence || []).forEach((e) => { qids.add(e.id); if (e.doc_name) docs.add(e.doc_name); }));
+          return {
+            code: code,
+            title: topics[0].cluster.code_title,
+            topics: topics,
+            top: Math.min(...topics.map((t) => PRIORITY_ORDER.indexOf(t.result.priority))),
+            provisional: topics.every((t) => t.result.provisional),
+            updates: topics.filter((t) => t.result.decision === "Yes, update profile").length,
+            questions: qids.size,
+            documents: docs.size,
+          };
+        });
+        groups.sort((a, b) => a.top - b.top || Number(a.provisional) - Number(b.provisional) || b.questions - a.questions);
+
+        $("rxTodos").innerHTML =
+          '<div class="rx-group-head">' + groups.length + " TRD codes with recurring topics to review (" + shown.length + " topics)</div>" +
+          groups.map((g) => {
+            const p = PRIORITY_ORDER[g.top] || "Medium";
+            return '<details class="rx-code"><summary>' +
+              '<span class="rx-code-id">' + escapeHtml(g.code) + "</span>" +
+              '<span class="rx-code-title">' + escapeHtml(g.title || "") + "</span>" +
+              '<span class="rx-code-meta">' + g.topics.length + " topic" + (g.topics.length === 1 ? "" : "s") +
+                " · " + g.questions + " questions · " + g.documents + " documents</span>" +
+              '<span class="rec-chip priority-' + p.toLowerCase() + '"><strong>' + escapeHtml(p) + "</strong></span>" +
+              (g.updates ? '<span class="rec-chip"><strong>' + g.updates + "</strong> update profile</span>" : "") +
+              (g.provisional ? '<span class="rec-chip priority-medium"><strong>Provisional</strong> no profile</span>' : "") +
+              '</summary><div class="recs">' + g.topics.map((t, k) => todoCard(t, k + 1)).join("") + "</div></details>";
+          }).join("");
+      }
+
+      function renderList(boxId, items, title, rowFn) {
+        const box = $(boxId);
+        box.hidden = !items.length;
+        if (!items.length) return;
+        box.querySelector("summary").textContent = title + " (" + items.length + ")";
+        box.querySelector("div").innerHTML = items.map(rowFn).join("");
+      }
+
+      function visibleItems() {
+        const noProfile = new Set((rxShown.summary || {}).codes_without_profile || []);
+        const showAll = $("rxFProvisional").checked;
+        return (rxShown.items || []).filter((i) => showAll || !noProfile.has(i.code));
+      }
+
+      function renderResults() {
+        if (!rxShown) return;
+        $("rxFallback").hidden = true;
+        const noProfile = new Set((rxShown.summary || {}).codes_without_profile || []);
+        $("rxFProvisional").checked = !(rxShown.items || []).some((i) => !noProfile.has(i.code));
+        renderView();
+      }
+
+      function renderView() {
+        const s = rxShown.summary || {};
+        const items = visibleItems();
+        const count = (fn) => items.filter(fn).length;
+        const excluded = (i) => i.kind === "excluded";
+        $("rxSummary").hidden = false;
+        $("rxSummary").innerHTML =
+          stat(s.questions_in_window, "questions in window") +
+          stat(new Set(items.map((i) => i.code)).size, "TRD codes shown") +
+          stat(count((i) => i.kind !== "error"), "topic clusters") +
+          stat(count((i) => i.kind === "todo"), "to-dos") +
+          stat(count((i) => i.kind === "covered"), "already covered by profile") +
+          stat(count((i) => excluded(i) && /clarification|administrative/.test(i.result.reason)), "excluded: clarification or administrative") +
+          stat(count((i) => excluded(i) && /single document|threshold/.test(i.result.reason)), "excluded: single document") +
+          stat(s.unmapped_questions, "questions without a TRD code");
+
+        const todos = items.filter((i) => i.kind === "todo");
+        $("rxFilters").hidden = !(rxShown.items || []).some((i) => i.kind === "todo");
+        fillSelect("rxFDecision", [...new Set(todos.map((i) => i.result.decision))].sort(), "All decisions");
+        fillSelect("rxFOwner", [...new Set(todos.map((i) => i.result.owner))].sort(), "All owners");
+        fillSelect("rxFSection", [...new Set(todos.map((i) => i.cluster.ctd_section))].sort(), "All CTD sections");
+        renderTodos();
+
+        renderList("rxCoveredBox", items.filter((i) => i.kind === "covered"), "Already covered by the profile, no to-do", (i) =>
+          '<div class="rx-item"><b>' + escapeHtml(i.cluster.topic) + "</b> <span class=\"rx-codes\">" + escapeHtml(i.cluster.code) + "</span> · " +
+          escapeHtml(i.result.decision) + "<br><small>" + escapeHtml(recurrenceLine(i.cluster)) + "</small>" +
+          (i.result.profile_quote ? '<div class="rx-quote">' + escapeHtml(i.result.profile_quote) + "</div>" : "") +
+          (i.result.gap ? "<div>" + escapeHtml(i.result.gap) + "</div>" : "") +
+          evidenceHtml(i.cluster) + "</div>"
+        );
+        renderList("rxExcludedBox", items.filter((i) => i.kind === "excluded"), "Excluded from recommendations", (i) =>
+          '<div class="rx-item"><b>' + escapeHtml(i.cluster.topic) + "</b> <span class=\"rx-codes\">" + escapeHtml(i.cluster.code) + "</span> · " +
+          escapeHtml(REASON_LABEL[i.result.reason] || i.result.reason) + "<br><small>" + escapeHtml(recurrenceLine(i.cluster)) + "</small>" +
+          (i.cluster.summary ? "<div>" + escapeHtml(i.cluster.summary) + "</div>" : "") +
+          evidenceHtml(i.cluster) + "</div>"
+        );
+        renderList("rxErrorsBox", items.filter((i) => i.kind === "error"), "Codes that failed to analyse", (i) =>
+          '<div class="rx-item"><span class="rx-codes">' + escapeHtml(i.code) + "</span> · " + escapeHtml(i.result.error) + "</div>"
+        );
+
+        $("rxExport").hidden = false;
+        $("rxExport").href = "/api/recommendations/runs/" + rxShown.id + "/export.csv";
+      }
+
+      ["rxFDecision", "rxFOwner", "rxFSection"].forEach((id) =>
+        $(id).addEventListener("change", () => { if (rxShown) renderTodos(); })
+      );
+      $("rxFProvisional").addEventListener("change", () => { if (rxShown) renderView(); });
+
+      loadProfiles();
+      refreshRuns();
     })();
 
     })();

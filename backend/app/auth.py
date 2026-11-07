@@ -3,7 +3,7 @@ from __future__ import annotations
 import secrets
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, Header, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 from .config import Settings, get_settings
@@ -30,3 +30,22 @@ def require_basic_auth(
             headers={"WWW-Authenticate": 'Basic realm="CMC Dashboard"'},
         )
     return credentials.username
+
+
+def require_prompt_editor(
+    settings: Annotated[Settings, Depends(get_settings)],
+    x_editor_password: Annotated[str | None, Header()] = None,
+) -> None:
+    expected = settings.prompt_editor_password
+    if not expected:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Prompt editing is disabled. Set PROMPT_EDITOR_PASSWORD on the server.",
+        )
+    if not x_editor_password or not secrets.compare_digest(
+        x_editor_password.encode("utf-8"), expected.encode("utf-8")
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Wrong editor password.",
+        )

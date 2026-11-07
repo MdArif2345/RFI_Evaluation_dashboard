@@ -48,6 +48,8 @@ class Settings(BaseSettings):
     # --- Access control ---
     app_password: str = "cmc-share"
     app_username: str = "cmc"
+    # Required to save or restore system prompt versions. Empty disables editing.
+    prompt_editor_password: str = ""
 
     # --- Data / index ---
     qna_path: Path = DEFAULT_QNA_PATH

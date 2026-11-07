@@ -2349,6 +2349,13 @@ class DocxQAExtractor {
             return;
         }
         if (this._corpusBusy) return;
+        let pw = '';
+        try { pw = sessionStorage.getItem('cmc-prompt-editor-pw') || ''; } catch (_) { /* private mode */ }
+        if (!pw) pw = window.prompt('Enter the editor password to add rows to the corpus:') || '';
+        if (!pw) {
+            this.showToast('Adding to the corpus needs the editor password', 'warning');
+            return;
+        }
         this._corpusBusy = true;
         const btn = this.$('add-corpus-btn');
         const original = btn ? btn.textContent : '';
@@ -2360,7 +2367,7 @@ class DocxQAExtractor {
             const res = await fetch('/api/corpus/append', {
                 method: 'POST',
                 credentials: 'same-origin',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'X-Editor-Password': pw },
                 body: JSON.stringify({
                     rows: rows.map((row) => ({
                         registrationName: row.registrationName || '',
@@ -2375,6 +2382,10 @@ class DocxQAExtractor {
                 })
             });
             const data = await res.json().catch(() => ({}));
+            try {
+                if (res.status === 403) sessionStorage.removeItem('cmc-prompt-editor-pw');
+                else if (res.ok) sessionStorage.setItem('cmc-prompt-editor-pw', pw);
+            } catch (_) { /* private mode */ }
             if (!res.ok) {
                 throw new Error(data.detail || `Append failed (${res.status})`);
             }
