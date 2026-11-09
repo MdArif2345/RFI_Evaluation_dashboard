@@ -11,7 +11,7 @@ This folder is **independent of `yaap-infra-v2`**. Do not mix the two projects.
 | Path | Role |
 |------|------|
 | `index.html` | Dashboard UI + CMC Q&A chat panel (section 10) |
-| `data.js` / `metrics.json` | Pre-aggregated metrics |
+| `data.js` | Pre-aggregated metrics (`metrics.json` is a local, git-ignored copy) |
 | `code_catalog.json` | CTD code titles |
 | `QnA_pairs_extracted.json` | Knowledge base for RAG (~2k Q&A pairs) |
 | `qna_insights.json` | Precomputed clustering/analytics for dashboard section 10 (generated) |
@@ -21,7 +21,6 @@ This folder is **independent of `yaap-infra-v2`**. Do not mix the two projects.
 | `backend/.env` | **Your secrets** — replace placeholders (gitignored) |
 | `backend/.env.example` | Same key list, safe to commit |
 | `Dockerfile` / `render.yaml` | Shareable hosting on Render |
-| `_baseline/` | Snapshot of current dashboard (pre–QnA Extractor); see `_baseline/RESTORE.md` |
 
 ---
 
@@ -183,4 +182,4 @@ Note: hosting this externally (Render) puts CMC content on a non-Bayer server. F
 
 ## Updating metrics later
 
-Same as before: refresh `metrics.json` / `data.js`, restart or refresh. Chatbot index is separate — re-run `scripts/ingest.py` only when `QnA_pairs_extracted.json` changes.
+Same as before: refresh `data.js` (`python -m scripts.build_data_js`), restart or refresh. Chatbot index is separate — re-run `scripts/ingest.py` only when `QnA_pairs_extracted.json` changes.

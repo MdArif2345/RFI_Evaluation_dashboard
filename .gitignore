@@ -76,6 +76,12 @@ server_*.log
 uvicorn*.log
 
 # ----- Documentation/Reference files (not part of app) -----
-# *.docx  # Commented out - keeping Step 3 Prompt DG.docx
-# *.pdf   # Commented out - keeping guideline PDF
 *-report.html
+*.docx
+*.pdf
+VV-RFI-*
+CMC Data Analysis_v6/
+
+# ----- Local-only copies (not used by the app) -----
+_baseline/
+metrics.json
